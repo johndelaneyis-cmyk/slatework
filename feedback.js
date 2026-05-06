@@ -3,9 +3,9 @@
 
 (() => {
   // --- Cloudflare Web Analytics beacon ---------------------------------------
-  // Replace this token after creating a site at:
-  //   dash.cloudflare.com -> Analytics & Logs -> Web Analytics -> Add a site
-  const BEACON_TOKEN = "REPLACE_WITH_CF_BEACON_TOKEN";
+  // Public site identifier (visible to every visitor in the rendered HTML).
+  // Bound to slatework.tools at dash.cloudflare.com -> Web Analytics.
+  const BEACON_TOKEN = "0a7c100b0b8e44ee9cc547af8f844385";
   if (BEACON_TOKEN && BEACON_TOKEN !== "REPLACE_WITH_CF_BEACON_TOKEN") {
     const s = document.createElement('script');
     s.defer = true;
