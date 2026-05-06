@@ -320,6 +320,11 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
   max-width: 16ch;
 }
 
+.hero-display .reveal-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
 .hero-display .reveal {
   display: inline-block;
   opacity: 0;
