@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Slatework &mdash; Free tools for independent language tutors</title>
   <meta name="description" content="A free, privacy-first toolkit for independent language tutors and teachers. Country-aware tools for setup, rates, contracts, lesson planning, and grading &mdash; across the US, UK, Canada, Australia, New Zealand, Ireland, and Hong Kong." />
-  <meta name="theme-color" content="#1e293b" />
+  <meta name="theme-color" content="#020617" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="canonical" href="https://slatework.tools/" />
   <meta property="og:type" content="website" />
@@ -38,140 +38,195 @@
 </head>
 <body>
 
-<header class="site-header">
-  <a class="brand" href="/">
-    <svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="6" y="10" width="52" height="44" rx="4" fill="#0f172a"/>
-      <line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
-    </svg>
-    Slatework
-  </a>
-  <nav>
-    <a href="/about.html">About</a>
-    <a href="/privacy.html">Privacy</a>
-  </nav>
-</header>
+<section class="hero-slate">
+  <header class="site-header dark">
+    <a class="brand" href="/">
+      <svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="6" y="10" width="52" height="44" rx="4" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.4"/>
+        <line x1="16" y1="22" x2="48" y2="22" stroke="#f8fafc" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="16" y1="32" x2="42" y2="32" stroke="#f8fafc" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="16" y1="42" x2="38" y2="42" stroke="#f8fafc" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      Slatework
+    </a>
+    <nav>
+      <a href="/about.html">About</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+  </header>
 
-<main>
-  <section class="container hero">
-    <div class="eyebrow">Free <span aria-hidden="true">|</span> No account <span aria-hidden="true">|</span> Open source</div>
-    <h1>Tutor tools that don't waste your evening.</h1>
-    <p class="lead">
-      Set up your tutoring business, set defensible rates, plan lessons, mark student work &mdash; without paying a platform 30% or stitching seven free templates together. Ten free tools for independent language tutors and the teachers who tutor on the side.
-    </p>
-    <div class="hero-cta">
-      <a class="btn btn-primary btn-lg" href="#tools">Browse the toolkit</a>
-      <a class="btn-link" href="/about.html">Read the story &rarr;</a>
-    </div>
-    <div class="hero-status">
-      v0.1.0 &middot; 10 tools &middot; 7 countries &middot; <span class="dot" aria-hidden="true"></span>live now
-    </div>
-  </section>
+  <div class="hero-inner">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="mono-caption">// FREE &middot; NO ACCOUNT &middot; NO PLATFORM FEE</p>
 
-  <div class="trust-band">
-    <div class="row">
-      <span class="label">Country-aware for</span>
-      <ul>
-        <li>US</li>
-        <li>UK</li>
-        <li>CA</li>
-        <li>AU</li>
-        <li>NZ</li>
-        <li>IE</li>
-        <li>HK</li>
-      </ul>
+        <h1 class="hero-display" id="hero-display">Tutor tools that don't waste your evening.</h1>
+
+        <p class="hero-sub">
+          Set up your business, set defensible rates, plan lessons, mark student work &mdash; without paying a platform 30% or stitching seven free templates together. Ten free tools, country-aware for seven markets, built for independent language tutors and the teachers who tutor on the side.
+        </p>
+
+        <p class="mono-caption hero-status">// v0.1.0 &middot; 10 tools &middot; 7 countries &middot; <span class="dot" aria-hidden="true"></span>live now</p>
+
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="#tools">Browse the toolkit &darr;</a>
+          <a class="link-chalk" href="/about.html">Read the story &rarr;</a>
+        </div>
+      </div>
+
+      <aside class="preview-widget" aria-label="Live rate preview">
+        <p class="mono-caption">// LIVE PREVIEW &middot; YOUR HOURLY RATE</p>
+
+        <div class="preview-form">
+          <div class="preview-field">
+            <label for="preview-country">Country</label>
+            <select id="preview-country" class="preview-input"></select>
+          </div>
+          <div class="preview-field">
+            <label for="preview-pair">Language pair</label>
+            <select id="preview-pair" class="preview-input"></select>
+          </div>
+          <div class="preview-field full">
+            <label for="preview-exp">Experience</label>
+            <select id="preview-exp" class="preview-input">
+              <option value="new">New (under 1 yr)</option>
+              <option value="early" selected>Early (1&ndash;3 yr)</option>
+              <option value="mid">Mid (3&ndash;7 yr)</option>
+              <option value="senior">Senior (7+ yr)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="preview-result">
+          <div class="preview-rate-label">Median rate</div>
+          <div id="preview-rate" class="preview-rate">&mdash;</div>
+          <div id="preview-platforms" class="preview-platforms">// loading&hellip;</div>
+          <a class="preview-link" href="/rates.html">See full breakdown &rarr;</a>
+        </div>
+      </aside>
     </div>
   </div>
+</section>
 
-  <section id="tools" class="container tools-section">
+<div class="country-band">
+  <div class="row">
+    // COUNTRY-AWARE FOR <span class="codes">US &middot; UK &middot; CA &middot; AU &middot; NZ &middot; IE &middot; HK</span>
+  </div>
+</div>
 
-    <div class="bucket">
-      <div class="bucket-head">
-        <span class="num">01 / 04</span>
-        <h2>Setting up your tutoring business</h2>
-        <p class="sub">Get legal-to-teach, get paid, stay insured.</p>
+<main>
+  <section id="tools" class="tools-region">
+    <div class="tools-inner">
+
+      <div class="bucket-section">
+        <div class="bucket-meta">
+          <p class="mono-caption">// 01 / 04</p>
+          <h2>Setting up your tutoring business</h2>
+          <p class="count">// 3 tools</p>
+          <p class="desc">Get legal-to-teach, get paid, stay insured.</p>
+        </div>
+        <div class="bucket-tiles">
+          <div class="tile-grid">
+            <a class="tile" href="/setup.html">
+              <span class="tile-slug">// setup</span>
+              <h3>Start tutoring privately</h3>
+              <p>Country-aware setup: registration, background checks, working-with-minors basics.</p>
+            </a>
+            <a class="tile" href="/tax.html">
+              <span class="tile-slug">// tax</span>
+              <h3>Tax &amp; self-employment</h3>
+              <p>The forms, thresholds, and deadlines for your country &mdash; Schedule C, SA103, T2125, ABN, IR3, ROS, BIR60.</p>
+            </a>
+            <a class="tile" href="/insurance.html">
+              <span class="tile-slug">// insurance</span>
+              <h3>Insurance &amp; safeguarding</h3>
+              <p>Public liability, professional indemnity, and DBS/WWCC/Garda equivalents &mdash; what tutors actually need.</p>
+            </a>
+          </div>
+        </div>
       </div>
-      <div class="tile-grid">
-        <a class="tile" href="/setup.html">
-          <h3>Start tutoring privately</h3>
-          <p>Country-aware setup: registration, background checks, working-with-minors basics.</p>
-        </a>
-        <a class="tile" href="/tax.html">
-          <h3>Tax &amp; self-employment</h3>
-          <p>The forms, thresholds, and deadlines for your country &mdash; Schedule C, SA103, T2125, ABN, IR3, ROS, BIR60.</p>
-        </a>
-        <a class="tile" href="/insurance.html">
-          <h3>Insurance &amp; safeguarding</h3>
-          <p>Public liability, professional indemnity, and DBS/WWCC/Garda equivalents &mdash; what tutors actually need.</p>
-        </a>
+
+      <div class="bucket-section">
+        <div class="bucket-meta">
+          <p class="mono-caption">// 02 / 04</p>
+          <h2>Lesson delivery &amp; grading</h2>
+          <p class="count">// 4 tools</p>
+          <p class="desc">Plan lessons, place students, generate worksheets, mark writing.</p>
+        </div>
+        <div class="bucket-tiles">
+          <div class="tile-grid">
+            <a class="tile" href="/lesson-plan.html">
+              <span class="tile-slug">// lesson-plan</span>
+              <h3>Lesson plan generator</h3>
+              <p>Language pair + level + goal &rarr; structured plan. Works for 1:1, small group, or a full classroom.</p>
+            </a>
+            <a class="tile" href="/cefr.html">
+              <span class="tile-slug">// cefr</span>
+              <h3>CEFR proficiency mapper</h3>
+              <p>Place a student at A1&ndash;C2 &mdash; rule-based by default, with optional AI assessment from a writing sample.</p>
+            </a>
+            <a class="tile" href="/worksheet.html">
+              <span class="tile-slug">// worksheet</span>
+              <h3>Worksheet + answer key</h3>
+              <p>Topic + level &rarr; printable worksheet with the answer key matched, in seconds.</p>
+            </a>
+            <a class="tile" href="/marking.html">
+              <span class="tile-slug">// marking</span>
+              <h3>Marking accelerator</h3>
+              <p>Paste student writing &rarr; highlighted error categories + level-matched feedback to copy-paste.</p>
+            </a>
+          </div>
+        </div>
       </div>
+
+      <div class="bucket-section">
+        <div class="bucket-meta">
+          <p class="mono-caption">// 03 / 04</p>
+          <h2>Pricing &amp; money</h2>
+          <p class="count">// 2 tools</p>
+          <p class="desc">Know what to charge. Know what platforms actually pay.</p>
+        </div>
+        <div class="bucket-tiles">
+          <div class="tile-grid">
+            <a class="tile" href="/rates.html">
+              <span class="tile-slug">// rates</span>
+              <h3>Hourly rate calculator</h3>
+              <p>Private rate range AND your platform-net side-by-side across italki, Preply, Wyzant, Cambly, and Tutorful.</p>
+            </a>
+            <a class="tile" href="/payments.html">
+              <span class="tile-slug">// payments</span>
+              <h3>Payment methods</h3>
+              <p>Wise, Stripe Link, PayPal, plus local rails &mdash; HK FPS, AU PayID, UK Faster Payments, US Zelle.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="bucket-section">
+        <div class="bucket-meta">
+          <p class="mono-caption">// 04 / 04</p>
+          <h2>Client acquisition</h2>
+          <p class="count">// 1 tool</p>
+          <p class="desc">Sign clients without a 30% platform fee.</p>
+        </div>
+        <div class="bucket-tiles">
+          <div class="tile-grid">
+            <a class="tile" href="/contract.html">
+              <span class="tile-slug">// contract</span>
+              <h3>Parent-tutor contract</h3>
+              <p>Generate a signable lesson agreement &mdash; trial terms, cancellation policy, parent welcome paragraph included.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+
     </div>
-
-    <div class="bucket">
-      <div class="bucket-head">
-        <span class="num">02 / 04</span>
-        <h2>Lesson delivery &amp; grading</h2>
-        <p class="sub">Plan lessons, place students, generate worksheets, mark writing.</p>
-      </div>
-      <div class="tile-grid">
-        <a class="tile" href="/lesson-plan.html">
-          <h3>Lesson plan generator</h3>
-          <p>Language pair + level + goal &rarr; structured plan. Works for 1:1, small group, or a full classroom.</p>
-        </a>
-        <a class="tile" href="/cefr.html">
-          <h3>CEFR proficiency mapper</h3>
-          <p>Place a student at A1&ndash;C2 &mdash; rule-based by default, with optional AI assessment from a writing sample.</p>
-        </a>
-        <a class="tile" href="/worksheet.html">
-          <h3>Worksheet + answer key</h3>
-          <p>Topic + level &rarr; printable worksheet with the answer key matched, in seconds.</p>
-        </a>
-        <a class="tile" href="/marking.html">
-          <h3>Marking accelerator</h3>
-          <p>Paste student writing &rarr; highlighted error categories + level-matched feedback to copy-paste.</p>
-        </a>
-      </div>
-    </div>
-
-    <div class="bucket">
-      <div class="bucket-head">
-        <span class="num">03 / 04</span>
-        <h2>Pricing &amp; money</h2>
-        <p class="sub">Know what to charge. Know what platforms actually pay.</p>
-      </div>
-      <div class="tile-grid">
-        <a class="tile" href="/rates.html">
-          <h3>Hourly rate calculator</h3>
-          <p>Private rate range AND your platform-net side-by-side across italki, Preply, Wyzant, Cambly, and Tutorful.</p>
-        </a>
-        <a class="tile" href="/payments.html">
-          <h3>Payment methods</h3>
-          <p>Wise, Stripe Link, PayPal, plus local rails &mdash; HK FPS, AU PayID, UK Faster Payments, US Zelle.</p>
-        </a>
-      </div>
-    </div>
-
-    <div class="bucket">
-      <div class="bucket-head">
-        <span class="num">04 / 04</span>
-        <h2>Client acquisition</h2>
-        <p class="sub">Sign clients without a 30% platform fee.</p>
-      </div>
-      <div class="tile-grid">
-        <a class="tile" href="/contract.html">
-          <h3>Parent-tutor contract</h3>
-          <p>Generate a signable lesson agreement &mdash; trial terms, cancellation policy, parent welcome paragraph included.</p>
-        </a>
-      </div>
-    </div>
-
   </section>
 
   <section class="newsletter">
     <div class="newsletter-inner">
-      <h2>One short letter every Sunday.</h2>
+      <p class="mono-caption">// EVERY SUNDAY</p>
+      <h2>One short letter a week.</h2>
       <p class="lead">Notes from independent tutors and teachers &mdash; what's working this week, what just shipped, useful templates. Unsubscribe in one click.</p>
       <form id="newsletter">
         <div class="field">
@@ -180,16 +235,19 @@
         </div>
         <button type="submit" class="btn btn-primary">Join</button>
       </form>
-      <div id="newsletter-status" class="small" style="min-height: 1.4em;"></div>
+      <div id="newsletter-status"></div>
       <p class="footnote">// Joining 0 readers &middot; be the first</p>
     </div>
   </section>
 
-  <section class="container maker">
-    <p>
-      Slatework is the second project from the maker of Authorly. Same approach: ten free tools, no signup, no platform fee, no pretending the work isn't hard. Built quietly in 2026 for the tutors and teachers who already do the work.
-    </p>
-    <span class="sig">&mdash; Darren &middot; 2026</span>
+  <section class="maker">
+    <div class="maker-inner">
+      <p class="mono-caption">// THE MAKER</p>
+      <p>
+        Slatework is the second project from the maker of Authorly. Same approach: ten free tools, no signup, no platform fee, no pretending the work isn't hard. Built quietly in 2026 for the tutors and teachers who already do the work.
+      </p>
+      <span class="sig">// &mdash; Darren &middot; 2026</span>
+    </div>
   </section>
 </main>
 
@@ -208,9 +266,30 @@
   </div>
 </footer>
 
+<script src="/src/lib/countries.js"></script>
+<script src="/src/lib/currency.js"></script>
+
 <script>
 console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:italic");
 
+/* Headline letter-by-letter chalk reveal — first paint only, respects reduced-motion */
+(() => {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const el = document.getElementById('hero-display');
+  if (!el || reduce) return;
+  const text = el.textContent;
+  el.textContent = '';
+  const chars = [...text];
+  chars.forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.className = 'reveal';
+    span.style.animationDelay = (i * 20) + 'ms';
+    span.textContent = ch === ' ' ? ' ' : ch;
+    el.appendChild(span);
+  });
+})();
+
+/* Newsletter submit */
 (() => {
   const form = document.getElementById('newsletter');
   const status = document.getElementById('newsletter-status');
@@ -238,6 +317,70 @@ console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:itali
       status.textContent = 'Network error. Try again in a moment.';
     }
   });
+})();
+
+/* Live rate preview widget */
+(async () => {
+  const SW = window.Slatework;
+  if (!SW) return;
+
+  const countrySel = document.getElementById('preview-country');
+  const pairSel = document.getElementById('preview-pair');
+  const expSel = document.getElementById('preview-exp');
+  const rateEl = document.getElementById('preview-rate');
+  const platEl = document.getElementById('preview-platforms');
+  if (!countrySel || !pairSel || !expSel) return;
+
+  for (const c of SW.listCountries()) {
+    const o = document.createElement('option');
+    o.value = c.code;
+    o.textContent = c.name;
+    if (c.code === 'GB') o.selected = true;
+    countrySel.appendChild(o);
+  }
+
+  for (const p of SW.languagePairs()) {
+    const o = document.createElement('option');
+    o.value = p.code;
+    o.textContent = p.label;
+    if (p.code === 'en-es') o.selected = true;
+    pairSel.appendChild(o);
+  }
+
+  const EXP_MULT = { new: 0.85, early: 1.0, mid: 1.2, senior: 1.5 };
+
+  async function update() {
+    const code = countrySel.value;
+    const pair = pairSel.value;
+    const exp = expSel.value;
+    try {
+      const pack = await SW.loadCountry(code);
+      const data = pack.rates_by_language_pair[pair];
+      if (!data) {
+        rateEl.textContent = '—';
+        platEl.textContent = '// no data for this pair yet';
+        return;
+      }
+      const mult = EXP_MULT[exp] || 1;
+      const median = data.median * mult;
+      const ccy = pack.currency;
+      const locale = pack.locale_default;
+      rateEl.textContent = SW.formatCurrency(median, ccy, locale) + '/hr';
+
+      const platforms = (pack.platforms || [])
+        .filter(p => (p.available_in || []).includes(code) && p.fee_pct > 0)
+        .slice(0, 3);
+      const parts = platforms.map(p => p.name + ' ' + SW.formatCurrency(median * (1 - p.fee_pct / 100), ccy, locale));
+      platEl.textContent = parts.length ? '// ' + parts.join(' · ') + ' net' : '// no platform fees in this market';
+    } catch (e) {
+      platEl.textContent = '// could not load rates';
+    }
+  }
+
+  countrySel.addEventListener('change', update);
+  pairSel.addEventListener('change', update);
+  expSel.addEventListener('change', update);
+  await update();
 })();
 </script>
 
