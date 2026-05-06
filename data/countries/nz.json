@@ -1,0 +1,260 @@
+{
+  "currency": "NZD",
+  "rates_by_language_pair": {
+    "en-zh": {
+      "low": 40,
+      "median": 70,
+      "unit": "per_hour",
+      "high": 130
+    },
+    "es-en": {
+      "low": 30,
+      "median": 50,
+      "unit": "per_hour",
+      "high": 95
+    },
+    "en-ja": {
+      "low": 45,
+      "median": 75,
+      "unit": "per_hour",
+      "high": 140
+    },
+    "en-ar": {
+      "low": 40,
+      "median": 65,
+      "unit": "per_hour",
+      "high": 120
+    },
+    "en-ko": {
+      "low": 45,
+      "median": 75,
+      "unit": "per_hour",
+      "high": 140
+    },
+    "en-fr": {
+      "low": 35,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 110
+    },
+    "en-de": {
+      "low": 35,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 110
+    },
+    "fr-en": {
+      "low": 30,
+      "median": 50,
+      "unit": "per_hour",
+      "high": 95
+    },
+    "en-it": {
+      "low": 35,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 110
+    },
+    "en-pt": {
+      "low": 30,
+      "median": 55,
+      "unit": "per_hour",
+      "high": 100
+    },
+    "en-ru": {
+      "low": 35,
+      "median": 55,
+      "unit": "per_hour",
+      "high": 100
+    },
+    "en-es": {
+      "low": 30,
+      "median": 55,
+      "unit": "per_hour",
+      "high": 100
+    }
+  },
+  "locale_default": "en-NZ",
+  "tax": {
+    "vat_threshold_amount": 60000,
+    "self_employment_form": "IR3 (Individual income return) + IR3B (Self-employed income summary)",
+    "notes": "Tutoring is generally GST-exempt only if delivered through a registered education provider. Independent tutors charge GST above the threshold.",
+    "trading_allowance_amount": 0,
+    "self_employment_url": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/self-employed",
+    "registration_steps": [
+      "Get an IRD number if you don't already have one (free at ird.govt.nz).",
+      "If turnover exceeds NZ$60,000/year, register for GST — voluntary below that.",
+      "File IR3 by 7 July each year covering 1 April–31 March; pay tax in three provisional instalments.",
+      "Pay ACC levies (work-based + earner) — automatically calculated after first IR3 filing.",
+      "Most private tutors are sole traders; no separate business registration required."
+    ]
+  },
+  "currency_symbol": "NZ$",
+  "data_source_last_verified": "2026-05-06",
+  "payment_methods": [
+    {
+      "international": false,
+      "domestic": true,
+      "key": "bank_transfer",
+      "name": "Bank transfer (account-to-account)",
+      "notes": "Free, 0–1 business day. Default for most NZ tutors."
+    },
+    {
+      "name": "POLi Pay",
+      "notes": "Bank-redirect payment for one-off lessons.",
+      "international": false,
+      "key": "poli",
+      "domestic": true,
+      "url": "https://www.polipayments.com"
+    },
+    {
+      "international": true,
+      "domestic": true,
+      "key": "wise",
+      "name": "Wise",
+      "url": "https://wise.com"
+    },
+    {
+      "name": "Stripe Link",
+      "notes": "2.9%+NZ$0.30 cards.",
+      "international": true,
+      "key": "stripe_link",
+      "domestic": true,
+      "url": "https://link.com"
+    },
+    {
+      "international": true,
+      "domestic": true,
+      "key": "paypal",
+      "name": "PayPal",
+      "url": "https://www.paypal.com"
+    },
+    {
+      "international": false,
+      "domestic": true,
+      "key": "cash",
+      "name": "Cash"
+    }
+  ],
+  "insurance": {
+    "providers": [
+      {
+        "name": "Vero",
+        "url": "https://www.vero.co.nz/business-insurance"
+      },
+      {
+        "name": "AMI Business",
+        "url": "https://www.ami.co.nz/business"
+      },
+      {
+        "name": "NZI",
+        "url": "https://www.nzi.co.nz"
+      }
+    ],
+    "public_liability_typical_amount": 2000000,
+    "notes": "NZ$2M public liability + NZ$1M professional indemnity is standard. ~NZ$300–$600/year."
+  },
+  "name": "New Zealand",
+  "platforms": [
+    {
+      "url": "https://www.italki.com",
+      "key": "italki",
+      "name": "italki",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "fee_pct": 15
+    },
+    {
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "name": "Preply",
+      "key": "preply",
+      "fee_curve": [
+        {
+          "after_hours": 0,
+          "fee_pct": 33
+        },
+        {
+          "after_hours": 20,
+          "fee_pct": 28
+        },
+        {
+          "after_hours": 50,
+          "fee_pct": 25
+        },
+        {
+          "after_hours": 200,
+          "fee_pct": 18
+        },
+        {
+          "after_hours": 400,
+          "fee_pct": 15
+        }
+      ],
+      "fee_pct": 33,
+      "url": "https://preply.com"
+    },
+    {
+      "url": "https://www.thelessonspace.com",
+      "key": "lessonspace",
+      "name": "LessonSpace",
+      "available_in": [
+        "AU",
+        "NZ"
+      ],
+      "fee_pct": 20
+    },
+    {
+      "url": "https://www.verbling.com",
+      "key": "verbling",
+      "name": "Verbling",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "fee_pct": 15
+    },
+    {
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "name": "Cambly",
+      "notes": "Per-minute rate.",
+      "key": "cambly",
+      "fee_pct": 0,
+      "url": "https://www.cambly.com"
+    }
+  ],
+  "background_check": {
+    "cost_amount": 0,
+    "url": "https://www.police.govt.nz/advice-services/businesses-and-organisations/vetting-service",
+    "name": "Police vetting (NZ Police-issued criminal record check)",
+    "notes": "Free for individuals applying directly, but most parents or schools request a vetted check via an approved organisation. Working safely with children is governed by the Children's Act 2014."
+  },
+  "code": "NZ"
+}

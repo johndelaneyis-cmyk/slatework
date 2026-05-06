@@ -1,0 +1,254 @@
+{
+  "currency": "CAD",
+  "rates_by_language_pair": {
+    "en-zh": {
+      "low": 30,
+      "median": 55,
+      "unit": "per_hour",
+      "high": 120
+    },
+    "es-en": {
+      "low": 25,
+      "median": 45,
+      "unit": "per_hour",
+      "high": 90
+    },
+    "en-ja": {
+      "low": 35,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 130
+    },
+    "en-ar": {
+      "low": 32,
+      "median": 55,
+      "unit": "per_hour",
+      "high": 110
+    },
+    "en-ko": {
+      "low": 35,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 130
+    },
+    "en-fr": {
+      "low": 28,
+      "median": 50,
+      "unit": "per_hour",
+      "high": 100
+    },
+    "en-de": {
+      "low": 30,
+      "median": 50,
+      "unit": "per_hour",
+      "high": 100
+    },
+    "fr-en": {
+      "low": 28,
+      "median": 48,
+      "unit": "per_hour",
+      "high": 95
+    },
+    "en-it": {
+      "low": 28,
+      "median": 48,
+      "unit": "per_hour",
+      "high": 95
+    },
+    "en-pt": {
+      "low": 25,
+      "median": 45,
+      "unit": "per_hour",
+      "high": 90
+    },
+    "en-ru": {
+      "low": 28,
+      "median": 48,
+      "unit": "per_hour",
+      "high": 95
+    },
+    "en-es": {
+      "low": 25,
+      "median": 45,
+      "unit": "per_hour",
+      "high": 90
+    }
+  },
+  "locale_default": "en-CA",
+  "tax": {
+    "vat_threshold_amount": 30000,
+    "self_employment_form": "T2125 (Statement of Business or Professional Activities)",
+    "notes": "Tutoring is GST/HST-exempt in some provinces when delivered by a teacher to a student in a course leading to a credential — verify with your province before charging tax.",
+    "trading_allowance_amount": 0,
+    "self_employment_url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t2125.html",
+    "registration_steps": [
+      "Register a sole proprietorship with your province (most provinces: $60–$80 one-time fee).",
+      "If gross revenue exceeds CA$30,000 in any 12-month period, register for GST/HST with CRA — mandatory.",
+      "Get a Business Number (BN) from CRA at canada.ca/business-number.",
+      "File T2125 each year with your personal T1 return (deadline 30 April for most; 15 June if self-employed but balance owing still due 30 April).",
+      "Pay quarterly tax instalments if net tax owing exceeds CA$3,000 in current or prior year.",
+      "Province-level: Quebec runs its own tax system (Revenu Québec); register separately if QC-resident."
+    ]
+  },
+  "currency_symbol": "CA$",
+  "data_source_last_verified": "2026-05-06",
+  "payment_methods": [
+    {
+      "international": false,
+      "domestic": true,
+      "key": "interac_etransfer",
+      "name": "Interac e-Transfer",
+      "notes": "Free or low-cost, near-instant Canadian bank-to-bank. Default for most tutors."
+    },
+    {
+      "name": "Wise",
+      "notes": "Mid-market FX.",
+      "international": true,
+      "key": "wise",
+      "domestic": true,
+      "url": "https://wise.com"
+    },
+    {
+      "name": "Stripe Link",
+      "notes": "2.9%+CA$0.30 cards.",
+      "international": true,
+      "key": "stripe_link",
+      "domestic": true,
+      "url": "https://link.com"
+    },
+    {
+      "international": true,
+      "domestic": true,
+      "key": "paypal",
+      "name": "PayPal",
+      "url": "https://www.paypal.com"
+    },
+    {
+      "international": false,
+      "domestic": true,
+      "key": "cash",
+      "name": "Cash"
+    }
+  ],
+  "insurance": {
+    "providers": [
+      {
+        "name": "Front Row Insurance",
+        "url": "https://frontrowinsurance.com"
+      },
+      {
+        "name": "Zensurance",
+        "url": "https://www.zensurance.com"
+      },
+      {
+        "name": "TruShield",
+        "url": "https://www.trushieldinsurance.ca"
+      }
+    ],
+    "public_liability_typical_amount": 2000000,
+    "notes": "CA$2M general liability + CA$1M professional liability is typical for private tutors. ~CA$30–$60/month."
+  },
+  "name": "Canada",
+  "platforms": [
+    {
+      "url": "https://www.italki.com",
+      "key": "italki",
+      "name": "italki",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "fee_pct": 15
+    },
+    {
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "name": "Preply",
+      "key": "preply",
+      "fee_curve": [
+        {
+          "after_hours": 0,
+          "fee_pct": 33
+        },
+        {
+          "after_hours": 20,
+          "fee_pct": 28
+        },
+        {
+          "after_hours": 50,
+          "fee_pct": 25
+        },
+        {
+          "after_hours": 200,
+          "fee_pct": 18
+        },
+        {
+          "after_hours": 400,
+          "fee_pct": 15
+        }
+      ],
+      "fee_pct": 33,
+      "url": "https://preply.com"
+    },
+    {
+      "url": "https://www.tutorocean.com",
+      "key": "tutorocean",
+      "name": "TutorOcean",
+      "available_in": [
+        "CA",
+        "US"
+      ],
+      "fee_pct": 18
+    },
+    {
+      "url": "https://www.verbling.com",
+      "key": "verbling",
+      "name": "Verbling",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "fee_pct": 15
+    },
+    {
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "name": "Cambly",
+      "notes": "Per-minute rate, not commission.",
+      "key": "cambly",
+      "fee_pct": 0,
+      "url": "https://www.cambly.com"
+    }
+  ],
+  "background_check": {
+    "cost_amount": 50,
+    "url": "https://www.rcmp-grc.gc.ca/en/criminal-record-check",
+    "name": "Vulnerable Sector Check (police-issued, required for tutoring minors in most provinces)",
+    "notes": "Cost varies by police service ($25–$75). Most provinces require this for working with children."
+  },
+  "code": "CA"
+}

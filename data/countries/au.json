@@ -1,0 +1,269 @@
+{
+  "currency": "AUD",
+  "rates_by_language_pair": {
+    "en-zh": {
+      "low": 45,
+      "median": 75,
+      "unit": "per_hour",
+      "high": 140
+    },
+    "es-en": {
+      "low": 35,
+      "median": 55,
+      "unit": "per_hour",
+      "high": 100
+    },
+    "en-ja": {
+      "low": 50,
+      "median": 80,
+      "unit": "per_hour",
+      "high": 150
+    },
+    "en-ar": {
+      "low": 45,
+      "median": 70,
+      "unit": "per_hour",
+      "high": 130
+    },
+    "en-ko": {
+      "low": 50,
+      "median": 80,
+      "unit": "per_hour",
+      "high": 150
+    },
+    "en-fr": {
+      "low": 40,
+      "median": 65,
+      "unit": "per_hour",
+      "high": 115
+    },
+    "en-de": {
+      "low": 40,
+      "median": 65,
+      "unit": "per_hour",
+      "high": 115
+    },
+    "fr-en": {
+      "low": 35,
+      "median": 55,
+      "unit": "per_hour",
+      "high": 100
+    },
+    "en-it": {
+      "low": 40,
+      "median": 65,
+      "unit": "per_hour",
+      "high": 115
+    },
+    "en-pt": {
+      "low": 35,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 110
+    },
+    "en-ru": {
+      "low": 40,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 110
+    },
+    "en-es": {
+      "low": 35,
+      "median": 60,
+      "unit": "per_hour",
+      "high": 110
+    }
+  },
+  "locale_default": "en-AU",
+  "tax": {
+    "vat_threshold_amount": 75000,
+    "self_employment_form": "Individual tax return + Business and Professional Items schedule",
+    "notes": "Tutoring services are typically GST-free if you're a recognised education provider; check the ATO ruling for your specific service before charging GST.",
+    "trading_allowance_amount": 0,
+    "self_employment_url": "https://www.ato.gov.au/businesses-and-organisations/income-deductions-and-concessions/income-and-deductions-for-business",
+    "registration_steps": [
+      "Apply for an Australian Business Number (ABN) at abr.gov.au — free, takes minutes.",
+      "If projected gross income exceeds A$75,000/year, register for GST.",
+      "Register a business name with ASIC if trading under anything other than your personal name (~A$42 for 1 year).",
+      "Lodge an annual income tax return through myTax or via a registered agent — deadline 31 October.",
+      "Pay PAYG instalments quarterly if ATO assigns you to instalment scheme.",
+      "Each state has Working With Children Check — required before tutoring minors."
+    ]
+  },
+  "currency_symbol": "A$",
+  "data_source_last_verified": "2026-05-06",
+  "payment_methods": [
+    {
+      "international": false,
+      "domestic": true,
+      "key": "payid",
+      "name": "PayID / Osko",
+      "notes": "Free, instant AU bank-to-bank. Default for most tutors."
+    },
+    {
+      "international": false,
+      "domestic": true,
+      "key": "bank_transfer",
+      "name": "Bank transfer (BSB+account)",
+      "notes": "Free, 0–1 business day."
+    },
+    {
+      "international": true,
+      "domestic": true,
+      "key": "wise",
+      "name": "Wise",
+      "url": "https://wise.com"
+    },
+    {
+      "name": "Stripe Link",
+      "notes": "1.7%+A$0.30 AU cards.",
+      "international": true,
+      "key": "stripe_link",
+      "domestic": true,
+      "url": "https://link.com"
+    },
+    {
+      "international": true,
+      "domestic": true,
+      "key": "paypal",
+      "name": "PayPal",
+      "url": "https://www.paypal.com"
+    },
+    {
+      "international": false,
+      "domestic": true,
+      "key": "cash",
+      "name": "Cash"
+    }
+  ],
+  "insurance": {
+    "providers": [
+      {
+        "name": "BizCover",
+        "url": "https://www.bizcover.com.au"
+      },
+      {
+        "name": "AAMI Business",
+        "url": "https://www.aami.com.au/business-insurance.html"
+      },
+      {
+        "name": "Public Liability Australia",
+        "url": "https://www.publicliability.com.au"
+      }
+    ],
+    "public_liability_typical_amount": 20000000,
+    "notes": "A$20M public liability is standard in AU for private tutors. ~A$300–$500/year."
+  },
+  "name": "Australia",
+  "platforms": [
+    {
+      "url": "https://www.italki.com",
+      "key": "italki",
+      "name": "italki",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "fee_pct": 15
+    },
+    {
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "name": "Preply",
+      "key": "preply",
+      "fee_curve": [
+        {
+          "after_hours": 0,
+          "fee_pct": 33
+        },
+        {
+          "after_hours": 20,
+          "fee_pct": 28
+        },
+        {
+          "after_hours": 50,
+          "fee_pct": 25
+        },
+        {
+          "after_hours": 200,
+          "fee_pct": 18
+        },
+        {
+          "after_hours": 400,
+          "fee_pct": 15
+        }
+      ],
+      "fee_pct": 33,
+      "url": "https://preply.com"
+    },
+    {
+      "url": "https://www.thelessonspace.com",
+      "key": "lessonspace",
+      "name": "LessonSpace (was StudyHall)",
+      "available_in": [
+        "AU",
+        "NZ"
+      ],
+      "fee_pct": 20
+    },
+    {
+      "url": "https://clueylearning.com.au",
+      "key": "cluey",
+      "name": "Cluey Learning",
+      "available_in": [
+        "AU"
+      ],
+      "fee_pct": 30
+    },
+    {
+      "url": "https://www.verbling.com",
+      "key": "verbling",
+      "name": "Verbling",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "fee_pct": 15
+    },
+    {
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "name": "Cambly",
+      "notes": "Per-minute rate, not commission.",
+      "key": "cambly",
+      "fee_pct": 0,
+      "url": "https://www.cambly.com"
+    }
+  ],
+  "background_check": {
+    "cost_amount": 0,
+    "url": "https://www.workingwithchildren.gov.au",
+    "name": "Working with Children Check (state-issued; called WWCC, WWVP, or Blue Card depending on state)",
+    "notes": "Free in most states for paid workers; free for volunteers everywhere. NSW WWCC is free for tutoring; QLD Blue Card $107.20 for paid; VIC WWC free for volunteer, $134 for employee."
+  },
+  "code": "AU"
+}
