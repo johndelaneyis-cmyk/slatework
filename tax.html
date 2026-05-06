@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tax &amp; self-employment for tutors — Slatework</title>
+  <meta name="description" content="What form to file, when to file it, and the thresholds that matter for self-employed language tutors — across the US, UK, Canada, Australia, New Zealand, Ireland, and Hong Kong." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/tax.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>Tax &amp; self-employment</h1>
+  <p>What form to file, what threshold matters, and what to do with the money you make.</p>
+
+  <div class="privacy-notice">This is information, not advice. Confirm with a local accountant before filing — the data here is current as of the date stamped at the bottom.</div>
+
+  <form id="form">
+    <div class="field">
+      <label for="country">Country</label>
+      <select id="country" name="country" required></select>
+    </div>
+  </form>
+
+  <section id="result" style="display:none;">
+    <h2 id="country-title"></h2>
+
+    <div class="result">
+      <div class="row"><span><strong>Form</strong></span><strong id="form-name"></strong></div>
+      <div class="row"><span><strong>Where to file</strong></span><strong><a id="form-link" target="_blank" rel="noopener">Open →</a></strong></div>
+      <div class="row"><span><strong>Trading allowance / threshold</strong></span><strong id="threshold"></strong></div>
+      <div class="row"><span><strong>VAT / GST registration threshold</strong></span><strong id="vat-threshold"></strong></div>
+    </div>
+
+    <h3>How to register</h3>
+    <ol id="reg-steps"></ol>
+
+    <h3>Notes</h3>
+    <p id="notes" class="small"></p>
+
+    <p class="small" id="last-verified"></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script src="/src/lib/countries.js"></script>
+<script>
+const SW = window.Slatework;
+const $ = (id) => document.getElementById(id);
+
+(async function init() {
+  const sel = $('country');
+  for (const c of SW.listCountries()) {
+    const o = document.createElement('option');
+    o.value = c.code;
+    o.textContent = c.name;
+    sel.appendChild(o);
+  }
+  sel.value = 'GB';
+  sel.addEventListener('change', render);
+  await render();
+})();
+
+async function render() {
+  const code = $('country').value;
+  const pack = await SW.loadCountry(code);
+  const t = pack.tax;
+
+  $('country-title').textContent = pack.name;
+  $('form-name').textContent = t.self_employment_form;
+  $('form-link').href = t.self_employment_url;
+  $('threshold').textContent = t.trading_allowance_amount
+    ? `${formatAmount(t.trading_allowance_amount, pack)} (covered without filing)`
+    : 'No general allowance — file from $1 of net income.';
+  $('vat-threshold').textContent = t.vat_threshold_amount
+    ? `${formatAmount(t.vat_threshold_amount, pack)} turnover/year`
+    : 'No VAT/GST in this country (or not applicable to tutoring services).';
+
+  const reg = $('reg-steps');
+  reg.innerHTML = '';
+  for (const step of t.registration_steps) {
+    const li = document.createElement('li');
+    li.textContent = step;
+    reg.appendChild(li);
+  }
+
+  $('notes').textContent = t.notes || '';
+  $('last-verified').textContent = `Verified ${pack.data_source_last_verified}. Tax rules change; confirm before filing.`;
+  $('result').style.display = 'block';
+}
+
+function formatAmount(n, pack) {
+  return new Intl.NumberFormat(pack.locale_default, { style: 'currency', currency: pack.currency, maximumFractionDigits: 0 }).format(n);
+}
+</script>
+</body>
+</html>
