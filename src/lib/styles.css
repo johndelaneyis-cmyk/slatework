@@ -1340,6 +1340,12 @@ ul.checklist li::before {
   .hero-display .reveal { opacity: 1; transform: none; }
   .hero-slate::before { animation: none; }
   .mono-caption .dot { animation: none; }
+  .chalk-mark::after {
+    animation: none;
+    opacity: 0.8;
+    -webkit-clip-path: none;
+    clip-path: none;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1371,8 +1377,29 @@ ul.checklist li::before {
   background-color: currentColor;
   -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 18' preserveAspectRatio='none'><path d='M4,11 C40,6 80,13 130,8 C170,5 200,12 236,9' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/><path d='M8,13 C50,9 100,14 150,11 C190,8 210,13 232,12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' opacity='0.5'/></svg>") no-repeat center / 100% 100%;
   mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 18' preserveAspectRatio='none'><path d='M4,11 C40,6 80,13 130,8 C170,5 200,12 236,9' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/><path d='M8,13 C50,9 100,14 150,11 C190,8 210,13 232,12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' opacity='0.5'/></svg>") no-repeat center / 100% 100%;
-  opacity: 0.8;
+  opacity: 0;
   pointer-events: none;
+  /* Chalk-write reveal: clipped left-to-right just after the headline
+     letters finish (last char ~ 35 * 20ms + 600ms = 1.3s). */
+  -webkit-clip-path: inset(0 100% 0 0);
+  clip-path: inset(0 100% 0 0);
+  animation: chalk-write 0.75s cubic-bezier(0.65, 0, 0.35, 1) 1.25s forwards;
+}
+
+@keyframes chalk-write {
+  0% {
+    -webkit-clip-path: inset(0 100% 0 0);
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  100% {
+    -webkit-clip-path: inset(0 0 0 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 0.8;
+  }
 }
 
 /* On dark surfaces, the chalk underline picks up the chalk-accent for that
