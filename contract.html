@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Parent-tutor contract builder — Slatework</title>
+  <meta name="description" content="Generate a printable parent-tutor lesson agreement with your name, rate, cancellation policy, and a parent-welcome paragraph — entirely in your browser." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/contract.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; }
+      .container { max-width: none; padding: 1.5cm; }
+      .preview { box-shadow: none; border: none; }
+    }
+    .preview {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.7;
+    }
+    .preview h2 { font-family: inherit; font-size: 1.4rem; }
+    .preview h3 { font-family: inherit; font-size: 1.05rem; margin-top: 1.6rem; }
+  </style>
+</head>
+<body>
+<header class="site-header no-print">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <div class="no-print">
+    <h1>Parent-tutor contract builder</h1>
+    <p>Fill out the form on the left and your contract previews on the right. When it looks good, print to PDF (or actual paper) — nothing is sent to our servers.</p>
+
+    <div class="privacy-notice">Generated entirely in your browser. Your name, rate, and details never reach our servers — view source to verify.</div>
+  </div>
+
+  <div class="section-row no-print">
+    <form id="form">
+      <h2>Your details</h2>
+      <div class="field"><label for="tutor_name">Tutor name</label><input id="tutor_name" type="text" placeholder="e.g., Sarah Chen" /></div>
+      <div class="field"><label for="business_name">Business name (optional)</label><input id="business_name" type="text" placeholder="leave blank to use your name" /></div>
+      <div class="field"><label for="contact_email">Contact email</label><input id="contact_email" type="email" placeholder="hello@yourdomain.com" /></div>
+
+      <h2>Lesson details</h2>
+      <div class="field"><label for="subject">Subject / language</label><input id="subject" type="text" placeholder="e.g., GCSE Spanish" value="Spanish" /></div>
+      <div class="field"><label for="rate">Rate per lesson</label><input id="rate" type="text" placeholder="e.g., £40 per 60-minute lesson" value="£40 per 60-minute lesson" /></div>
+      <div class="field"><label for="duration">Lesson duration</label><input id="duration" type="text" placeholder="e.g., 60 minutes" value="60 minutes" /></div>
+      <div class="field"><label for="location">Location</label><input id="location" type="text" placeholder="e.g., online via Zoom, or in-person at the student's home" value="online via Zoom" /></div>
+
+      <h2>Policy</h2>
+      <div class="field"><label for="cancel_hours">Cancellation notice (hours)</label><input id="cancel_hours" type="number" min="0" max="168" step="1" value="24" /></div>
+      <div class="field">
+        <label for="cancel_fee">Late-cancel fee</label>
+        <select id="cancel_fee">
+          <option value="full">Full lesson fee</option>
+          <option value="half" selected>Half lesson fee</option>
+          <option value="none">No fee (rebook only)</option>
+        </select>
+      </div>
+      <div class="field"><label for="payment_terms">Payment terms</label><input id="payment_terms" type="text" placeholder="e.g., paid weekly in advance via Faster Payments" value="paid weekly in advance" /></div>
+
+      <h2>Parent welcome paragraph</h2>
+      <div class="field">
+        <label for="welcome_tone">Tone</label>
+        <select id="welcome_tone">
+          <option value="warm">Warm</option>
+          <option value="formal">Formal</option>
+          <option value="brief" selected>Brief and practical</option>
+        </select>
+      </div>
+
+      <div class="field" style="margin-top:1.5rem;">
+        <button type="button" id="print-btn">Print / save as PDF</button>
+      </div>
+    </form>
+
+    <aside>
+      <p class="small">Preview →</p>
+    </aside>
+  </div>
+
+  <section class="preview" id="preview">
+    <!-- Filled by JS -->
+  </section>
+</main>
+
+<footer class="site-footer no-print">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const form = $('form');
+form.addEventListener('input', render);
+$('print-btn').addEventListener('click', () => window.print());
+
+function render() {
+  const tutor = $('tutor_name').value.trim() || '[Your name]';
+  const biz = $('business_name').value.trim() || tutor;
+  const email = $('contact_email').value.trim() || '[your email]';
+  const subject = $('subject').value.trim() || 'language tutoring';
+  const rate = $('rate').value.trim() || '[rate per lesson]';
+  const duration = $('duration').value.trim() || '[duration]';
+  const location = $('location').value.trim() || '[location]';
+  const cancelHours = $('cancel_hours').value || '24';
+  const cancelFee = $('cancel_fee').value;
+  const cancelText = cancelFee === 'full' ? 'the full lesson fee' : cancelFee === 'half' ? 'half the lesson fee' : 'no fee, but a rebook is required';
+  const paymentTerms = $('payment_terms').value.trim() || '[payment terms]';
+  const welcomeTone = $('welcome_tone').value;
+
+  const welcome = welcomePara(welcomeTone, tutor, subject);
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  $('preview').innerHTML = `
+    <h2 style="text-align:center;">${escapeHtml(subject)} — Lesson Agreement</h2>
+    <p style="text-align:center;">between <strong>${escapeHtml(biz)}</strong> ("the Tutor") and the Parent or Guardian named below ("the Parent")</p>
+
+    <h3>1. Welcome</h3>
+    <p>${escapeHtml(welcome)}</p>
+
+    <h3>2. Lessons</h3>
+    <p>The Tutor will provide <strong>${escapeHtml(subject)}</strong> lessons of <strong>${escapeHtml(duration)}</strong> at the agreed rate of <strong>${escapeHtml(rate)}</strong>, delivered <strong>${escapeHtml(location)}</strong>. Lessons are scheduled by mutual agreement.</p>
+
+    <h3>3. Trial lesson</h3>
+    <p>The first lesson is offered at the standard rate. If the Parent decides not to continue after the first lesson, no further commitment applies.</p>
+
+    <h3>4. Payment</h3>
+    <p>Lessons are <strong>${escapeHtml(paymentTerms)}</strong>. The Tutor will issue a written invoice or receipt on request.</p>
+
+    <h3>5. Cancellation policy</h3>
+    <p>Lessons cancelled with at least <strong>${escapeHtml(cancelHours)}</strong> hours' notice incur no fee and may be rescheduled. Lessons cancelled with less notice incur <strong>${escapeHtml(cancelText)}</strong>. The Tutor will give the same notice in the rare event a session must be rescheduled from her side.</p>
+
+    <h3>6. Communication</h3>
+    <p>Lesson-related messaging happens via <strong>${escapeHtml(email)}</strong>. The Tutor responds during reasonable hours; a same-day reply is not guaranteed.</p>
+
+    <h3>7. Safeguarding (where the student is a minor)</h3>
+    <p>Lessons with students under 18 are conducted with a parent or guardian on-record. The Tutor maintains current background-check certification and will share documentation on request.</p>
+
+    <h3>8. Privacy</h3>
+    <p>The Tutor keeps lesson records (date, duration, topic, work assigned) and shares them with the Parent on request. The Tutor does not share student information with third parties.</p>
+
+    <h3>9. Term</h3>
+    <p>This agreement runs lesson by lesson. Either side may end it with one full week's notice.</p>
+
+    <p style="margin-top: 3rem;">Date: <strong>${today}</strong></p>
+    <p style="margin-top: 1.5rem;">Tutor signature: ___________________________</p>
+    <p style="margin-top: 1rem;">Parent signature: ___________________________</p>
+    <p style="margin-top: 1rem;">Parent name: ___________________________</p>
+    <p style="margin-top: 1rem;">Student name: ___________________________</p>
+  `;
+}
+
+function welcomePara(tone, name, subject) {
+  if (tone === 'warm') return `Thank you for choosing me to support your child's ${subject} progress. I'll be straightforward, structured, and kind, and I'll keep you informed at each step. The goal of every lesson is real, visible progress — not just hours logged.`;
+  if (tone === 'formal') return `This agreement governs the provision of ${subject} tutoring services by ${name}. Lessons follow a structured plan agreed with the Parent and reviewed monthly.`;
+  return `I teach ${subject} clearly and consistently. You'll get a brief written note after each lesson summarising what we did and what's been set as practice. If something isn't working, please tell me — I'd rather adjust early than at the end of the term.`;
+}
+
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+render();
+</script>
+</body>
+</html>
