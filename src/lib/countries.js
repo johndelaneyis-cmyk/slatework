@@ -33,6 +33,7 @@
 
   function languagePairs() {
     return [
+      { code: 'en-en', label: 'English only (test prep, writing, ESL advanced)' },
       { code: 'en-es', label: 'English — Spanish' },
       { code: 'en-fr', label: 'English — French' },
       { code: 'en-de', label: 'English — German' },
