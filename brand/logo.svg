@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Slatework</title>
+  <desc>The Slatework logo: a slate board with three chalk lines representing a lesson plan, plus a single warm chalk-mark — the signature reminder of the teacher this is built for.</desc>
+
+  <!-- Chalk-dust grain layer (filter applied to a rect at low opacity) -->
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0"/>
+    </filter>
+  </defs>
+
+  <!-- Slate board: dark slate, rounded square (modern app-icon proportions) -->
+  <rect x="0" y="0" width="1024" height="1024" rx="128" ry="128" fill="#0f172a"/>
+
+  <!-- Subtle inner rim — gives the "real slate board" feel -->
+  <rect x="64" y="64" width="896" height="896" rx="80" ry="80"
+        fill="none" stroke="#475569" stroke-width="3" opacity="0.55"/>
+
+  <!-- Chalk-dust grain overlay (very subtle, layered above slate) -->
+  <rect x="0" y="0" width="1024" height="1024" rx="128" ry="128"
+        filter="url(#grain)" opacity="0.55"/>
+
+  <!-- Three chalk lines — like a lesson plan written on the slate.
+       Slightly hand-drawn: each line uses a curved bezier and varies
+       in length, opacity, and slight vertical drift to feel real. -->
+
+  <!-- Line 1: longest, brightest, top -->
+  <path d="M 200 380 C 360 372, 540 388, 824 378"
+        stroke="#f8fafc" stroke-width="14" stroke-linecap="round"
+        fill="none" opacity="0.96"/>
+
+  <!-- Line 2: medium, middle -->
+  <path d="M 200 540 C 360 533, 520 548, 720 540"
+        stroke="#f8fafc" stroke-width="14" stroke-linecap="round"
+        fill="none" opacity="0.86"/>
+
+  <!-- Line 3: shorter, bottom -->
+  <path d="M 200 700 C 320 694, 460 706, 620 700"
+        stroke="#f8fafc" stroke-width="14" stroke-linecap="round"
+        fill="none" opacity="0.74"/>
+
+  <!-- Signature chalk-mark in the bottom-right — warm cream accent.
+       Echoes the chalk-mark underline that sits below "evening" on the homepage. -->
+  <path d="M 740 808 C 780 800, 824 812, 860 802"
+        stroke="#fde68a" stroke-width="9" stroke-linecap="round"
+        fill="none" opacity="0.92"/>
+</svg>
