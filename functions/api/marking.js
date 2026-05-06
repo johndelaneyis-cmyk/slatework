@@ -49,7 +49,7 @@ const SYSTEM_PROMPT = [
   "4. **Organisation** — [comment]"
 ].join("\n");
 
-const DEFAULT_MODEL = "claude-sonnet-4-7";
+const DEFAULT_MODEL = "claude-sonnet-4-6";
 const PER_IP_DAILY = 20;
 const GLOBAL_DAILY = 2000;
 const MIN_SAMPLE_LEN = 50;

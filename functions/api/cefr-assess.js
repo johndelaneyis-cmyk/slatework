@@ -21,7 +21,7 @@ const SYSTEM_PROMPT = [
   '{"level": "B1", "confidence": "medium", "reasoning": "...", "extracted_text": "Verbatim transcription of what was read from the image."}'
 ].join("\n");
 
-const DEFAULT_MODEL = "claude-sonnet-4-7";
+const DEFAULT_MODEL = "claude-sonnet-4-6";
 const PER_IP_DAILY = 15;
 const GLOBAL_DAILY = 1500;
 const MIN_SAMPLE_LEN = 100;

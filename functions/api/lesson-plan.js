@@ -42,7 +42,7 @@ const SYSTEM_PROMPT = [
   "[2–3 sentences on how to adjust if a student is ahead or struggling.]"
 ].join("\n");
 
-const DEFAULT_MODEL = "claude-sonnet-4-7";
+const DEFAULT_MODEL = "claude-sonnet-4-6";
 const PER_IP_DAILY = 15;
 const GLOBAL_DAILY = 1500;
 const MIN_GOAL_LEN = 10;
