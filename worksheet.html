@@ -59,7 +59,9 @@
       <div class="section-row">
         <div class="field">
           <label for="target">Target language</label>
-          <input id="target" type="text" placeholder="e.g., French" required />
+          <select id="target" required></select>
+          <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
+          <span class="help">Pick the target language. Don't see yours? Choose "Other (type below)".</span>
         </div>
         <div class="field">
           <label for="level">CEFR level</label>
@@ -119,9 +121,58 @@
   </div>
 </footer>
 
+<script src="/src/lib/countries.js"></script>
 <script src="/feedback.js" defer></script>
 <script>
 const $ = (id) => document.getElementById(id);
+const SW = window.Slatework;
+
+// Build target language dropdown from languagePairs() — non-English half of each pair.
+(function buildTargetDropdown() {
+  const pairs = SW.languagePairs();
+  const sel = $('target');
+  const seen = new Set();
+  for (const p of pairs) {
+    const parts = p.label.split(' — ');
+    const left = parts[0] ? parts[0].trim() : '';
+    const right = parts[1] ? parts[1].trim() : '';
+    const candidates = [];
+    if (left && left !== 'English') candidates.push(left);
+    if (right && right !== 'English') candidates.push(right);
+    if (p.code === 'en-en') candidates.push('English');
+    for (const lang of candidates) {
+      const clean = lang.replace(/\s*\(.*\)\s*$/, '').trim();
+      if (clean && !seen.has(clean)) {
+        seen.add(clean);
+        const opt = document.createElement('option');
+        opt.value = clean;
+        opt.textContent = clean;
+        sel.appendChild(opt);
+      }
+    }
+  }
+  if (seen.has('French')) sel.value = 'French';
+  const other = document.createElement('option');
+  other.value = 'other';
+  other.textContent = 'Other (type below)';
+  sel.appendChild(other);
+  sel.addEventListener('change', () => {
+    const otherInput = $('target_other');
+    if (sel.value === 'other') {
+      otherInput.style.display = '';
+      otherInput.required = true;
+    } else {
+      otherInput.style.display = 'none';
+      otherInput.required = false;
+    }
+  });
+})();
+
+function resolveTargetLang() {
+  const sel = $('target');
+  if (sel.value === 'other') return $('target_other').value.trim();
+  return sel.value;
+}
 
 $('form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -135,7 +186,7 @@ $('form').addEventListener('submit', async (e) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        target_language: $('target').value,
+        target_language: resolveTargetLang(),
         level: $('level').value,
         topic: $('topic').value,
         exam: $('exam').value,

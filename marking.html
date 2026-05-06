@@ -49,7 +49,9 @@
     <div class="section-row">
       <div class="field">
         <label for="target">Target language</label>
-        <input id="target" type="text" placeholder="e.g., Spanish" required />
+        <select id="target" required></select>
+        <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
+        <span class="help">Pick the target language. Don't see yours? Choose "Other (type below)".</span>
       </div>
       <div class="field">
         <label for="level">Student CEFR level</label>
@@ -71,9 +73,24 @@
     </div>
 
     <div class="field">
-      <label for="sample">Anonymised student writing</label>
-      <textarea id="sample" required minlength="50" maxlength="4000" placeholder="Paste the writing only. Remove names and identifying details first."></textarea>
+      <label>Upload student work (optional)</label>
+      <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Drag a file or click to upload">
+        <p class="drop-zone-text">
+          <span class="mono-caption">// DROP A FILE OR CLICK TO UPLOAD</span><br/>
+          Accepts .txt &middot; .docx &middot; .pdf &middot; or a photo of handwritten work (jpg/png/heic). Max 10 MB.<br/>
+          <em>Files are processed in your browser. Photos are sent to Anthropic vision (same as pasted text — never stored).</em>
+        </p>
+        <p id="drop-status" class="drop-status small"></p>
+      </div>
     </div>
+
+    <div class="field">
+      <label for="sample">Anonymised student writing</label>
+      <textarea id="sample" minlength="50" maxlength="4000" placeholder="Paste the writing only — or attach a file/photo above. Remove names and identifying details first."></textarea>
+    </div>
+
+    <input type="hidden" id="image-data" name="image_data" value="" />
+    <input type="hidden" id="image-mime" name="image_mime" value="" />
 
     <button type="submit" id="go">Mark and suggest feedback</button>
   </form>
@@ -88,14 +105,88 @@
   </div>
 </footer>
 
+<script src="/src/lib/countries.js"></script>
+<script src="/src/lib/file-extract.js"></script>
 <script src="/feedback.js" defer></script>
 <script>
 const $ = (id) => document.getElementById(id);
+const SW = window.Slatework;
+
+// Build target language dropdown from languagePairs() — non-English half of each pair.
+(function buildTargetDropdown() {
+  const pairs = SW.languagePairs();
+  const sel = $('target');
+  const seen = new Set();
+  for (const p of pairs) {
+    const parts = p.label.split(' — ');
+    const left = parts[0] ? parts[0].trim() : '';
+    const right = parts[1] ? parts[1].trim() : '';
+    const candidates = [];
+    if (left && left !== 'English') candidates.push(left);
+    if (right && right !== 'English') candidates.push(right);
+    if (p.code === 'en-en') candidates.push('English');
+    for (const lang of candidates) {
+      const clean = lang.replace(/\s*\(.*\)\s*$/, '').trim();
+      if (clean && !seen.has(clean)) {
+        seen.add(clean);
+        const opt = document.createElement('option');
+        opt.value = clean;
+        opt.textContent = clean;
+        sel.appendChild(opt);
+      }
+    }
+  }
+  if (seen.has('Spanish')) sel.value = 'Spanish';
+  const other = document.createElement('option');
+  other.value = 'other';
+  other.textContent = 'Other (type below)';
+  sel.appendChild(other);
+  sel.addEventListener('change', () => {
+    const otherInput = $('target_other');
+    if (sel.value === 'other') {
+      otherInput.style.display = '';
+      otherInput.required = true;
+    } else {
+      otherInput.style.display = 'none';
+      otherInput.required = false;
+    }
+  });
+})();
+
+function resolveTargetLang() {
+  const sel = $('target');
+  if (sel.value === 'other') return $('target_other').value.trim();
+  return sel.value;
+}
+
+// Wire the file-drop zone
+(function wireDrop() {
+  const dropZone = $('drop-zone');
+  const textarea = $('sample');
+  const dropStatus = $('drop-status');
+  if (!dropZone || !SW.attachFileDrop) return;
+  SW.attachFileDrop({
+    dropZone,
+    textarea,
+    onStatus: (msg) => { dropStatus.textContent = msg; },
+    imageHandler: async (base64, mime) => {
+      $('image-data').value = base64;
+      $('image-mime').value = mime;
+      dropStatus.textContent = 'Image attached. Click Mark when ready.';
+    }
+  });
+})();
 
 $('form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = $('go');
   const result = $('result');
+  const lang = resolveTargetLang();
+  if (!lang) { result.style.display = 'block'; result.innerHTML = '<p>Pick a target language.</p>'; return; }
+  const sampleVal = $('sample').value.trim();
+  const imageData = $('image-data').value;
+  const imageMime = $('image-mime').value;
+  if (!sampleVal && !imageData) { result.style.display = 'block'; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
   btn.disabled = true;
   result.style.display = 'block';
   result.innerHTML = '<p>Marking…</p>';
@@ -105,10 +196,12 @@ $('form').addEventListener('submit', async (e) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        target_language: $('target').value,
+        target_language: lang,
         level: $('level').value,
         rubric: $('rubric').value,
-        sample: $('sample').value
+        sample: $('sample').value,
+        image_data: imageData,
+        image_mime: imageMime
       })
     });
     if (!r.ok) {
@@ -118,6 +211,9 @@ $('form').addEventListener('submit', async (e) => {
     }
     const data = await r.json();
     result.innerHTML = renderMarkdown(data.markdown || '');
+    // Clear the hidden image fields after a successful submit so a re-run uses fresh state
+    $('image-data').value = '';
+    $('image-mime').value = '';
   } catch {
     result.innerHTML = '<p>Network error. Try again.</p>';
   } finally {

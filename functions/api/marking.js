@@ -50,6 +50,8 @@ const PER_IP_DAILY = 20;
 const GLOBAL_DAILY = 2000;
 const MIN_SAMPLE_LEN = 50;
 const MAX_SAMPLE_LEN = 4000;
+const MAX_IMAGE_BASE64 = 14 * 1024 * 1024;
+const VALID_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']);
 const VALID_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export async function onRequestPost({ request, env }) {
@@ -60,10 +62,18 @@ export async function onRequestPost({ request, env }) {
   const level = String(body.level || '').trim().toUpperCase();
   const sample = String(body.sample || '').trim();
   const rubric = String(body.rubric || '').trim().slice(0, 200);
+  const imageData = typeof body.image_data === 'string' ? body.image_data : '';
+  const imageMime = typeof body.image_mime === 'string' ? body.image_mime : '';
+  const hasImage = imageData.length > 0;
 
   if (!language) return jsonResponse({ error: 'Missing target language.' }, 400);
   if (!VALID_LEVELS.includes(level)) return jsonResponse({ error: 'Level must be A1–C2.' }, 400);
-  if (sample.length < MIN_SAMPLE_LEN) return jsonResponse({ error: 'Sample too short. Paste at least 50 characters.' }, 400);
+  if (hasImage) {
+    if (imageData.length > MAX_IMAGE_BASE64) return jsonResponse({ error: 'Image too big — max 10 MB.' }, 400);
+    if (!VALID_IMAGE_MIMES.has(imageMime)) return jsonResponse({ error: 'Unsupported image format.' }, 400);
+  } else {
+    if (sample.length < MIN_SAMPLE_LEN) return jsonResponse({ error: 'Sample too short. Paste at least 50 characters or attach a photo.' }, 400);
+  }
   if (sample.length > MAX_SAMPLE_LEN) return jsonResponse({ error: 'Sample too long (max 4000 chars).' }, 400);
 
   if (!env.ANTHROPIC_API_KEY) return jsonResponse({ error: 'Service is being configured. Try again in a few minutes.' }, 503);
@@ -72,19 +82,40 @@ export async function onRequestPost({ request, env }) {
   const rate = await rateCheck(env, fp, 'marking', PER_IP_DAILY, GLOBAL_DAILY);
   if (!rate.ok) return jsonResponse({ error: rate.reason }, rate.status || 429);
 
-  const userMsg = [
+  const baseLines = [
     `Target language: ${language}`,
     `CEFR level: ${level}`,
-    rubric ? `Rubric tag: ${rubric}` : '',
-    '',
-    'Student writing sample:',
-    '"""',
-    sample,
-    '"""'
-  ].filter(Boolean).join('\n');
+    rubric ? `Rubric tag: ${rubric}` : ''
+  ].filter(Boolean);
+
+  let textBody;
+  if (hasImage && sample.length === 0) {
+    textBody = baseLines.concat([
+      '',
+      "Mark this student writing. The image attached above is the student's work — extract the text mentally and grade it as you would any pasted writing. Use the same error categorization and feedback variants as if the text had been pasted directly."
+    ]).join('\n');
+  } else {
+    textBody = baseLines.concat([
+      '',
+      'Student writing sample:',
+      '"""',
+      sample,
+      '"""'
+    ]).join('\n');
+  }
+
+  let userPayload;
+  if (hasImage) {
+    userPayload = [
+      { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageData } },
+      { type: 'text', text: textBody }
+    ];
+  } else {
+    userPayload = textBody;
+  }
 
   try {
-    const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2500 });
+    const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userPayload, max_tokens: 2500 });
     return jsonResponse({ markdown: text }, 200);
   } catch {
     return jsonResponse({ error: 'Could not mark the sample. Try again in a moment.' }, 502);

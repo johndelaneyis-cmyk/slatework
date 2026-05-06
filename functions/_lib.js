@@ -49,11 +49,14 @@ export async function rateCheck(env, fingerprint, tool, perIpDaily, globalDaily)
 }
 
 export async function callClaude(env, { model, system, user, max_tokens = 1500 }) {
+  const userContent = typeof user === 'string'
+    ? [{ type: 'text', text: user }]
+    : user;
   const body = {
     model,
     max_tokens,
     system,
-    messages: [{ role: 'user', content: user }]
+    messages: [{ role: 'user', content: userContent }]
   };
   const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',

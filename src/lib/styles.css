@@ -1244,6 +1244,24 @@ ul.checklist li::before {
 }
 
 /* =========================================================
+   FILE DROP ZONE (marking + cefr upload)
+   ========================================================= */
+.drop-zone {
+  border: 2px dashed var(--line-strong);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: border-color 150ms ease-out, background 150ms ease-out;
+}
+.drop-zone:hover, .drop-zone:focus-visible { border-color: var(--ink-muted); background: var(--surface); outline: none; }
+.drop-zone.drag-over { border-color: var(--accent); background: rgba(217, 119, 6, 0.05); }
+.drop-zone-text { margin: 0; color: var(--ink-muted); font-size: 0.95rem; line-height: 1.55; }
+.drop-zone-text em { font-style: italic; color: var(--ink-faint); display: block; margin-top: 0.4rem; font-size: 0.85rem; }
+.drop-status { margin: 0.5rem 0 0; min-height: 1.2em; color: var(--accent); font-weight: 500; }
+
+/* =========================================================
    MOTION REDUCED
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {

@@ -49,11 +49,15 @@
     <div class="section-row">
       <div class="field">
         <label for="target">Target language</label>
-        <input id="target" type="text" placeholder="e.g., Spanish" required />
+        <select id="target" required></select>
+        <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
+        <span class="help">Pick the target language. Don't see yours? Choose "Other (type below)".</span>
       </div>
       <div class="field">
         <label for="source">Source language</label>
-        <input id="source" type="text" placeholder="English" value="English" required />
+        <select id="source" required></select>
+        <input id="source_other" type="text" placeholder="Type the source language" style="display:none; margin-top:6px;" />
+        <span class="help">Pick the source language. Don't see yours? Choose "Other (type below)".</span>
       </div>
     </div>
 
@@ -104,9 +108,86 @@
   </div>
 </footer>
 
+<script src="/src/lib/countries.js"></script>
 <script src="/feedback.js" defer></script>
 <script>
 const $ = (id) => document.getElementById(id);
+const SW = window.Slatework;
+
+// Build target/source language dropdowns from languagePairs().
+// Target dropdown shows the language to learn (non-English half of each pair).
+// Source dropdown shows the source language (English/Spanish/etc.).
+(function buildLangDropdowns() {
+  const pairs = SW.languagePairs();
+  const targetSel = $('target');
+  const sourceSel = $('source');
+  const targetSeen = new Set();
+  const sourceSeen = new Set();
+  for (const p of pairs) {
+    const parts = p.label.split(' — ');
+    const left = parts[0] ? parts[0].trim() : '';
+    const right = parts[1] ? parts[1].trim() : '';
+    // Target = the non-English language (or both halves if neither is English).
+    const targetCandidates = [];
+    if (left && left !== 'English') targetCandidates.push(left);
+    if (right && right !== 'English') targetCandidates.push(right);
+    // Special-case "English only (test prep, writing, ESL advanced)" — students learning English.
+    if (p.code === 'en-en') targetCandidates.push('English');
+    for (const lang of targetCandidates) {
+      // Strip parentheticals e.g. "English only (test prep, ...)" — we already stripped above
+      const clean = lang.replace(/\s*\(.*\)\s*$/, '').trim();
+      if (clean && !targetSeen.has(clean)) {
+        targetSeen.add(clean);
+        const opt = document.createElement('option');
+        opt.value = clean;
+        opt.textContent = clean;
+        targetSel.appendChild(opt);
+      }
+    }
+    // Source = left half (the language the student already speaks)
+    if (left) {
+      const clean = left.replace(/\s*\(.*\)\s*$/, '').trim();
+      if (clean && !sourceSeen.has(clean)) {
+        sourceSeen.add(clean);
+        const opt = document.createElement('option');
+        opt.value = clean;
+        opt.textContent = clean;
+        sourceSel.appendChild(opt);
+      }
+    }
+  }
+  // Default Spanish for target if it exists; default English for source.
+  if (targetSeen.has('Spanish')) targetSel.value = 'Spanish';
+  if (sourceSeen.has('English')) sourceSel.value = 'English';
+  // Append "Other (type below)" to both
+  for (const sel of [targetSel, sourceSel]) {
+    const other = document.createElement('option');
+    other.value = 'other';
+    other.textContent = 'Other (type below)';
+    sel.appendChild(other);
+  }
+  // Toggle the matching text input visibility on change
+  function wireOther(selectEl, otherInputId) {
+    selectEl.addEventListener('change', () => {
+      const otherInput = document.getElementById(otherInputId);
+      if (selectEl.value === 'other') {
+        otherInput.style.display = '';
+        otherInput.required = true;
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.required = false;
+      }
+    });
+  }
+  wireOther(targetSel, 'target_other');
+  wireOther(sourceSel, 'source_other');
+})();
+
+function resolveLang(selectId, otherId) {
+  const sel = $(selectId);
+  if (sel.value === 'other') return $(otherId).value.trim();
+  return sel.value;
+}
 
 $('form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -121,8 +202,8 @@ $('form').addEventListener('submit', async (e) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        target_language: $('target').value,
-        source_language: $('source').value,
+        target_language: resolveLang('target', 'target_other'),
+        source_language: resolveLang('source', 'source_other'),
         level: $('level').value,
         mode: $('mode').value,
         goal: $('goal').value,

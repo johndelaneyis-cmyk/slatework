@@ -71,6 +71,11 @@
       <h2>Your details</h2>
       <div class="field"><label for="tutor_name">Tutor name</label><input id="tutor_name" type="text" placeholder="e.g., Sarah Chen" /></div>
       <div class="field"><label for="business_name">Business name (optional)</label><input id="business_name" type="text" placeholder="leave blank to use your name" /></div>
+      <div class="field">
+        <label for="years_teaching">Years teaching (optional)</label>
+        <input id="years_teaching" type="number" min="0" max="60" step="1" placeholder="e.g. 5" />
+        <span class="help">Used in the warm/formal welcome paragraphs. Leave blank to skip.</span>
+      </div>
       <div class="field"><label for="contact_email">Contact email</label><input id="contact_email" type="email" placeholder="hello@yourdomain.com" /></div>
 
       <h2>Lesson details</h2>
@@ -98,7 +103,13 @@
           <option value="warm">Warm</option>
           <option value="formal">Formal</option>
           <option value="brief" selected>Brief and practical</option>
+          <option value="custom">Custom (write your own)</option>
         </select>
+      </div>
+      <div class="field" id="welcome_custom_field" style="display:none;">
+        <label for="welcome_custom">Custom welcome paragraph</label>
+        <textarea id="welcome_custom" placeholder="Type your own welcome paragraph here."></textarea>
+        <span class="help">Tip: keep it under 80 words. The contract preview updates as you type.</span>
       </div>
 
       <div class="field" style="margin-top:1.5rem;">
@@ -143,8 +154,13 @@ function render() {
   const cancelText = cancelFee === 'full' ? 'the full lesson fee' : cancelFee === 'half' ? 'half the lesson fee' : 'no fee, but a rebook is required';
   const paymentTerms = $('payment_terms').value.trim() || '[payment terms]';
   const welcomeTone = $('welcome_tone').value;
+  const yearsRaw = $('years_teaching') ? $('years_teaching').value : '';
+  const years = yearsRaw === '' ? null : parseInt(yearsRaw, 10);
+  const customField = $('welcome_custom_field');
+  if (customField) customField.style.display = welcomeTone === 'custom' ? '' : 'none';
+  const customText = $('welcome_custom') ? $('welcome_custom').value : '';
 
-  const welcome = welcomePara(welcomeTone, tutor, subject);
+  const welcome = welcomePara(welcomeTone, tutor, subject, years, customText);
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -187,10 +203,23 @@ function render() {
   `;
 }
 
-function welcomePara(tone, name, subject) {
-  if (tone === 'warm') return `Thank you for choosing me to support your child's ${subject} progress. I'll be straightforward, structured, and kind, and I'll keep you informed at each step. The goal of every lesson is real, visible progress — not just hours logged.`;
-  if (tone === 'formal') return `This agreement governs the provision of ${subject} tutoring services by ${name}. Lessons follow a structured plan agreed with the Parent and reviewed monthly.`;
-  return `I teach ${subject} clearly and consistently. You'll get a brief written note after each lesson summarising what we did and what's been set as practice. If something isn't working, please tell me — I'd rather adjust early than at the end of the term.`;
+function welcomePara(tone, name, subject, years, custom) {
+  const briefText = `I teach ${subject} clearly and consistently. You'll get a brief written note after each lesson summarising what we did and what's been set as practice. If something isn't working, please tell me — I'd rather adjust early than at the end of the term.`;
+  if (tone === 'custom') {
+    const trimmed = (custom || '').trim();
+    if (trimmed) return trimmed;
+    return briefText;
+  }
+  const hasYears = typeof years === 'number' && !Number.isNaN(years) && years >= 1;
+  if (tone === 'warm') {
+    if (hasYears) return `Thank you for choosing me to support your child's ${subject} progress. With ${years}+ years teaching ${subject}, I'll be straightforward, structured, and kind, and I'll keep you informed at each step. The goal of every lesson is real, visible progress — not just hours logged.`;
+    return `Thank you for choosing me to support your child's ${subject} progress. I'll be straightforward, structured, and kind, and I'll keep you informed at each step. The goal of every lesson is real, visible progress — not just hours logged.`;
+  }
+  if (tone === 'formal') {
+    if (hasYears) return `With ${years}+ years teaching ${subject}, this agreement governs the provision of ${subject} tutoring services by ${name}. Lessons follow a structured plan agreed with the Parent and reviewed monthly.`;
+    return `This agreement governs the provision of ${subject} tutoring services by ${name}. Lessons follow a structured plan agreed with the Parent and reviewed monthly.`;
+  }
+  return briefText;
 }
 
 function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
