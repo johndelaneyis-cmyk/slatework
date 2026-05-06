@@ -85,6 +85,12 @@
       <span class="help">10–600 characters. The clearer the goal, the more useful the plan.</span>
     </div>
 
+    <div class="field">
+      <label for="exam">Exam or curriculum (optional)</label>
+      <input id="exam" name="exam" type="text" placeholder="e.g. GCSE English Language Paper 1, HKDSE Paper 3, SAT writing, IELTS speaking band 7" maxlength="200" />
+      <span class="help">Leave blank for general-purpose practice. If you teach to a specific exam, name it &mdash; the worksheet will target it.</span>
+    </div>
+
     <button type="submit" id="go">Generate plan</button>
   </form>
 
@@ -119,7 +125,8 @@ $('form').addEventListener('submit', async (e) => {
         source_language: $('source').value,
         level: $('level').value,
         mode: $('mode').value,
-        goal: $('goal').value
+        goal: $('goal').value,
+        exam: $('exam').value
       })
     });
     if (!r.ok) {

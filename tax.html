@@ -41,7 +41,7 @@
 
 <main class="container">
   <h1>Tax &amp; self-employment</h1>
-  <p>What form to file, what threshold matters, and what to do with the money you make.</p>
+  <p>Most countries let you earn a small amount before you have to register as self-employed. Find out where that line is for you, and what the form looks like for the day you cross it.</p>
 
   <div class="privacy-notice">This is information, not advice. Confirm with a local accountant before filing — the data here is current as of the date stamped at the bottom.</div>
 
@@ -54,6 +54,12 @@
 
   <section id="result" style="display:none;">
     <h2 id="country-title"></h2>
+
+    <div class="threshold-callout">
+      <p class="mono-caption" id="threshold-caption">// THIS IS THE THRESHOLD &mdash; UNDER IT, MOST DON'T NEED TO REGISTER</p>
+      <p class="threshold-headline"><strong id="threshold-amount">&mdash;</strong></p>
+      <p class="threshold-note" id="threshold-subnote"></p>
+    </div>
 
     <div class="result">
       <div class="row"><span><strong>Form</strong></span><strong id="form-name"></strong></div>
@@ -112,6 +118,24 @@ async function render() {
   $('vat-threshold').textContent = t.vat_threshold_amount
     ? `${formatAmount(t.vat_threshold_amount, pack)} turnover/year`
     : 'No VAT/GST in this country (or not applicable to tutoring services).';
+
+  // Top callout: emphasise the threshold (the loudest part of the page)
+  const captionEl = $('threshold-caption');
+  const amountEl = $('threshold-amount');
+  const subnoteEl = $('threshold-subnote');
+  if (code === 'HK') {
+    captionEl.textContent = "// NO VAT/GST IN HONG KONG · BUT BUSINESS REGISTRATION IS REQUIRED FROM DAY ONE";
+    amountEl.textContent = 'Register from day one';
+    subnoteEl.textContent = 'Hong Kong has no general trading allowance and no VAT/GST. The Business Registration Certificate is required as soon as you start tutoring for fees — but the upside is a flat, simple regime once you are in.';
+  } else if (t.trading_allowance_amount) {
+    captionEl.textContent = "// THIS IS THE THRESHOLD — UNDER IT, MOST DON'T NEED TO REGISTER";
+    amountEl.textContent = `${formatAmount(t.trading_allowance_amount, pack)} / year`;
+    subnoteEl.textContent = `Earn under ${formatAmount(t.trading_allowance_amount, pack)} from tutoring in a tax year and you usually don't need to register as self-employed. Cross it and you do — that's when the form below matters.`;
+  } else {
+    captionEl.textContent = "// NO GENERAL ALLOWANCE — REGISTER FROM YOUR FIRST PAID LESSON";
+    amountEl.textContent = 'Register from $1 of net income';
+    subnoteEl.textContent = 'This country has no general trading allowance, so registration is expected as soon as you have any net self-employment income. Use the form below to start.';
+  }
 
   const reg = $('reg-steps');
   reg.innerHTML = '';

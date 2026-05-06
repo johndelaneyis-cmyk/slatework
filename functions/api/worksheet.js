@@ -12,6 +12,7 @@ const SYSTEM_PROMPT = [
   "- Number every question.",
   "- The answer key must list answers by the same numbers, with a one-sentence note explaining the answer where useful.",
   "- Do not include student names, identifying details, or location-specific facts.",
+  "- If an exam or curriculum target is specified, calibrate question style, vocabulary, and difficulty to that exam's published standards. Treat it as the source of truth over generic CEFR-level expectations.",
   "",
   "Output is Markdown with two sections separated by a horizontal rule. The boundary is exactly the line `---ANSWER-KEY---` so the client can split.",
   "",
@@ -45,6 +46,7 @@ export async function onRequestPost({ request, env }) {
   const target = String(body.target_language || '').trim();
   const level = String(body.level || '').trim().toUpperCase();
   const topic = String(body.topic || '').trim();
+  const exam = String(body.exam || '').trim();
   const format = String(body.format || 'gap_fill').trim();
   const count = Math.max(3, Math.min(20, parseInt(body.count, 10) || 8));
 
@@ -52,6 +54,7 @@ export async function onRequestPost({ request, env }) {
   if (!VALID_LEVELS.includes(level)) return jsonResponse({ error: 'Level must be A1–C2.' }, 400);
   if (topic.length < 2) return jsonResponse({ error: 'Topic too short.' }, 400);
   if (topic.length > 200) return jsonResponse({ error: 'Topic too long (200 chars max).' }, 400);
+  if (exam.length > 200) return jsonResponse({ error: 'Exam / curriculum target too long (200 chars max).' }, 400);
   if (!VALID_FORMATS.includes(format)) return jsonResponse({ error: 'Format must be gap_fill, multiple_choice, short_answer, or reading_comprehension.' }, 400);
 
   if (!env.ANTHROPIC_API_KEY) return jsonResponse({ error: 'Service is being configured. Try again in a few minutes.' }, 503);
@@ -60,13 +63,15 @@ export async function onRequestPost({ request, env }) {
   const rate = await rateCheck(env, fp, 'worksheet', PER_IP_DAILY, GLOBAL_DAILY);
   if (!rate.ok) return jsonResponse({ error: rate.reason }, rate.status || 429);
 
-  const userMsg = [
+  const userMsgLines = [
     `Target language: ${target}`,
     `CEFR level: ${level}`,
     `Topic: ${topic}`,
     `Format: ${format}`,
     `Number of questions: ${count}`
-  ].join('\n');
+  ];
+  if (exam) userMsgLines.push(`Exam / curriculum target: ${exam}`);
+  const userMsg = userMsgLines.join('\n');
 
   try {
     const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2500 });

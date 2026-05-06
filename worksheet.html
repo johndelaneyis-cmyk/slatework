@@ -77,6 +77,11 @@
         <label for="topic">Topic</label>
         <input id="topic" type="text" placeholder="e.g., Past tense with irregular verbs; ordering food at a restaurant" required maxlength="200" />
       </div>
+      <div class="field">
+        <label for="exam">Exam or curriculum (optional)</label>
+        <input id="exam" name="exam" type="text" placeholder="e.g. GCSE English Language Paper 1, HKDSE Paper 3, SAT writing, IELTS speaking band 7" maxlength="200" />
+        <span class="help">Leave blank for general-purpose practice. If you teach to a specific exam, name it &mdash; the worksheet will target it.</span>
+      </div>
       <div class="section-row">
         <div class="field">
           <label for="format">Format</label>
@@ -133,6 +138,7 @@ $('form').addEventListener('submit', async (e) => {
         target_language: $('target').value,
         level: $('level').value,
         topic: $('topic').value,
+        exam: $('exam').value,
         format: $('format').value,
         count: parseInt($('count').value, 10)
       })

@@ -768,6 +768,125 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 }
 
 /* =========================================================
+   FAQ (full-bleed dark band)
+   ========================================================= */
+.faq {
+  background: var(--slate-board);
+  color: var(--chalk);
+  padding: 5rem 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 768px) {
+  .faq { padding: 7rem 2rem; }
+}
+
+.faq-inner {
+  max-width: 44rem;
+  margin: 0 auto;
+}
+
+.faq .mono-caption {
+  color: var(--chalk-faint);
+  margin-bottom: 1rem;
+}
+
+.faq h2 {
+  font-family: var(--sans);
+  font-size: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--chalk);
+  margin: 0 0 2rem;
+  line-height: 1.1;
+}
+
+.faq details {
+  border-top: 1px solid var(--chalk-faint);
+  padding: 1.25rem 0;
+}
+
+.faq details:last-of-type {
+  border-bottom: 1px solid var(--chalk-faint);
+}
+
+.faq details > summary {
+  font-family: var(--sans);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--chalk);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .faq details > summary { font-size: 1.25rem; }
+}
+
+.faq details > summary::-webkit-details-marker { display: none; }
+
+.faq details > summary::after {
+  content: "+";
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--chalk-mute);
+  flex: 0 0 auto;
+  transition: transform var(--transition);
+}
+
+.faq details[open] > summary::after {
+  content: "−";
+  color: var(--chalk-accent);
+}
+
+.faq details > summary:hover { color: var(--chalk-accent); }
+.faq details > summary:focus-visible {
+  outline: 2px solid var(--chalk-accent);
+  outline-offset: 4px;
+}
+
+.faq details .answer {
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--chalk-mute);
+  margin: 1rem 0 0;
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .faq details .answer { font-size: 1.0625rem; }
+}
+
+.faq details .answer p { margin: 0 0 0.85rem; }
+.faq details .answer p:last-child { margin-bottom: 0; }
+
+.faq details .answer strong { color: var(--chalk); font-weight: 600; }
+
+.faq details .answer a {
+  color: var(--chalk-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.faq details .answer a:hover { color: var(--chalk); }
+
+.faq details .answer code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: var(--slate-deep);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--chalk);
+}
+
+/* =========================================================
    MAKER section (light)
    ========================================================= */
 .maker {
@@ -1001,6 +1120,47 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   color: var(--ink-muted);
   line-height: 1.5;
   margin: 1.5rem 0;
+}
+
+/* Threshold callout (tax page — visually loudest element) */
+.threshold-callout {
+  background: var(--slate-board);
+  color: var(--chalk);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin: 1.75rem 0 1.25rem;
+  border-left: 4px solid var(--chalk-accent);
+}
+
+@media (min-width: 768px) {
+  .threshold-callout { padding: 2rem 2.25rem; }
+}
+
+.threshold-callout .mono-caption {
+  color: var(--chalk-accent);
+  margin: 0 0 0.75rem;
+}
+
+.threshold-callout .threshold-headline {
+  font-family: var(--sans);
+  margin: 0 0 0.85rem;
+  line-height: 1.1;
+}
+
+.threshold-callout .threshold-headline strong {
+  font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--chalk);
+}
+
+.threshold-callout .threshold-note {
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--chalk-mute);
+  margin: 0;
+  max-width: 44rem;
 }
 
 .section-row {

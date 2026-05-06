@@ -13,6 +13,7 @@ const SYSTEM_PROMPT = [
   "- For 1:1 mode, lean into individual feedback opportunities.",
   "- Be concrete. Don't say \"do a warmup\" — say what the warmup is.",
   "- Time the plan to fit a 60-minute lesson by default; adjust if the user specifies otherwise.",
+  "- If an exam or curriculum target is specified, calibrate question style, vocabulary, and difficulty to that exam's published standards. Treat it as the source of truth over generic CEFR-level expectations.",
   "",
   "Format your response as Markdown:",
   "",
@@ -59,12 +60,14 @@ export async function onRequestPost({ request, env }) {
   const level = String(body.level || '').trim().toUpperCase();
   const mode = String(body.mode || 'one_to_one').trim();
   const goal = String(body.goal || '').trim();
+  const exam = String(body.exam || '').trim();
 
   if (!target) return jsonResponse({ error: 'Missing target language.' }, 400);
   if (!VALID_LEVELS.includes(level)) return jsonResponse({ error: 'Level must be one of A1, A2, B1, B2, C1, C2.' }, 400);
   if (!VALID_MODES.includes(mode)) return jsonResponse({ error: 'Mode must be one_to_one, small_group, or classroom.' }, 400);
   if (goal.length < MIN_GOAL_LEN) return jsonResponse({ error: 'Lesson goal too short. 10+ characters please.' }, 400);
   if (goal.length > MAX_GOAL_LEN) return jsonResponse({ error: 'Lesson goal too long. Keep it under 600 characters.' }, 400);
+  if (exam.length > 200) return jsonResponse({ error: 'Exam / curriculum target too long (200 chars max).' }, 400);
 
   if (!env.ANTHROPIC_API_KEY) return jsonResponse({ error: 'Service is being configured. Try again in a few minutes.' }, 503);
 
@@ -72,13 +75,15 @@ export async function onRequestPost({ request, env }) {
   const rate = await rateCheck(env, fp, 'lesson_plan', PER_IP_DAILY, GLOBAL_DAILY);
   if (!rate.ok) return jsonResponse({ error: rate.reason }, rate.status || 429);
 
-  const userMsg = [
+  const userMsgLines = [
     `Target language: ${target}`,
     `Source language: ${source}`,
     `CEFR level: ${level}`,
     `Mode: ${mode.replace('_', ' ')}`,
     `Lesson goal: ${goal}`
-  ].join('\n');
+  ];
+  if (exam) userMsgLines.push(`Exam / curriculum target: ${exam}`);
+  const userMsg = userMsgLines.join('\n');
 
   try {
     const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2000 });
