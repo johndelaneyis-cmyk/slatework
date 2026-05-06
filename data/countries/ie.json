@@ -1,0 +1,76 @@
+{
+  "code": "IE",
+  "name": "Ireland",
+  "currency": "EUR",
+  "currency_symbol": "€",
+  "locale_default": "en-IE",
+  "platforms": [
+    { "key": "italki", "name": "italki", "fee_pct": 15, "url": "https://www.italki.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"] },
+    { "key": "preply", "name": "Preply", "fee_pct": 33,
+      "fee_curve": [
+        { "after_hours": 0, "fee_pct": 33 },
+        { "after_hours": 20, "fee_pct": 28 },
+        { "after_hours": 50, "fee_pct": 25 },
+        { "after_hours": 200, "fee_pct": 18 },
+        { "after_hours": 400, "fee_pct": 15 }
+      ],
+      "url": "https://preply.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"] },
+    { "key": "tutorful", "name": "Tutorful", "fee_pct": 12.5, "url": "https://tutorful.co.uk", "available_in": ["GB","IE"] },
+    { "key": "verbling", "name": "Verbling", "fee_pct": 15, "url": "https://www.verbling.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"] },
+    { "key": "cambly", "name": "Cambly", "fee_pct": 0, "url": "https://www.cambly.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"], "notes": "Per-minute rate." }
+  ],
+  "tax": {
+    "self_employment_form": "Form 11 (self-assessed) via ROS",
+    "self_employment_url": "https://www.revenue.ie/en/self-assessment-and-self-employment/index.aspx",
+    "vat_threshold_amount": 42500,
+    "trading_allowance_amount": 5000,
+    "registration_steps": [
+      "Register for Income Tax with Revenue via ROS (Revenue Online Service) at ros.ie.",
+      "If non-PAYE income exceeds €5,000/year, you must register as self-assessed.",
+      "Register for VAT only if turnover exceeds €42,500 (services threshold — 2026).",
+      "File Form 11 by 31 October each year (mid-November if filing through ROS).",
+      "Pay preliminary tax and balance via ROS.",
+      "USC (Universal Social Charge) and PRSI Class S apply on self-employment income."
+    ],
+    "notes": "Education services delivered by an approved provider are VAT-exempt; private tutoring is generally exempt — confirm with Revenue."
+  },
+  "background_check": {
+    "name": "Garda Vetting (National Vetting Bureau)",
+    "url": "https://vetting.garda.ie",
+    "cost_amount": 0,
+    "notes": "Free Garda Vetting is required for all roles working with children/vulnerable persons. Application is via a registered organisation; private tutors typically vet through a tutoring association or apply via a parent's school request."
+  },
+  "rates_by_language_pair": {
+    "en-es": { "low": 22, "median": 38, "high": 70, "unit": "per_hour" },
+    "en-fr": { "low": 25, "median": 42, "high": 75, "unit": "per_hour" },
+    "en-de": { "low": 25, "median": 42, "high": 75, "unit": "per_hour" },
+    "en-zh": { "low": 28, "median": 48, "high": 90, "unit": "per_hour" },
+    "en-ja": { "low": 30, "median": 50, "high": 95, "unit": "per_hour" },
+    "en-ko": { "low": 30, "median": 50, "high": 95, "unit": "per_hour" },
+    "en-it": { "low": 22, "median": 38, "high": 70, "unit": "per_hour" },
+    "en-pt": { "low": 22, "median": 38, "high": 70, "unit": "per_hour" },
+    "en-ru": { "low": 25, "median": 38, "high": 70, "unit": "per_hour" },
+    "en-ar": { "low": 28, "median": 45, "high": 85, "unit": "per_hour" },
+    "ga-en": { "low": 25, "median": 40, "high": 70, "unit": "per_hour" },
+    "es-en": { "low": 22, "median": 35, "high": 65, "unit": "per_hour" },
+    "fr-en": { "low": 22, "median": 35, "high": 65, "unit": "per_hour" }
+  },
+  "payment_methods": [
+    { "key": "sepa_instant", "name": "SEPA Instant Credit Transfer", "domestic": true, "international": true, "notes": "Free or low-cost across SEPA zone, near-instant." },
+    { "key": "revolut", "name": "Revolut", "domestic": true, "international": true, "url": "https://www.revolut.com" },
+    { "key": "wise", "name": "Wise", "domestic": true, "international": true, "url": "https://wise.com" },
+    { "key": "stripe_link", "name": "Stripe Link", "domestic": true, "international": true, "url": "https://link.com", "notes": "1.5%+€0.25 EU cards." },
+    { "key": "paypal", "name": "PayPal", "domestic": true, "international": true, "url": "https://www.paypal.com" },
+    { "key": "cash", "name": "Cash", "domestic": true, "international": false }
+  ],
+  "insurance": {
+    "public_liability_typical_amount": 6500000,
+    "providers": [
+      { "name": "Aviva Ireland", "url": "https://www.aviva.ie/business-insurance" },
+      { "name": "AXA Ireland", "url": "https://www.axa.ie/business-insurance" },
+      { "name": "Ironsure", "url": "https://www.ironsure.ie" }
+    ],
+    "notes": "€6.5M public liability is the Irish standard. ~€200–€400/year for private tutors."
+  },
+  "data_source_last_verified": "2026-05-06"
+}

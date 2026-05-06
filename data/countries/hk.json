@@ -1,0 +1,82 @@
+{
+  "code": "HK",
+  "name": "Hong Kong",
+  "currency": "HKD",
+  "currency_symbol": "HK$",
+  "locale_default": "en-HK",
+  "platforms": [
+    { "key": "italki", "name": "italki", "fee_pct": 15, "url": "https://www.italki.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"] },
+    { "key": "preply", "name": "Preply", "fee_pct": 33,
+      "fee_curve": [
+        { "after_hours": 0, "fee_pct": 33 },
+        { "after_hours": 20, "fee_pct": 28 },
+        { "after_hours": 50, "fee_pct": 25 },
+        { "after_hours": 200, "fee_pct": 18 },
+        { "after_hours": 400, "fee_pct": 15 }
+      ],
+      "url": "https://preply.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"] },
+    { "key": "snapask", "name": "Snapask", "fee_pct": 30, "url": "https://www.snapask.com/en-hk", "available_in": ["HK","SG","TW"] },
+    { "key": "afterschool", "name": "AfterSchool HK", "fee_pct": 25, "url": "https://www.afterschool.com.hk", "available_in": ["HK"] },
+    { "key": "tutorcircle", "name": "Tutor Circle", "fee_pct": 0, "url": "https://www.tutorcircle.hk", "available_in": ["HK"], "notes": "Charges tutors a one-off introduction fee (~HK$200) per matched student rather than commission." },
+    { "key": "verbling", "name": "Verbling", "fee_pct": 15, "url": "https://www.verbling.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"] },
+    { "key": "cambly", "name": "Cambly", "fee_pct": 0, "url": "https://www.cambly.com", "available_in": ["US","GB","CA","AU","NZ","IE","HK"], "notes": "Per-minute rate." }
+  ],
+  "tax": {
+    "self_employment_form": "BIR60 (Tax Return — Individuals) with Part 5 (Profits Tax for sole proprietorship)",
+    "self_employment_url": "https://www.ird.gov.hk/eng/tax/bus_pft.htm",
+    "vat_threshold_amount": 0,
+    "trading_allowance_amount": 0,
+    "income_tax_brackets": [
+      { "upper_bound_amount": 2000000, "rate": 0.075 },
+      { "upper_bound_amount": null,    "rate": 0.15  }
+    ],
+    "registration_steps": [
+      "Apply for a Business Registration Certificate (BR) at the Inland Revenue Department within 1 month of starting — annual fee HK$2,150 (1-year) or HK$5,650 (3-year).",
+      "Register your business name with the Companies Registry if trading under any name other than your own.",
+      "File Profits Tax Return (Form BIR60 + relevant supplementary forms) annually — tax year is 1 April–31 March.",
+      "Profits Tax: 7.5% on first HK$2M assessable profits, 15% above.",
+      "Mandatory Provident Fund (MPF) contributions: 5% of relevant income up to HK$1,500/month cap (HK$18,000/year) once you exceed the HK$7,100/month income trigger.",
+      "No GST/VAT in Hong Kong — clean."
+    ],
+    "notes": "Hong Kong has no sales tax, GST, or VAT — a meaningful simplification. The 'tutor king/queen' culture means rates can be 5–10× the international online median for in-person prep."
+  },
+  "background_check": {
+    "name": "Sexual Conviction Record Check (SCRC) — Hong Kong Police",
+    "url": "https://www.police.gov.hk/ppp_en/11_useful_info/scrc.html",
+    "cost_amount": 135,
+    "notes": "Required by many parents and schools for tutors of minors. Application via the HK Police; HK$135 fee. Result valid 12 months."
+  },
+  "rates_by_language_pair": {
+    "en-zh": { "low": 200, "median": 400, "high": 1500, "unit": "per_hour" },
+    "en-yue": { "low": 200, "median": 400, "high": 1500, "unit": "per_hour" },
+    "yue-en": { "low": 250, "median": 500, "high": 1800, "unit": "per_hour" },
+    "zh-en": { "low": 250, "median": 500, "high": 1800, "unit": "per_hour" },
+    "en-ja": { "low": 300, "median": 550, "high": 1500, "unit": "per_hour" },
+    "en-ko": { "low": 300, "median": 550, "high": 1500, "unit": "per_hour" },
+    "en-fr": { "low": 280, "median": 480, "high": 1200, "unit": "per_hour" },
+    "en-de": { "low": 280, "median": 480, "high": 1200, "unit": "per_hour" },
+    "en-es": { "low": 250, "median": 450, "high": 1100, "unit": "per_hour" },
+    "yue-zh": { "low": 200, "median": 350, "high": 800, "unit": "per_hour" },
+    "zh-yue": { "low": 200, "median": 350, "high": 800, "unit": "per_hour" }
+  },
+  "payment_methods": [
+    { "key": "fps", "name": "FPS (Faster Payment System)", "domestic": true, "international": false, "url": "https://fps.hkma.gov.hk", "notes": "Free, instant HK bank-to-bank by phone/email/QR. Default for most tutors." },
+    { "key": "octopus", "name": "Octopus (peer-to-peer)", "domestic": true, "international": false, "url": "https://www.octopus.com.hk" },
+    { "key": "payme", "name": "PayMe (HSBC)", "domestic": true, "international": false, "url": "https://payme.hsbc.com.hk" },
+    { "key": "alipay_hk", "name": "AlipayHK", "domestic": true, "international": false, "url": "https://www.alipayhk.com" },
+    { "key": "wechat_pay_hk", "name": "WeChat Pay HK", "domestic": true, "international": false, "url": "https://pay.weixin.qq.com/wechatpay_guide/intro_hk.shtml" },
+    { "key": "wise", "name": "Wise", "domestic": true, "international": true, "url": "https://wise.com" },
+    { "key": "stripe_link", "name": "Stripe Link", "domestic": true, "international": true, "url": "https://link.com", "notes": "3.4%+HK$2.35 HK cards." },
+    { "key": "cash", "name": "Cash", "domestic": true, "international": false }
+  ],
+  "insurance": {
+    "public_liability_typical_amount": 10000000,
+    "providers": [
+      { "name": "AIG Hong Kong", "url": "https://www.aig.com.hk/business" },
+      { "name": "AXA Hong Kong", "url": "https://www.axa.com.hk/en/business-insurance" },
+      { "name": "Zurich Hong Kong", "url": "https://www.zurich.com.hk" }
+    ],
+    "notes": "HK$10M public liability is typical. Tutors of minors should carry professional indemnity in addition. ~HK$1,500–$3,500/year."
+  },
+  "data_source_last_verified": "2026-05-06"
+}
