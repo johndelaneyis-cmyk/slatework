@@ -11,3 +11,7 @@ id = "rate_limits_local_dev"
 [[kv_namespaces]]
 binding = "FX_CACHE"
 id = "fx_cache_local_dev"
+
+[[kv_namespaces]]
+binding = "FEEDBACK"
+id = "feedback_local_dev"
