@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CEFR proficiency mapper — Slatework</title>
+  <meta name="description" content="Place a language student at A1–C2 using the CEFR Can-Do framework. Default rule-based assessment with an optional AI mode for sample-writing input." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/cefr.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>CEFR proficiency mapper</h1>
+  <p>Place a student at A1, A2, B1, B2, C1, or C2 using the standard CEFR Can-Do statements. Pick the mode that matches the moment.</p>
+
+  <div role="tablist" style="display:flex; gap:0.5rem; margin: 1rem 0;">
+    <button id="tab-rules" type="button" class="btn" aria-selected="true">Rule-based (private)</button>
+    <button id="tab-ai" type="button" class="btn secondary" aria-selected="false">AI from writing sample</button>
+  </div>
+
+  <section id="rules-mode">
+    <div class="privacy-notice">Runs entirely in your browser. We don't see anything you enter.</div>
+    <form id="rules-form">
+      <p>Answer for each statement: <em>Yes</em>, <em>Partial</em>, or <em>No</em>.</p>
+      <div id="statements"></div>
+      <button type="button" id="rules-go" style="margin-top:1rem;">Place the student</button>
+    </form>
+    <section id="rules-result" class="result" style="display:none;"></section>
+  </section>
+
+  <section id="ai-mode" style="display:none;">
+    <div class="privacy-notice"><strong>Don't include the student's name or identifying info.</strong> The writing sample is sent to Anthropic for processing and is not stored by us.</div>
+    <form id="ai-form">
+      <div class="field">
+        <label for="lang">Language being assessed</label>
+        <input id="lang" type="text" placeholder="e.g., Spanish" required />
+      </div>
+      <div class="field">
+        <label for="sample">Anonymised writing sample (50–500 words)</label>
+        <textarea id="sample" required minlength="100" maxlength="3000" placeholder="Paste the student's writing here. Remove names and identifying details first."></textarea>
+      </div>
+      <button type="submit" id="ai-go">Assess</button>
+    </form>
+    <section id="ai-result" class="result" style="display:none;"></section>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script src="/src/lib/cefr-rules.js"></script>
+<script>
+const SW = window.Slatework;
+const $ = (id) => document.getElementById(id);
+
+// --- Tab switching
+const rulesMode = $('rules-mode');
+const aiMode = $('ai-mode');
+const tabRules = $('tab-rules');
+const tabAi = $('tab-ai');
+
+tabRules.addEventListener('click', () => {
+  rulesMode.style.display = '';
+  aiMode.style.display = 'none';
+  tabRules.classList.remove('secondary'); tabAi.classList.add('secondary');
+  tabRules.setAttribute('aria-selected', 'true'); tabAi.setAttribute('aria-selected', 'false');
+});
+tabAi.addEventListener('click', () => {
+  rulesMode.style.display = 'none';
+  aiMode.style.display = '';
+  tabAi.classList.remove('secondary'); tabRules.classList.add('secondary');
+  tabAi.setAttribute('aria-selected', 'true'); tabRules.setAttribute('aria-selected', 'false');
+});
+
+// --- Rule-based mode
+const statementsBox = $('statements');
+const stmts = SW.cefrStatements();
+for (const s of stmts) {
+  const div = document.createElement('div');
+  div.className = 'field';
+  div.innerHTML = `
+    <label>${escapeHtml(s.q)}</label>
+    <div style="display:flex; gap:1rem;">
+      <label><input type="radio" name="${s.id}" value="yes" /> Yes</label>
+      <label><input type="radio" name="${s.id}" value="partial" /> Partial</label>
+      <label><input type="radio" name="${s.id}" value="no" checked /> No</label>
+    </div>
+  `;
+  statementsBox.appendChild(div);
+}
+
+$('rules-go').addEventListener('click', () => {
+  const answers = {};
+  for (const s of stmts) {
+    const sel = document.querySelector(`input[name="${s.id}"]:checked`);
+    answers[s.id] = sel ? sel.value : 'no';
+  }
+  const out = SW.cefrPlace(answers);
+  const r = $('rules-result');
+  r.innerHTML = `
+    <div class="row"><span>Placement</span><strong>${out.level}</strong></div>
+    <div class="row"><span>Confidence</span><strong>${out.confidence}</strong></div>
+    <p class="small" style="margin-top:0.6rem;">${escapeHtml(out.notes)}</p>
+  `;
+  r.style.display = 'block';
+});
+
+// --- AI mode (wired in Phase 2 — endpoint exists in Phase 2)
+$('ai-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const result = $('ai-result');
+  const btn = $('ai-go');
+  btn.disabled = true;
+  result.style.display = 'block';
+  result.innerHTML = '<p>Assessing…</p>';
+  try {
+    const r = await fetch('/api/cefr-assess', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ language: $('lang').value, sample: $('sample').value })
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      result.innerHTML = '<p>' + escapeHtml(e.error || 'Could not assess. Try again in a moment.') + '</p>';
+      return;
+    }
+    const data = await r.json();
+    result.innerHTML = `
+      <div class="row"><span>Placement</span><strong>${escapeHtml(data.level || '—')}</strong></div>
+      <div class="row"><span>Confidence</span><strong>${escapeHtml(data.confidence || '—')}</strong></div>
+      <h3 style="margin-top:0.6rem;">Reasoning</h3>
+      <p>${escapeHtml(data.reasoning || '').replace(/\n/g, '<br>')}</p>
+    `;
+  } catch {
+    result.innerHTML = '<p>Network error. Try again in a moment.</p>';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+</script>
+</body>
+</html>
