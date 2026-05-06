@@ -1,17 +1,19 @@
-# Slatework — Cloudflare Pages config for local dev (`wrangler pages dev .`).
-# Production KV namespaces are bound via the Cloudflare dashboard.
+# Slatework — Cloudflare Pages config.
+# KV namespace IDs below are the real production namespaces in the slatework
+# Cloudflare account. Wrangler uses these for both `pages dev` (local) and
+# `pages deploy` (production) — same IDs in both contexts.
 name = "slatework"
 compatibility_date = "2025-09-01"
 pages_build_output_dir = "."
 
 [[kv_namespaces]]
 binding = "RATE_LIMITS"
-id = "rate_limits_local_dev"
+id = "f89b67366aea4b2bb87fbf54597d8596"
 
 [[kv_namespaces]]
 binding = "FX_CACHE"
-id = "fx_cache_local_dev"
+id = "f333d30bc24c4f26ae05fac840dfa5d8"
 
 [[kv_namespaces]]
 binding = "FEEDBACK"
-id = "feedback_local_dev"
+id = "274ba45bdb7940d0816ea252728b74b7"
