@@ -34,3 +34,5 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+.claude/qa-screenshots/*.png
+.claude/qa-screenshots/findings.json
