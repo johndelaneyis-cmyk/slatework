@@ -1,0 +1,271 @@
+﻿{
+    "currency":  "USD",
+    "rates_by_language_pair":  {
+                                   "en-zh":  {
+                                                 "low":  35,
+                                                 "median":  65,
+                                                 "unit":  "per_hour",
+                                                 "high":  150
+                                             },
+                                   "es-en":  {
+                                                 "low":  25,
+                                                 "median":  45,
+                                                 "unit":  "per_hour",
+                                                 "high":  100
+                                             },
+                                   "en-ja":  {
+                                                 "low":  40,
+                                                 "median":  70,
+                                                 "unit":  "per_hour",
+                                                 "high":  160
+                                             },
+                                   "en-ar":  {
+                                                 "low":  35,
+                                                 "median":  60,
+                                                 "unit":  "per_hour",
+                                                 "high":  140
+                                             },
+                                   "en-ko":  {
+                                                 "low":  40,
+                                                 "median":  70,
+                                                 "unit":  "per_hour",
+                                                 "high":  160
+                                             },
+                                   "en-fr":  {
+                                                 "low":  30,
+                                                 "median":  55,
+                                                 "unit":  "per_hour",
+                                                 "high":  130
+                                             },
+                                   "en-de":  {
+                                                 "low":  30,
+                                                 "median":  55,
+                                                 "unit":  "per_hour",
+                                                 "high":  130
+                                             },
+                                   "fr-en":  {
+                                                 "low":  25,
+                                                 "median":  45,
+                                                 "unit":  "per_hour",
+                                                 "high":  100
+                                             },
+                                   "en-it":  {
+                                                 "low":  30,
+                                                 "median":  55,
+                                                 "unit":  "per_hour",
+                                                 "high":  120
+                                             },
+                                   "en-pt":  {
+                                                 "low":  25,
+                                                 "median":  50,
+                                                 "unit":  "per_hour",
+                                                 "high":  110
+                                             },
+                                   "en-ru":  {
+                                                 "low":  30,
+                                                 "median":  50,
+                                                 "unit":  "per_hour",
+                                                 "high":  110
+                                             },
+                                   "en-es":  {
+                                                 "low":  25,
+                                                 "median":  50,
+                                                 "unit":  "per_hour",
+                                                 "high":  120
+                                             }
+                               },
+    "locale_default":  "en-US",
+    "tax":  {
+                "vat_threshold_amount":  0,
+                "self_employment_form":  "Schedule C (Form 1040) + Schedule SE",
+                "notes":  "Form 1099-K thresholds dropped to $5,000 for tax year 2026. Platform earnings above that get reported to IRS automatically.",
+                "trading_allowance_amount":  0,
+                "self_employment_url":  "https://www.irs.gov/forms-pubs/about-schedule-c-form-1040",
+                "registration_steps":  [
+                                           "No federal registration is required to start as a sole proprietor — your SSN is your tax ID by default.",
+                                           "Apply for a free EIN at irs.gov to use instead of your SSN on client invoices.",
+                                           "Check your state for a sales-tax requirement; tutoring services are exempt in most states but verify with your state revenue department.",
+                                           "If gross income exceeds $400/year, file Schedule SE for self-employment tax (Social Security + Medicare).",
+                                           "Pay estimated federal tax quarterly via Form 1040-ES if you expect to owe $1,000+.",
+                                           "Track every business expense — mileage, materials, home-office %, software, professional development."
+                                       ]
+            },
+    "currency_symbol":  "$",
+    "data_source_last_verified":  "2026-05-06",
+    "payment_methods":  [
+                            {
+                                "name":  "Zelle",
+                                "notes":  "Free, instant; bank-to-bank within US. No platform fee.",
+                                "international":  false,
+                                "key":  "zelle",
+                                "domestic":  true,
+                                "url":  "https://www.zellepay.com"
+                            },
+                            {
+                                "name":  "Venmo",
+                                "notes":  "Free for personal; 1.9%+$0.10 for goods/services tag.",
+                                "international":  false,
+                                "key":  "venmo",
+                                "domestic":  true,
+                                "url":  "https://venmo.com"
+                            },
+                            {
+                                "name":  "Cash App",
+                                "notes":  "Free for personal.",
+                                "international":  false,
+                                "key":  "cashapp",
+                                "domestic":  true,
+                                "url":  "https://cash.app"
+                            },
+                            {
+                                "name":  "Stripe Link",
+                                "notes":  "2.9%+$0.30 per transaction; supports cards.",
+                                "international":  true,
+                                "key":  "stripe_link",
+                                "domestic":  true,
+                                "url":  "https://link.com"
+                            },
+                            {
+                                "name":  "Wise",
+                                "notes":  "Mid-market FX; ideal for international clients.",
+                                "international":  true,
+                                "key":  "wise",
+                                "domestic":  true,
+                                "url":  "https://wise.com"
+                            },
+                            {
+                                "international":  false,
+                                "domestic":  true,
+                                "key":  "ach",
+                                "name":  "ACH bank transfer",
+                                "notes":  "Manual but free; 1–3 business days."
+                            },
+                            {
+                                "international":  false,
+                                "domestic":  true,
+                                "key":  "cash",
+                                "name":  "Cash",
+                                "notes":  "In-person only. Issue a written receipt for record-keeping."
+                            }
+                        ],
+    "insurance":  {
+                      "providers":  [
+                                        {
+                                            "name":  "Hiscox",
+                                            "url":  "https://www.hiscox.com/small-business-insurance/professional-liability-insurance"
+                                        },
+                                        {
+                                            "name":  "Next Insurance",
+                                            "url":  "https://www.nextinsurance.com"
+                                        },
+                                        {
+                                            "name":  "Thimble",
+                                            "url":  "https://www.thimble.com"
+                                        }
+                                    ],
+                      "public_liability_typical_amount":  1000000,
+                      "notes":  "Tutors teaching minors privately should consider $1M general-liability + professional indemnity. ~$25–$60/month."
+                  },
+    "name":  "United States",
+    "platforms":  [
+                      {
+                          "url":  "https://www.italki.com",
+                          "key":  "italki",
+                          "name":  "italki",
+                          "available_in":  [
+                                               "US",
+                                               "GB",
+                                               "CA",
+                                               "AU",
+                                               "NZ",
+                                               "IE",
+                                               "HK"
+                                           ],
+                          "fee_pct":  15
+                      },
+                      {
+                          "available_in":  [
+                                               "US",
+                                               "GB",
+                                               "CA",
+                                               "AU",
+                                               "NZ",
+                                               "IE",
+                                               "HK"
+                                           ],
+                          "name":  "Preply",
+                          "key":  "preply",
+                          "fee_curve":  [
+                                            {
+                                                "after_hours":  0,
+                                                "fee_pct":  33
+                                            },
+                                            {
+                                                "after_hours":  20,
+                                                "fee_pct":  28
+                                            },
+                                            {
+                                                "after_hours":  50,
+                                                "fee_pct":  25
+                                            },
+                                            {
+                                                "after_hours":  200,
+                                                "fee_pct":  18
+                                            },
+                                            {
+                                                "after_hours":  400,
+                                                "fee_pct":  15
+                                            }
+                                        ],
+                          "fee_pct":  33,
+                          "url":  "https://preply.com"
+                      },
+                      {
+                          "url":  "https://www.wyzant.com",
+                          "key":  "wyzant",
+                          "name":  "Wyzant",
+                          "available_in":  [
+                                               "US"
+                                           ],
+                          "fee_pct":  25
+                      },
+                      {
+                          "available_in":  [
+                                               "US",
+                                               "GB",
+                                               "CA",
+                                               "AU",
+                                               "NZ",
+                                               "IE",
+                                               "HK"
+                                           ],
+                          "name":  "Cambly",
+                          "notes":  "Pays tutors a fixed per-minute rate; not a commission model. ~$0.17/minute.",
+                          "key":  "cambly",
+                          "fee_pct":  0,
+                          "url":  "https://www.cambly.com"
+                      },
+                      {
+                          "url":  "https://www.verbling.com",
+                          "key":  "verbling",
+                          "name":  "Verbling",
+                          "available_in":  [
+                                               "US",
+                                               "GB",
+                                               "CA",
+                                               "AU",
+                                               "NZ",
+                                               "IE",
+                                               "HK"
+                                           ],
+                          "fee_pct":  15
+                      }
+                  ],
+    "background_check":  {
+                             "cost_amount":  25,
+                             "url":  "https://www.fbi.gov/services/cjis/identity-history-summary-checks",
+                             "name":  "State + national background check (Sterling, Checkr, GoodHire — varies by client)",
+                             "notes":  "Not legally required for private tutors in most US states, but parents of minors increasingly request one. FBI Identity History Summary is the gold standard at ~$18; commercial services run $25–$70."
+                         },
+    "code":  "US"
+}

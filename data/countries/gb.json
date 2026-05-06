@@ -1,0 +1,284 @@
+﻿{
+    "currency":  "GBP",
+    "rates_by_language_pair":  {
+                                   "en-zh":  {
+                                                 "low":  25,
+                                                 "median":  45,
+                                                 "unit":  "per_hour",
+                                                 "high":  90
+                                             },
+                                   "es-en":  {
+                                                 "low":  18,
+                                                 "median":  30,
+                                                 "unit":  "per_hour",
+                                                 "high":  55
+                                             },
+                                   "en-ja":  {
+                                                 "low":  28,
+                                                 "median":  48,
+                                                 "unit":  "per_hour",
+                                                 "high":  95
+                                             },
+                                   "en-ar":  {
+                                                 "low":  25,
+                                                 "median":  42,
+                                                 "unit":  "per_hour",
+                                                 "high":  80
+                                             },
+                                   "en-ko":  {
+                                                 "low":  28,
+                                                 "median":  48,
+                                                 "unit":  "per_hour",
+                                                 "high":  95
+                                             },
+                                   "en-fr":  {
+                                                 "low":  20,
+                                                 "median":  35,
+                                                 "unit":  "per_hour",
+                                                 "high":  65
+                                             },
+                                   "en-de":  {
+                                                 "low":  22,
+                                                 "median":  38,
+                                                 "unit":  "per_hour",
+                                                 "high":  70
+                                             },
+                                   "fr-en":  {
+                                                 "low":  18,
+                                                 "median":  30,
+                                                 "unit":  "per_hour",
+                                                 "high":  55
+                                             },
+                                   "en-it":  {
+                                                 "low":  20,
+                                                 "median":  35,
+                                                 "unit":  "per_hour",
+                                                 "high":  65
+                                             },
+                                   "en-pt":  {
+                                                 "low":  18,
+                                                 "median":  32,
+                                                 "unit":  "per_hour",
+                                                 "high":  60
+                                             },
+                                   "en-ru":  {
+                                                 "low":  20,
+                                                 "median":  32,
+                                                 "unit":  "per_hour",
+                                                 "high":  60
+                                             },
+                                   "en-es":  {
+                                                 "low":  18,
+                                                 "median":  32,
+                                                 "unit":  "per_hour",
+                                                 "high":  60
+                                             }
+                               },
+    "locale_default":  "en-GB",
+    "tax":  {
+                "vat_threshold_amount":  90000,
+                "notes":  "DBS check required for tutoring minors in some authorities. Keep all records 5 years past the 31 January submission deadline.",
+                "self_employment_form":  "SA103 (Self Assessment Self-Employment supplementary page)",
+                "income_tax_brackets":  [
+                                            {
+                                                "rate":  0,
+                                                "upper_bound_amount":  12570
+                                            },
+                                            {
+                                                "rate":  0.2,
+                                                "upper_bound_amount":  50270
+                                            },
+                                            {
+                                                "rate":  0.4,
+                                                "upper_bound_amount":  125140
+                                            },
+                                            {
+                                                "rate":  0.45,
+                                                "upper_bound_amount":  null
+                                            }
+                                        ],
+                "trading_allowance_amount":  1000,
+                "self_employment_url":  "https://www.gov.uk/self-employed-records",
+                "registration_steps":  [
+                                           "Register for Self Assessment with HMRC at gov.uk/log-in-file-self-assessment-tax-return — must be done by 5 October following your first tax year of trading.",
+                                           "If turnover is under £1,000/year, the Trading Allowance covers it — no need to file.",
+                                           "Above £1,000, file an SA100 + SA103 by 31 January (online) or 31 October (paper).",
+                                           "Pay Class 2 NI (£3.45/week if profits \u003e £6,725) and Class 4 NI (9% on profits £12,570–£50,270, 2% above).",
+                                           "Register for VAT only if turnover exceeds £90,000 — most tutors stay well below this."
+                                       ]
+            },
+    "currency_symbol":  "£",
+    "data_source_last_verified":  "2026-05-06",
+    "payment_methods":  [
+                            {
+                                "international":  false,
+                                "domestic":  true,
+                                "key":  "faster_payments",
+                                "name":  "Faster Payments",
+                                "notes":  "Free, near-instant UK bank transfer. Default for most tutors."
+                            },
+                            {
+                                "name":  "Wise",
+                                "notes":  "Mid-market FX; ideal for non-UK clients.",
+                                "international":  true,
+                                "key":  "wise",
+                                "domestic":  true,
+                                "url":  "https://wise.com"
+                            },
+                            {
+                                "name":  "Stripe Link",
+                                "notes":  "1.5%+£0.20 UK; 2.5%+£0.20 EEA cards.",
+                                "international":  true,
+                                "key":  "stripe_link",
+                                "domestic":  true,
+                                "url":  "https://link.com"
+                            },
+                            {
+                                "name":  "PayPal",
+                                "notes":  "Higher fees but trusted by older parents.",
+                                "international":  true,
+                                "key":  "paypal",
+                                "domestic":  true,
+                                "url":  "https://www.paypal.com"
+                            },
+                            {
+                                "name":  "GoCardless",
+                                "notes":  "Direct debit for recurring weekly lessons.",
+                                "international":  false,
+                                "key":  "go_cardless",
+                                "domestic":  true,
+                                "url":  "https://gocardless.com"
+                            },
+                            {
+                                "international":  false,
+                                "domestic":  true,
+                                "key":  "cash",
+                                "name":  "Cash",
+                                "notes":  "Issue a written receipt and log in your records."
+                            }
+                        ],
+    "insurance":  {
+                      "providers":  [
+                                        {
+                                            "name":  "PolicyBee",
+                                            "url":  "https://www.policybee.co.uk/private-tutors-insurance"
+                                        },
+                                        {
+                                            "name":  "Hiscox",
+                                            "url":  "https://www.hiscox.co.uk/business-insurance/professional-indemnity-insurance"
+                                        },
+                                        {
+                                            "name":  "Simply Business",
+                                            "url":  "https://www.simplybusiness.co.uk/insurance/tutor/"
+                                        }
+                                    ],
+                      "public_liability_typical_amount":  6000000,
+                      "notes":  "PolicyBee is the most tutor-specific UK provider. £6m public liability + £1m professional indemnity is typical at ~£8–£15/month."
+                  },
+    "name":  "United Kingdom",
+    "platforms":  [
+                      {
+                          "url":  "https://www.italki.com",
+                          "key":  "italki",
+                          "name":  "italki",
+                          "available_in":  [
+                                               "US",
+                                               "GB",
+                                               "CA",
+                                               "AU",
+                                               "NZ",
+                                               "IE",
+                                               "HK"
+                                           ],
+                          "fee_pct":  15
+                      },
+                      {
+                          "available_in":  [
+                                               "US",
+                                               "GB",
+                                               "CA",
+                                               "AU",
+                                               "NZ",
+                                               "IE",
+                                               "HK"
+                                           ],
+                          "name":  "Preply",
+                          "key":  "preply",
+                          "fee_curve":  [
+                                            {
+                                                "after_hours":  0,
+                                                "fee_pct":  33
+                                            },
+                                            {
+                                                "after_hours":  20,
+                                                "fee_pct":  28
+                                            },
+                                            {
+                                                "after_hours":  50,
+                                                "fee_pct":  25
+                                            },
+                                            {
+                                                "after_hours":  200,
+                                                "fee_pct":  18
+                                            },
+                                            {
+                                                "after_hours":  400,
+                                                "fee_pct":  15
+                                            }
+                                        ],
+                          "fee_pct":  33,
+                          "url":  "https://preply.com"
+                      },
+                      {
+                          "url":  "https://tutorful.co.uk",
+                          "key":  "tutorful",
+                          "name":  "Tutorful",
+                          "available_in":  [
+                                               "GB",
+                                               "IE"
+                                           ],
+                          "fee_pct":  12.5
+                      },
+                      {
+                          "url":  "https://www.mytutor.co.uk",
+                          "key":  "mytutor",
+                          "name":  "MyTutor",
+                          "available_in":  [
+                                               "GB"
+                                           ],
+                          "fee_pct":  25
+                      },
+                      {
+                          "url":  "https://tutorhouse.co.uk",
+                          "key":  "tutorhouse",
+                          "name":  "Tutor House",
+                          "available_in":  [
+                                               "GB"
+                                           ],
+                          "fee_pct":  20
+                      },
+                      {
+                          "available_in":  [
+                                               "US",
+                                               "GB",
+                                               "CA",
+                                               "AU",
+                                               "NZ",
+                                               "IE",
+                                               "HK"
+                                           ],
+                          "name":  "Cambly",
+                          "notes":  "Per-minute rate, not commission.",
+                          "key":  "cambly",
+                          "fee_pct":  0,
+                          "url":  "https://www.cambly.com"
+                      }
+                  ],
+    "background_check":  {
+                             "cost_amount":  38,
+                             "url":  "https://www.gov.uk/dbs-check-applicant-criminal-record",
+                             "name":  "DBS (Disclosure and Barring Service) — Enhanced for working with children",
+                             "notes":  "Enhanced DBS is £38 (free for volunteers). Most parents of minors will ask to see one. Update Service costs £13/year for portability."
+                         },
+    "code":  "GB"
+}

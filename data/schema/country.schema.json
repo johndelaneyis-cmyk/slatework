@@ -1,125 +1,280 @@
 ﻿{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Slatework Country Pack",
-  "type": "object",
-  "required": [
-    "code", "name", "currency", "currency_symbol", "locale_default",
-    "platforms", "tax", "background_check", "rates_by_language_pair",
-    "payment_methods", "insurance", "data_source_last_verified"
-  ],
-  "properties": {
-    "code": { "type": "string", "pattern": "^[A-Z]{2}$" },
-    "name": { "type": "string", "minLength": 2 },
-    "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
-    "currency_symbol": { "type": "string", "minLength": 1, "maxLength": 4 },
-    "locale_default": { "type": "string", "pattern": "^[a-z]{2}-[A-Z]{2}$" },
-    "platforms": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["key", "name", "fee_pct", "url", "available_in"],
-        "properties": {
-          "key": { "type": "string" },
-          "name": { "type": "string" },
-          "fee_pct": { "type": "number", "minimum": 0, "maximum": 50 },
-          "fee_curve": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": ["after_hours", "fee_pct"],
-              "properties": {
-                "after_hours": { "type": "integer", "minimum": 0 },
-                "fee_pct": { "type": "number", "minimum": 0, "maximum": 50 }
-              }
-            }
-          },
-          "url": { "type": "string", "format": "uri" },
-          "available_in": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z]{2}$" } }
-        }
-      }
-    },
-    "tax": {
-      "type": "object",
-      "required": ["self_employment_form", "self_employment_url", "registration_steps"],
-      "properties": {
-        "self_employment_form": { "type": "string" },
-        "self_employment_url": { "type": "string", "format": "uri" },
-        "trading_allowance_amount": { "type": "number", "minimum": 0 },
-        "vat_threshold_amount": { "type": "number", "minimum": 0 },
-        "income_tax_brackets": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["upper_bound_amount", "rate"],
-            "properties": {
-              "upper_bound_amount": { "type": "number" },
-              "rate": { "type": "number", "minimum": 0, "maximum": 1 }
-            }
-          }
-        },
-        "registration_steps": { "type": "array", "items": { "type": "string" } },
-        "notes": { "type": "string" }
-      }
-    },
-    "background_check": {
-      "type": "object",
-      "required": ["name", "url"],
-      "properties": {
-        "name": { "type": "string" },
-        "cost_amount": { "type": "number", "minimum": 0 },
-        "url": { "type": "string", "format": "uri" },
-        "notes": { "type": "string" }
-      }
-    },
-    "rates_by_language_pair": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object",
-        "required": ["low", "median", "high", "unit"],
-        "properties": {
-          "low": { "type": "number", "minimum": 0 },
-          "median": { "type": "number", "minimum": 0 },
-          "high": { "type": "number", "minimum": 0 },
-          "unit": { "type": "string", "enum": ["per_hour"] }
-        }
-      }
-    },
-    "payment_methods": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["key", "name", "domestic", "international"],
-        "properties": {
-          "key": { "type": "string" },
-          "name": { "type": "string" },
-          "domestic": { "type": "boolean" },
-          "international": { "type": "boolean" },
-          "url": { "type": "string", "format": "uri" },
-          "notes": { "type": "string" }
-        }
-      }
-    },
-    "insurance": {
-      "type": "object",
-      "properties": {
-        "public_liability_typical_amount": { "type": "number", "minimum": 0 },
-        "providers": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": ["name", "url"],
-            "properties": {
-              "name": { "type": "string" },
-              "url": { "type": "string", "format": "uri" }
-            }
-          }
-        },
-        "notes": { "type": "string" }
-      }
-    },
-    "data_source_last_verified": {
-      "type": "string",
-      "format": "date"
-    }
-  }
+    "$schema":  "http://json-schema.org/draft-07/schema#",
+    "title":  "Slatework Country Pack",
+    "type":  "object",
+    "required":  [
+                     "code",
+                     "name",
+                     "currency",
+                     "currency_symbol",
+                     "locale_default",
+                     "platforms",
+                     "tax",
+                     "background_check",
+                     "rates_by_language_pair",
+                     "payment_methods",
+                     "insurance",
+                     "data_source_last_verified"
+                 ],
+    "properties":  {
+                       "code":  {
+                                    "type":  "string",
+                                    "pattern":  "^[A-Z]{2}$"
+                                },
+                       "name":  {
+                                    "type":  "string",
+                                    "minLength":  2
+                                },
+                       "currency":  {
+                                        "type":  "string",
+                                        "pattern":  "^[A-Z]{3}$"
+                                    },
+                       "currency_symbol":  {
+                                               "type":  "string",
+                                               "minLength":  1,
+                                               "maxLength":  4
+                                           },
+                       "locale_default":  {
+                                              "type":  "string",
+                                              "pattern":  "^[a-z]{2}-[A-Z]{2}$"
+                                          },
+                       "platforms":  {
+                                         "type":  "array",
+                                         "items":  {
+                                                       "type":  "object",
+                                                       "required":  [
+                                                                        "key",
+                                                                        "name",
+                                                                        "fee_pct",
+                                                                        "url",
+                                                                        "available_in"
+                                                                    ],
+                                                       "properties":  {
+                                                                          "key":  {
+                                                                                      "type":  "string"
+                                                                                  },
+                                                                          "name":  {
+                                                                                       "type":  "string"
+                                                                                   },
+                                                                          "fee_pct":  {
+                                                                                          "type":  "number",
+                                                                                          "minimum":  0,
+                                                                                          "maximum":  50
+                                                                                      },
+                                                                          "fee_curve":  {
+                                                                                            "type":  "array",
+                                                                                            "items":  {
+                                                                                                          "type":  "object",
+                                                                                                          "required":  [
+                                                                                                                           "after_hours",
+                                                                                                                           "fee_pct"
+                                                                                                                       ],
+                                                                                                          "properties":  {
+                                                                                                                             "after_hours":  {
+                                                                                                                                                 "type":  "integer",
+                                                                                                                                                 "minimum":  0
+                                                                                                                                             },
+                                                                                                                             "fee_pct":  {
+                                                                                                                                             "type":  "number",
+                                                                                                                                             "minimum":  0,
+                                                                                                                                             "maximum":  50
+                                                                                                                                         }
+                                                                                                                         }
+                                                                                                      }
+                                                                                        },
+                                                                          "url":  {
+                                                                                      "type":  "string",
+                                                                                      "format":  "uri"
+                                                                                  },
+                                                                          "available_in":  {
+                                                                                               "type":  "array",
+                                                                                               "items":  {
+                                                                                                             "type":  "string",
+                                                                                                             "pattern":  "^[A-Z]{2}$"
+                                                                                                         }
+                                                                                           }
+                                                                      }
+                                                   }
+                                     },
+                       "tax":  {
+                                   "type":  "object",
+                                   "required":  [
+                                                    "self_employment_form",
+                                                    "self_employment_url",
+                                                    "registration_steps"
+                                                ],
+                                   "properties":  {
+                                                      "self_employment_form":  {
+                                                                                   "type":  "string"
+                                                                               },
+                                                      "self_employment_url":  {
+                                                                                  "type":  "string",
+                                                                                  "format":  "uri"
+                                                                              },
+                                                      "trading_allowance_amount":  {
+                                                                                       "type":  "number",
+                                                                                       "minimum":  0
+                                                                                   },
+                                                      "vat_threshold_amount":  {
+                                                                                   "type":  "number",
+                                                                                   "minimum":  0
+                                                                               },
+                                                      "income_tax_brackets":  {
+                                                                                  "type":  "array",
+                                                                                  "items":  {
+                                                                                                "type":  "object",
+                                                                                                "required":  [
+                                                                                                                 "upper_bound_amount",
+                                                                                                                 "rate"
+                                                                                                             ],
+                                                                                                "properties":  {
+                                                                                                                   "upper_bound_amount":  {
+                                                                                                                                              "type":  [
+                                                                                                                                                           "number",
+                                                                                                                                                           "null"
+                                                                                                                                                       ]
+                                                                                                                                          },
+                                                                                                                   "rate":  {
+                                                                                                                                "type":  "number",
+                                                                                                                                "minimum":  0,
+                                                                                                                                "maximum":  1
+                                                                                                                            }
+                                                                                                               }
+                                                                                            }
+                                                                              },
+                                                      "registration_steps":  {
+                                                                                 "type":  "array",
+                                                                                 "items":  {
+                                                                                               "type":  "string"
+                                                                                           }
+                                                                             },
+                                                      "notes":  {
+                                                                    "type":  "string"
+                                                                }
+                                                  }
+                               },
+                       "background_check":  {
+                                                "type":  "object",
+                                                "required":  [
+                                                                 "name",
+                                                                 "url"
+                                                             ],
+                                                "properties":  {
+                                                                   "name":  {
+                                                                                "type":  "string"
+                                                                            },
+                                                                   "cost_amount":  {
+                                                                                       "type":  "number",
+                                                                                       "minimum":  0
+                                                                                   },
+                                                                   "url":  {
+                                                                               "type":  "string",
+                                                                               "format":  "uri"
+                                                                           },
+                                                                   "notes":  {
+                                                                                 "type":  "string"
+                                                                             }
+                                                               }
+                                            },
+                       "rates_by_language_pair":  {
+                                                      "type":  "object",
+                                                      "additionalProperties":  {
+                                                                                   "type":  "object",
+                                                                                   "required":  [
+                                                                                                    "low",
+                                                                                                    "median",
+                                                                                                    "high",
+                                                                                                    "unit"
+                                                                                                ],
+                                                                                   "properties":  {
+                                                                                                      "low":  {
+                                                                                                                  "type":  "number",
+                                                                                                                  "minimum":  0
+                                                                                                              },
+                                                                                                      "median":  {
+                                                                                                                     "type":  "number",
+                                                                                                                     "minimum":  0
+                                                                                                                 },
+                                                                                                      "high":  {
+                                                                                                                   "type":  "number",
+                                                                                                                   "minimum":  0
+                                                                                                               },
+                                                                                                      "unit":  {
+                                                                                                                   "type":  "string",
+                                                                                                                   "enum":  [
+                                                                                                                                "per_hour"
+                                                                                                                            ]
+                                                                                                               }
+                                                                                                  }
+                                                                               }
+                                                  },
+                       "payment_methods":  {
+                                               "type":  "array",
+                                               "items":  {
+                                                             "type":  "object",
+                                                             "required":  [
+                                                                              "key",
+                                                                              "name",
+                                                                              "domestic",
+                                                                              "international"
+                                                                          ],
+                                                             "properties":  {
+                                                                                "key":  {
+                                                                                            "type":  "string"
+                                                                                        },
+                                                                                "name":  {
+                                                                                             "type":  "string"
+                                                                                         },
+                                                                                "domestic":  {
+                                                                                                 "type":  "boolean"
+                                                                                             },
+                                                                                "international":  {
+                                                                                                      "type":  "boolean"
+                                                                                                  },
+                                                                                "url":  {
+                                                                                            "type":  "string",
+                                                                                            "format":  "uri"
+                                                                                        },
+                                                                                "notes":  {
+                                                                                              "type":  "string"
+                                                                                          }
+                                                                            }
+                                                         }
+                                           },
+                       "insurance":  {
+                                         "type":  "object",
+                                         "properties":  {
+                                                            "public_liability_typical_amount":  {
+                                                                                                    "type":  "number",
+                                                                                                    "minimum":  0
+                                                                                                },
+                                                            "providers":  {
+                                                                              "type":  "array",
+                                                                              "items":  {
+                                                                                            "type":  "object",
+                                                                                            "required":  [
+                                                                                                             "name",
+                                                                                                             "url"
+                                                                                                         ],
+                                                                                            "properties":  {
+                                                                                                               "name":  {
+                                                                                                                            "type":  "string"
+                                                                                                                        },
+                                                                                                               "url":  {
+                                                                                                                           "type":  "string",
+                                                                                                                           "format":  "uri"
+                                                                                                                       }
+                                                                                                           }
+                                                                                        }
+                                                                          },
+                                                            "notes":  {
+                                                                          "type":  "string"
+                                                                      }
+                                                        }
+                                     },
+                       "data_source_last_verified":  {
+                                                         "type":  "string",
+                                                         "format":  "date"
+                                                     }
+                   }
 }
