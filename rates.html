@@ -152,12 +152,12 @@ async function recalc() {
 
   // Suggestion block
   const suggestion = document.createElement('div');
-  suggestion.innerHTML = 
-    <div class="row"><span>Suggested low</span><strong>$\{SW.formatCurrency(low, ccy, locale)}/hr</strong></div>
-    <div class="row"><span>Suggested median</span><strong>$\{SW.formatCurrency(median, ccy, locale)}/hr</strong></div>
-    <div class="row"><span>Suggested high</span><strong>$\{SW.formatCurrency(high, ccy, locale)}/hr</strong></div>
-    <div class="row"><span>Your gross rate (used below)</span><strong>$\{SW.formatCurrency(grossRate, ccy, locale)}/hr</strong></div>
-  ;
+  suggestion.innerHTML = `
+    <div class="row"><span>Suggested low</span><strong>${SW.formatCurrency(low, ccy, locale)}/hr</strong></div>
+    <div class="row"><span>Suggested median</span><strong>${SW.formatCurrency(median, ccy, locale)}/hr</strong></div>
+    <div class="row"><span>Suggested high</span><strong>${SW.formatCurrency(high, ccy, locale)}/hr</strong></div>
+    <div class="row"><span>Your gross rate (used below)</span><strong>${SW.formatCurrency(grossRate, ccy, locale)}/hr</strong></div>
+  `;
   const sb = $('suggestion-block');
   sb.innerHTML = '';
   sb.appendChild(suggestion);
@@ -174,10 +174,10 @@ async function recalc() {
     const row = document.createElement('div');
     row.className = 'row';
     if (net == null) {
-      row.innerHTML = <span>$\{escapeHtml(p.name)}</span><strong class="small">$\{escapeHtml(p.notes || 'Different pricing model')}</strong>;
+      row.innerHTML = `<span>${escapeHtml(p.name)}</span><strong class="small">${escapeHtml(p.notes || 'Different pricing model')}</strong>`;
     } else {
-      const feeLabel = p.fee_curve ? \$\{fee}% (after \$\{hoursTier(p, hours)} hrs taught) : \$\{fee}%;
-      row.innerHTML = <span>$\{escapeHtml(p.name)} <span class="small">— $\{feeLabel}</span></span><strong>$\{SW.formatCurrency(net, ccy, locale)}/hr</strong>;
+      const feeLabel = p.fee_curve ? `${fee}% (after ${hoursTier(p, hours)} hrs taught)` : `${fee}%`;
+      row.innerHTML = `<span>${escapeHtml(p.name)} <span class="small">— ${feeLabel}</span></span><strong>${SW.formatCurrency(net, ccy, locale)}/hr</strong>`;
     }
     pb.appendChild(row);
   }
@@ -189,15 +189,15 @@ async function recalc() {
   const weeklyHours = hours;
   const grossYear = grossRate * weeklyHours * 50; // 50 working weeks
   const ab = $('annual-block');
-  ab.innerHTML = 
-    <div class="row"><span>Hours / week</span><strong>$\{weeklyHours}</strong></div>
-    <div class="row"><span>Gross / year (50 weeks)</span><strong>$\{SW.formatCurrency(grossYear, ccy, locale)}</strong></div>
-    <div class="row"><span>Tax-relevant threshold</span><strong>$\{taxThresholdNote(pack, ccy, locale)}</strong></div>
-  ;
+  ab.innerHTML = `
+    <div class="row"><span>Hours / week</span><strong>${weeklyHours}</strong></div>
+    <div class="row"><span>Gross / year (50 weeks)</span><strong>${SW.formatCurrency(grossYear, ccy, locale)}</strong></div>
+    <div class="row"><span>Tax-relevant threshold</span><strong>${taxThresholdNote(pack, ccy, locale)}</strong></div>
+  `;
 
   // FX note
   const r = await SW.rates();
-  $('fx-note').textContent = Rates and platform fees verified \$\{pack.data_source_last_verified}. FX rates \$\{r.source === 'fallback' ? 'using fallback table' : 'live'}.;
+  $('fx-note').textContent = `Rates and platform fees verified ${pack.data_source_last_verified}. FX rates ${r.source === 'fallback' ? 'using fallback table' : 'live'}.`;
 
   $('result').style.display = 'block';
 }
@@ -205,7 +205,7 @@ async function recalc() {
 function renderUnavailablePair(pack, pairKey) {
   $('platforms-block').innerHTML = '';
   $('annual-block').innerHTML = '';
-  $('suggestion-block').innerHTML = <p class="small">No published median for \$\{escapeHtml(pairKey)} in \$\{escapeHtml(pack.name)} yet. Pick another pair, or use the closest neighbor as a starting point.</p>;
+  $('suggestion-block').innerHTML = `<p class="small">No published median for ${escapeHtml(pairKey)} in ${escapeHtml(pack.name)} yet. Pick another pair, or use the closest neighbor as a starting point.</p>`;
   $('result').style.display = 'block';
 }
 
@@ -231,15 +231,15 @@ function hoursTier(p, hoursTaught) {
 function taxThresholdNote(pack, ccy, locale) {
   const t = pack.tax;
   const lines = [];
-  if (t.trading_allowance_amount) lines.push(Trading allowance: \$\{SW.formatCurrency(t.trading_allowance_amount, ccy, locale)});
-  if (t.vat_threshold_amount) lines.push(VAT/GST threshold: \$\{SW.formatCurrency(t.vat_threshold_amount, ccy, locale)});
+  if (t.trading_allowance_amount) lines.push(`Trading allowance: ${SW.formatCurrency(t.trading_allowance_amount, ccy, locale)}`);
+  if (t.vat_threshold_amount) lines.push(`VAT/GST threshold: ${SW.formatCurrency(t.vat_threshold_amount, ccy, locale)}`);
   return lines.length ? lines.join(' · ') : 'See ' + (t.self_employment_form || 'local tax form');
 }
 
 function escapeHtml(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/\"/g, '&quot;').replace(/'/g, '&#39;');
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 </script>
 
