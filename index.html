@@ -41,10 +41,10 @@
 <header class="site-header">
   <a class="brand" href="/">
     <svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true">
-      <rect x="6" y="10" width="52" height="44" rx="6" fill="#1e293b" stroke="#09090B" stroke-width="2"/>
-      <line x1="16" y1="22" x2="48" y2="22" stroke="#e7e3d8" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="16" y1="32" x2="42" y2="32" stroke="#e7e3d8" stroke-width="1.6" stroke-linecap="round"/>
-      <line x1="16" y1="42" x2="38" y2="42" stroke="#e7e3d8" stroke-width="1.6" stroke-linecap="round"/>
+      <rect x="6" y="10" width="52" height="44" rx="4" fill="#0f172a"/>
+      <line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/>
     </svg>
     Slatework
   </a>
@@ -56,28 +56,31 @@
 
 <main>
   <section class="container hero">
-    <div class="eyebrow">Free tools &middot; No account &middot; Open-source</div>
-    <h1>The toolkit independent language tutors actually use.</h1>
+    <div class="eyebrow">Free <span aria-hidden="true">|</span> No account <span aria-hidden="true">|</span> Open source</div>
+    <h1>Tutor tools that don't waste your evening.</h1>
     <p class="lead">
-      Set up your business, set defensible rates, plan lessons, mark student work &mdash; without paying a platform 30% or stitching seven free templates together. Free for any tutor or teacher.
+      Set up your tutoring business, set defensible rates, plan lessons, mark student work &mdash; without paying a platform 30% or stitching seven free templates together. Ten free tools for independent language tutors and the teachers who tutor on the side.
     </p>
     <div class="hero-cta">
-      <a class="btn btn-primary btn-lg" href="#tools">Browse the tools &darr;</a>
+      <a class="btn btn-primary btn-lg" href="#tools">Browse the toolkit</a>
       <a class="btn-link" href="/about.html">Read the story &rarr;</a>
+    </div>
+    <div class="hero-status">
+      v0.1.0 &middot; 10 tools &middot; 7 countries &middot; <span class="dot" aria-hidden="true"></span>live now
     </div>
   </section>
 
   <div class="trust-band">
-    <div class="container row">
+    <div class="row">
       <span class="label">Country-aware for</span>
       <ul>
-        <li>United States</li>
-        <li>United Kingdom</li>
-        <li>Canada</li>
-        <li>Australia</li>
-        <li>New Zealand</li>
-        <li>Ireland</li>
-        <li>Hong Kong</li>
+        <li>US</li>
+        <li>UK</li>
+        <li>CA</li>
+        <li>AU</li>
+        <li>NZ</li>
+        <li>IE</li>
+        <li>HK</li>
       </ul>
     </div>
   </div>
@@ -86,7 +89,7 @@
 
     <div class="bucket">
       <div class="bucket-head">
-        <span class="num">01 &mdash; Setup</span>
+        <span class="num">01 / 04</span>
         <h2>Setting up your tutoring business</h2>
         <p class="sub">Get legal-to-teach, get paid, stay insured.</p>
       </div>
@@ -108,9 +111,9 @@
 
     <div class="bucket">
       <div class="bucket-head">
-        <span class="num">02 &mdash; Lessons</span>
+        <span class="num">02 / 04</span>
         <h2>Lesson delivery &amp; grading</h2>
-        <p class="sub">Plan it, deliver it, mark it &mdash; without burning a Sunday.</p>
+        <p class="sub">Plan lessons, place students, generate worksheets, mark writing.</p>
       </div>
       <div class="tile-grid">
         <a class="tile" href="/lesson-plan.html">
@@ -134,9 +137,9 @@
 
     <div class="bucket">
       <div class="bucket-head">
-        <span class="num">03 &mdash; Pricing</span>
+        <span class="num">03 / 04</span>
         <h2>Pricing &amp; money</h2>
-        <p class="sub">Charge what your work is worth &mdash; in your currency, on your terms.</p>
+        <p class="sub">Know what to charge. Know what platforms actually pay.</p>
       </div>
       <div class="tile-grid">
         <a class="tile" href="/rates.html">
@@ -152,9 +155,9 @@
 
     <div class="bucket">
       <div class="bucket-head">
-        <span class="num">04 &mdash; Clients</span>
+        <span class="num">04 / 04</span>
         <h2>Client acquisition</h2>
-        <p class="sub">Win the parent meeting. Keep the trial. Sign the agreement.</p>
+        <p class="sub">Sign clients without a 30% platform fee.</p>
       </div>
       <div class="tile-grid">
         <a class="tile" href="/contract.html">
@@ -167,7 +170,7 @@
   </section>
 
   <section class="newsletter">
-    <div class="container newsletter-inner">
+    <div class="newsletter-inner">
       <h2>One short letter every Sunday.</h2>
       <p class="lead">Notes from independent tutors and teachers &mdash; what's working this week, what just shipped, useful templates. Unsubscribe in one click.</p>
       <form id="newsletter">
@@ -175,10 +178,10 @@
           <label for="email" style="position:absolute;left:-9999px;">Email</label>
           <input id="email" name="email" type="email" required placeholder="you@example.com" autocomplete="email" />
         </div>
-        <button type="submit">Join</button>
+        <button type="submit" class="btn btn-primary">Join</button>
       </form>
       <div id="newsletter-status" class="small" style="min-height: 1.4em;"></div>
-      <p class="footnote">Joining 0 readers. Be the first.</p>
+      <p class="footnote">// Joining 0 readers &middot; be the first</p>
     </div>
   </section>
 
@@ -186,7 +189,7 @@
     <p>
       Slatework is the second project from the maker of Authorly. Same approach: ten free tools, no signup, no platform fee, no pretending the work isn't hard. Built quietly in 2026 for the tutors and teachers who already do the work.
     </p>
-    <span class="sig">&mdash; Darren</span>
+    <span class="sig">&mdash; Darren &middot; 2026</span>
   </section>
 </main>
 
