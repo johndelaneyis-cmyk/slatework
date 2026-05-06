@@ -1,0 +1,59 @@
+// Country pack loader. Used by every country-aware tool page.
+// Exposes window.Slatework.loadCountry(code) returning the parsed pack.
+// Caches per-code in memory for the lifetime of the page.
+
+(() => {
+  const SUPPORTED = ['us', 'gb', 'ca', 'au', 'nz', 'ie', 'hk'];
+  const cache = new Map();
+
+  async function loadCountry(code) {
+    const lower = String(code || '').toLowerCase();
+    if (!SUPPORTED.includes(lower)) {
+      throw new Error('Unsupported country code: ' + code);
+    }
+    if (cache.has(lower)) return cache.get(lower);
+    const r = await fetch('/data/countries/' + lower + '.json', { cache: 'force-cache' });
+    if (!r.ok) throw new Error('Country pack fetch failed: ' + r.status);
+    const pack = await r.json();
+    cache.set(lower, pack);
+    return pack;
+  }
+
+  function listCountries() {
+    return [
+      { code: 'US', name: 'United States' },
+      { code: 'GB', name: 'United Kingdom' },
+      { code: 'CA', name: 'Canada' },
+      { code: 'AU', name: 'Australia' },
+      { code: 'NZ', name: 'New Zealand' },
+      { code: 'IE', name: 'Ireland' },
+      { code: 'HK', name: 'Hong Kong' }
+    ];
+  }
+
+  function languagePairs() {
+    return [
+      { code: 'en-es', label: 'English — Spanish' },
+      { code: 'en-fr', label: 'English — French' },
+      { code: 'en-de', label: 'English — German' },
+      { code: 'en-it', label: 'English — Italian' },
+      { code: 'en-pt', label: 'English — Portuguese' },
+      { code: 'en-ru', label: 'English — Russian' },
+      { code: 'en-zh', label: 'English — Mandarin' },
+      { code: 'en-yue', label: 'English — Cantonese' },
+      { code: 'en-ja', label: 'English — Japanese' },
+      { code: 'en-ko', label: 'English — Korean' },
+      { code: 'en-ar', label: 'English — Arabic' },
+      { code: 'es-en', label: 'Spanish — English' },
+      { code: 'fr-en', label: 'French — English' },
+      { code: 'ga-en', label: 'Irish — English' },
+      { code: 'yue-zh', label: 'Cantonese — Mandarin' },
+      { code: 'zh-yue', label: 'Mandarin — Cantonese' }
+    ];
+  }
+
+  window.Slatework = window.Slatework || {};
+  window.Slatework.loadCountry = loadCountry;
+  window.Slatework.listCountries = listCountries;
+  window.Slatework.languagePairs = languagePairs;
+})();
