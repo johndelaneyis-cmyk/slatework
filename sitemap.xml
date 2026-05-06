@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://slatework.tools/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://slatework.tools/setup.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slatework.tools/tax.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slatework.tools/insurance.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slatework.tools/rates.html</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://slatework.tools/payments.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://slatework.tools/contract.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://slatework.tools/lesson-plan.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slatework.tools/cefr.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://slatework.tools/worksheet.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slatework.tools/marking.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://slatework.tools/about.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://slatework.tools/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://slatework.tools/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://slatework.tools/setup</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://slatework.tools/tax</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://slatework.tools/insurance</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://slatework.tools/rates</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://slatework.tools/payments</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://slatework.tools/contract</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://slatework.tools/lesson-plan</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://slatework.tools/cefr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://slatework.tools/worksheet</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://slatework.tools/marking</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://slatework.tools/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://slatework.tools/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://slatework.tools/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>

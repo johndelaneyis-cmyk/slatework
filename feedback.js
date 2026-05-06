@@ -38,31 +38,49 @@
         <span class="fb-status" style="font-size: 0.85rem; color: var(--ink-muted, #475569); margin-left: 0.5rem;"></span>
       </div>
       <textarea data-fb="note" placeholder="(optional) one-sentence note — what went well or didn't" style="display:none; margin-top: 0.7rem; width: 100%; min-height: 4rem; font: inherit; padding: 0.5rem; border: 1px solid var(--line, #e2e8f0); border-radius: 6px;"></textarea>
-      <button type="button" data-fb="send" style="display:none; margin-top: 0.5rem; font: inherit; padding: 0.4rem 0.8rem; background: var(--slate, #475569); color: #fff; border: none; border-radius: 6px; cursor: pointer;">Send</button>
+      <div data-fb="actions" style="display:none; gap: 0.6rem; align-items: center; margin-top: 0.5rem;">
+        <button type="button" data-fb="send" style="font: inherit; padding: 0.4rem 0.8rem; background: var(--slate, #475569); color: #fff; border: none; border-radius: 6px; cursor: pointer;">Send</button>
+        <button type="button" data-fb="skip" style="font: inherit; padding: 0.4rem 0.6rem; background: transparent; color: var(--ink-muted, #475569); border: none; cursor: pointer; text-decoration: underline;">Skip note</button>
+      </div>
     `;
     main.appendChild(wrap);
 
     let chosen = null;
+    let submitted = false;
     const status = wrap.querySelector('.fb-status');
     const note = wrap.querySelector('[data-fb="note"]');
+    const actions = wrap.querySelector('[data-fb="actions"]');
     const sendBtn = wrap.querySelector('[data-fb="send"]');
+    const skipBtn = wrap.querySelector('[data-fb="skip"]');
 
     wrap.querySelectorAll('[data-fb="up"], [data-fb="down"]').forEach(btn => {
       btn.addEventListener('click', () => {
+        if (submitted) return;
         chosen = btn.getAttribute('data-fb');
         status.textContent = 'Thanks. Want to add a note?';
         note.style.display = 'block';
-        sendBtn.style.display = 'inline-block';
-        // Send the bare yes/no immediately so we capture even silent thumbs.
-        send(chosen, '');
+        actions.style.display = 'flex';
       });
     });
 
-    sendBtn.addEventListener('click', () => {
-      send(chosen, note.value.trim());
+    function finalize() {
+      submitted = true;
       status.textContent = 'Sent. Thanks.';
       note.disabled = true;
       sendBtn.disabled = true;
+      skipBtn.disabled = true;
+    }
+
+    sendBtn.addEventListener('click', () => {
+      if (submitted || !chosen) return;
+      send(chosen, note.value.trim());
+      finalize();
+    });
+
+    skipBtn.addEventListener('click', () => {
+      if (submitted || !chosen) return;
+      send(chosen, '');
+      finalize();
     });
   }
 

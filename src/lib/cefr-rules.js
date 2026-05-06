@@ -24,21 +24,60 @@
   function place(answers) {
     // answers: { [id]: 'yes'|'no'|'partial' }
     let highestYes = null;
+    let highestPartial = null;
+    let lowestPartial = null;
     let lowestNo = null;
+    let answeredCount = 0;
     for (const s of STATEMENTS) {
       const a = answers[s.id];
+      if (a !== 'yes' && a !== 'no' && a !== 'partial') continue;
+      answeredCount++;
       if (a === 'yes') {
         if (highestYes == null || ORDER.indexOf(s.level) > ORDER.indexOf(highestYes)) highestYes = s.level;
+      } else if (a === 'partial') {
+        if (highestPartial == null || ORDER.indexOf(s.level) > ORDER.indexOf(highestPartial)) highestPartial = s.level;
+        if (lowestPartial == null || ORDER.indexOf(s.level) < ORDER.indexOf(lowestPartial)) lowestPartial = s.level;
       } else if (a === 'no') {
         if (lowestNo == null || ORDER.indexOf(s.level) < ORDER.indexOf(lowestNo)) lowestNo = s.level;
       }
     }
-    if (highestYes == null) return { level: 'A0', confidence: 'low', notes: 'Not enough confirmed Can-Do statements to place — start at the very beginning.' };
-    return {
-      level: highestYes,
-      confidence: lowestNo && ORDER.indexOf(lowestNo) <= ORDER.indexOf(highestYes) ? 'low' : 'medium',
-      notes: lowestNo ? `Confirmed up to ${highestYes}; ceiling around ${lowestNo}.` : `Confirmed at ${highestYes}; ceiling not yet probed.`
-    };
+
+    if (answeredCount < 3) {
+      return { level: null, confidence: null, notes: 'Answer at least 3 of the statements above to place the student.', insufficient: true };
+    }
+
+    // Detect inconsistency: highest "yes" is at a higher level than lowest "no".
+    const inconsistent = highestYes && lowestNo && ORDER.indexOf(lowestNo) < ORDER.indexOf(highestYes);
+
+    // No yes at all — fall back to lowest partial as floor (low confidence).
+    if (highestYes == null) {
+      if (lowestPartial != null) {
+        return {
+          level: lowestPartial,
+          confidence: 'low',
+          notes: `Only partial confirmation at ${lowestPartial}; treat as a tentative floor and re-check the lower-level Can-Dos in the next session.`
+        };
+      }
+      return { level: 'A0', confidence: 'low', notes: 'Not enough confirmed Can-Do statements to place — start at the very beginning.' };
+    }
+
+    // Partial above the highest yes nudges the placement up but keeps confidence low.
+    let placed = highestYes;
+    let confidence = lowestNo && ORDER.indexOf(lowestNo) <= ORDER.indexOf(highestYes) ? 'low' : 'medium';
+    if (highestPartial && ORDER.indexOf(highestPartial) > ORDER.indexOf(highestYes)) {
+      placed = highestPartial;
+      confidence = 'low';
+    }
+
+    let notes = lowestNo ? `Confirmed up to ${highestYes}; ceiling around ${lowestNo}.` : `Confirmed at ${highestYes}; ceiling not yet probed.`;
+    if (inconsistent) {
+      notes = `Answers seem inconsistent — re-ask the lower-level statements before relying on this placement. Confirmed at ${highestYes}, but a lower-level statement (${lowestNo}) was answered No.`;
+      confidence = 'low';
+    } else if (highestPartial && ORDER.indexOf(highestPartial) > ORDER.indexOf(highestYes)) {
+      notes = `Confirmed at ${highestYes}; partial signal at ${highestPartial} suggests the ceiling is higher — confidence kept low pending more probing.`;
+    }
+
+    return { level: placed, confidence, notes };
   }
 
   window.Slatework = window.Slatework || {};
