@@ -32,31 +32,39 @@ The brand is the second project in the Authorly indie-creator-tools family. Same
 2. **Tax & self-employment setup by country** — separate page (SEO weight): US Schedule C, UK SA103, CA T2125, AU ABN+BAS, NZ IR3, IE ROS, HK Profits Tax + MPF.
 3. **Insurance & safeguarding checklist by country** — public-liability, professional indemnity, working-with-minors policies. Major market gap.
 
-### Pricing & money (3)
+### Pricing & money (2)
 
-4. **Hourly rate calculator + earnings projector** ⭐ — language pair, experience years, country, hours/week. Output: private-rate range AND platform-net side-by-side, with annual projection toggle.
-5. **Multi-platform comparator** — italki / Preply / Wyzant / Cambly / Tutorful net earnings at the same gross rate. SEO target: *"italki vs preply 2026"*.
-6. **Payment methods per country** — Wise / Stripe Link / PayPal + local rails (HK FPS, AU PayID, UK Faster Payments, US Zelle/Venmo, IE SEPA Instant).
+4. **Hourly rate calculator + earnings projector** ⭐ — language pair, experience years, country, hours/week. Output: private-rate range AND platform-net side-by-side across italki/Preply/Wyzant/Cambly/Tutorful (built-in multi-platform comparison), with annual projection toggle. Subsumes the standalone Multi-platform comparator.
+5. **Payment methods per country** — Wise / Stripe Link / PayPal + local rails (HK FPS, AU PayID, UK Faster Payments, US Zelle/Venmo, IE SEPA Instant).
 
-### Client acquisition (2)
+### Client acquisition (1)
 
-7. **Marketing copy generator** — Mumsnet ad / school noticeboard flyer / IG bio / LinkedIn intro / FB community post variants. LLM-backed.
-8. **Parent-tutor contract / lesson agreement builder** — includes embedded sections for trial-lesson terms and cancellation/no-show policy.
+6. **Parent-tutor contract / lesson agreement builder** — includes embedded sections for trial-lesson terms, cancellation/no-show policy, and a parent-welcome paragraph (covers most of what a separate marketing-copy tool would produce).
 
-### Lesson delivery (2)
+### Lesson delivery + grading (4)
 
-9. **Lesson plan generator** — language pair, level (CEFR), 1:1 vs small-group vs classroom mode, online vs in-person. LLM-backed. Classroom mode bridges secondary teacher audience.
-10. **CEFR / proficiency mapper** — default rule-based Q&A version (client-side, deterministic). Optional AI-assessed mode for sample writing input.
+The bucket where the secondary classroom-teacher audience is captured — and where most of the *correcting + prepping* time-burden is reduced. Four tools.
+
+7. **Lesson plan generator** — language pair, level (CEFR), 1:1 vs small-group vs classroom mode, online vs in-person. LLM-backed. Classroom mode bridges secondary teacher audience.
+8. **CEFR / proficiency mapper** — default rule-based Q&A version (client-side, deterministic). Optional AI-assessed mode for sample writing input.
+9. **Worksheet + answer-key generator** — language pair + CEFR level + topic + question count → printable worksheet (gap-fill, multiple choice, short answer, reading comprehension) + matching answer key. LLM-backed. Directly addresses the *prepping* time-sink for both tutors and classroom teachers.
+10. **Marking accelerator** — paste student writing or speaking transcript → highlighted error categories (grammar / vocabulary / structure / mechanics) + ready-to-paste feedback variants matched to CEFR level and a generic rubric. LLM-backed. Directly addresses the *correcting* time-sink.
+
+### What changed from the original 10 (and why)
+
+- **Dropped: Multi-platform comparator** — its core function (italki vs Preply vs Wyzant vs Cambly net earnings) is folded into Tool 4's rate calculator output. Saves a page; the SEO target queries are still partially captured.
+- **Dropped: Marketing copy generator** — its highest-value sub-functions (parent-welcome paragraph, lesson description) are folded into Tool 6's contract builder. Pure marketing-channel copy (Mumsnet ad / IG bio / LinkedIn intro) deferred to v2 backlog.
+- **Added: Worksheet + answer-key generator (Tool 9)** and **Marking accelerator (Tool 10)** — both directly address the *correcting + prepping* workflow that consumes language teachers and tutors, especially when teaching minors. Strengthens the secondary classroom-teacher audience without rebranding.
 
 ### Country-pack burden split
 
 | Tool | Country variants needed |
 |---|---|
-| 1, 2, 3, 4, 6 | Heavy (full per-country data) |
-| 5, 7, 8 | Light (currency + minor localization) |
-| 9, 10 | None (country-agnostic) |
+| 1, 2, 3, 4, 5 | Heavy (full per-country data) |
+| 6 | Light (currency + minor localization) |
+| 7, 8, 9, 10 | None (country-agnostic) |
 
-**Total:** ~37 country-specific data instances at launch (5 heavy × 7 + 3 light × 1).
+**Total:** ~36 country-specific data instances at launch (5 heavy × 7 + 1 light × 1).
 
 ## 4. Country-pack architecture
 
@@ -126,15 +134,17 @@ data/
 
 | Layer | Requirement |
 |---|---|
-| **8 of 10 tools** | Pure client-side. Forms + JS + JSON country-pack. Zero network calls beyond loading the page. |
-| **2–3 LLM-backed tools** (7, 9, 10-optional) | Cloudflare Worker proxy to Anthropic API. **No request-body logging.** Only `{timestamp, ip-hash, tool, success}` for rate-limit + abuse detection. |
+| **6 of 10 tools** | Pure client-side. Forms + JS + JSON country-pack. Zero network calls beyond loading the page. |
+| **4 LLM-backed tools** (7 lesson plan, 8 CEFR AI mode, 9 worksheet, 10 marking) | Cloudflare Pages Functions proxy to Anthropic API. **No request-body logging.** Only `{timestamp, ip-hash, tool, success}` for rate-limit + abuse detection. |
 | **Rate limit** | 10 requests/hour per IP-hash on free tier (LLM tools). |
 | **User accounts** | None. Ever. |
 | **Persistence** | localStorage only. Never server-side. |
 | **PII collection** | Newsletter signup only — email + optional first name. SHA-256 hash dedup pattern from Authorly. |
 | **Privacy notice** | Each LLM tool displays: *"Your input is sent to Anthropic for generation but not stored by us."* |
-| **Contract builder (#8)** | Generated entirely client-side — PDF/doc never touches a server. |
-| **CEFR mapper (#10)** | Default rule-based (client-side, no transmission). Optional AI-assessed mode with explicit "don't include student names" warning. |
+| **Contract builder (#6)** | Generated entirely client-side — PDF/doc never touches a server. |
+| **CEFR mapper (#8)** | Default rule-based (client-side, no transmission). Optional AI-assessed mode with explicit "don't include student names" warning. |
+| **Worksheet generator (#9)** | LLM-backed; tutor-supplied topic + level only — no student PII required. Generated worksheet returned and rendered client-side; not persisted server-side. |
+| **Marking accelerator (#10)** | LLM-backed; takes pasted student writing — potentially a minor's content. Form-level warning: *"Don't include the student's name or identifying info — paste the writing only."* Same no-logging posture as CEFR AI mode. |
 
 ### Compliance posture
 
@@ -160,13 +170,14 @@ Matches Authorly pattern for known-working infrastructure:
 | Domain | `slatework.tools` (primary), `slatework.app` + `slatework.co` (defensive) |
 | Repo | New GitHub repo, sibling to `authorly` |
 
-### Worker endpoints (LLM tools only)
+### Pages Functions endpoints (LLM tools only)
 
-- `POST /api/marketing-copy` — input: tutor profile fields. Output: 5 platform-specific copy variants.
-- `POST /api/lesson-plan` — input: language pair, CEFR level, mode, goal. Output: structured lesson plan.
-- `POST /api/cefr-assess` — input: writing sample. Output: CEFR level + reasoning. (Tool 10's "Try AI assessment" toggle, in MVP scope.)
+- `POST /api/lesson-plan` — input: language pair, CEFR level, mode (1:1 / small-group / classroom), goal. Output: structured lesson plan with warmup, core activities, exit ticket. Model: `claude-sonnet-4-6`.
+- `POST /api/cefr-assess` — input: writing sample. Output: CEFR level + reasoning. (Tool 8's "Try AI assessment" toggle.) Model: `claude-sonnet-4-6`.
+- `POST /api/worksheet` — input: language pair, CEFR level, topic, question count, format (gap-fill / multiple choice / short answer / reading comp). Output: worksheet markdown + matching answer key markdown. Model: `claude-sonnet-4-6`.
+- `POST /api/marking` — input: language pair, CEFR level, student writing/transcript, optional rubric tag. Output: error categories with examples + level-matched feedback variants. Model: `claude-sonnet-4-6`.
 
-Each endpoint: rate-limited, no body logging, returns within 10s or fails clearly.
+Each endpoint: rate-limited, no body logging, returns within 15s or fails clearly. Total of 4 LLM endpoints + 1 newsletter endpoint + 1 FX endpoint = 6 Pages Functions in `functions/api/`.
 
 ## 7. Brand & visual
 
@@ -174,11 +185,15 @@ Each endpoint: rate-limited, no body logging, returns within 10s or fails clearl
 |---|---|
 | Name | Slatework |
 | Tagline | *Free tools for independent language tutors.* |
+| Sub-line (used on About) | *Built for the tutors and teachers who turn lesson prep into late-night grading.* |
 | Domain | `slatework.tools` |
 | Logo iconography | Small slate frame (rounded rectangle, dark slate-gray, optional chalk-line edge) |
 | Color palette | Slate gray primary (`#475569`-ish range), warm cream accent, single brand color for CTAs |
 | Voice | Practical, dignified, indie. No emoji-heavy startup energy. Same tonal family as Authorly. |
 | Typography | Match Authorly's font family for visual continuity |
+| Dedication (About page) | One quiet line at the bottom: *"Built for the teacher who's currently grading at her kitchen table at 11pm."* No name. The site's whole emphasis on *correcting + prepping* tools speaks to her implicitly. |
+| Easter egg (HTML comment in `index.html`) | `<!-- Built with the world's tutors and teachers in mind — and one in particular. -->` Source-view discoverable; preserves privacy of the dedicatee. |
+| Easter egg (console.log on page load) | `console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:italic")` — appears in DevTools, costs nothing on the page. |
 
 ## 8. Monetization path
 
