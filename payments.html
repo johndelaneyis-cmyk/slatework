@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment methods for tutors — Slatework</title>
+  <meta name="description" content="The payment methods that work for independent tutors in your country — Wise, Stripe Link, PayPal, plus local rails like HK FPS, AU PayID, UK Faster Payments, US Zelle, and more." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/payments.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>Payment methods for tutors</h1>
+  <p>The payment methods that work in your country — for collecting from local students and from international ones. Free, private, fast, or all three.</p>
+
+  <div class="privacy-notice">Renders entirely in your browser from a country-pack data file. We don't see your selections.</div>
+
+  <form id="form">
+    <div class="field">
+      <label for="country">Country</label>
+      <select id="country" name="country" required></select>
+    </div>
+  </form>
+
+  <section id="result" style="display:none;">
+    <h2>Domestic payments (within your country)</h2>
+    <div id="domestic" class="result"></div>
+    <h2>International payments (cross-border students)</h2>
+    <div id="international" class="result"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script src="/src/lib/countries.js"></script>
+<script>
+const SW = window.Slatework;
+const $ = (id) => document.getElementById(id);
+
+(async function init() {
+  const countrySel = $('country');
+  for (const c of SW.listCountries()) {
+    const o = document.createElement('option');
+    o.value = c.code;
+    o.textContent = c.name;
+    countrySel.appendChild(o);
+  }
+  countrySel.value = 'GB';
+  countrySel.addEventListener('change', render);
+  await render();
+})();
+
+async function render() {
+  const code = $('country').value;
+  const pack = await SW.loadCountry(code);
+  const dom = $('domestic');
+  const intl = $('international');
+
+  dom.innerHTML = pack.payment_methods
+    .filter(m => m.domestic)
+    .map(renderRow)
+    .join('') || '<p class="small">No specific domestic recommendations for this country.</p>';
+
+  intl.innerHTML = pack.payment_methods
+    .filter(m => m.international)
+    .map(renderRow)
+    .join('') || '<p class="small">For international clients, default to Wise or Stripe Link.</p>';
+
+  $('result').style.display = 'block';
+}
+
+function renderRow(m) {
+  const link = m.url ? <a href="$\{escapeAttr(m.url)}" target="_blank" rel="noopener">$\{escapeHtml(m.name)}</a> : escapeHtml(m.name);
+  const note = m.notes ?  <span class="small">— $\{escapeHtml(m.notes)}</span> : '';
+  return <div class="row"><span>$\{link}$\{note}</span><strong></strong></div>;
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function escapeAttr(s) { return escapeHtml(s); }
+</script>
+</body>
+</html>
