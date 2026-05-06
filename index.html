@@ -403,18 +403,31 @@ console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:itali
   const el = document.getElementById('hero-display');
   if (!el || reduce) return;
   let i = 0;
+  const wrapText = (text, target) => {
+    for (const token of text.split(/(\s+)/)) {
+      if (!token) continue;
+      if (/^\s+$/.test(token)) {
+        target.appendChild(document.createTextNode(token));
+        continue;
+      }
+      const word = document.createElement('span');
+      word.className = 'reveal-word';
+      for (const ch of token) {
+        const span = document.createElement('span');
+        span.className = 'reveal';
+        span.style.animationDelay = (i * 20) + 'ms';
+        span.textContent = ch;
+        word.appendChild(span);
+        i++;
+      }
+      target.appendChild(word);
+    }
+  };
   const walk = (parent) => {
     for (const node of [...parent.childNodes]) {
       if (node.nodeType === Node.TEXT_NODE) {
         const frag = document.createDocumentFragment();
-        for (const ch of node.textContent) {
-          const span = document.createElement('span');
-          span.className = 'reveal';
-          span.style.animationDelay = (i * 20) + 'ms';
-          span.textContent = ch === ' ' ? ' ' : ch;
-          frag.appendChild(span);
-          i++;
-        }
+        wrapText(node.textContent, frag);
         node.replaceWith(frag);
       } else if (node.nodeType === Node.ELEMENT_NODE) {
         walk(node);
