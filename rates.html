@@ -159,7 +159,16 @@ async function recalc() {
   const hours = parseInt($('hours').value, 10) || 0;
   const userRate = parseFloat($('rate').value);
 
-  const pack = await SW.loadCountry(code);
+  let pack;
+  try {
+    pack = await SW.loadCountry(code);
+  } catch (e) {
+    $('suggestion-block').innerHTML = '<p class="small">Could not load country data. Refresh the page or pick a different country.</p>';
+    $('platforms-block').innerHTML = '';
+    $('annual-block').innerHTML = '';
+    $('result').style.display = 'block';
+    return;
+  }
   const pairData = pack.rates_by_language_pair[pairKey];
 
   if (!pairData) {
@@ -234,20 +243,27 @@ function renderUnavailablePair(pack, pairKey) {
   $('result').style.display = 'block';
 }
 
+function sortedCurve(p) {
+  // Defensive sort: country packs MAY arrive with fee_curve out of order.
+  // Sorted ascending by after_hours so the tier walk below is correct.
+  return [...p.fee_curve].sort((a, b) => (a.after_hours || 0) - (b.after_hours || 0));
+}
+
 function pickFee(p, hoursTaught) {
-  if (!p.fee_curve) return p.fee_pct;
-  // Find the highest tier whose threshold is <= hoursTaught
-  let fee = p.fee_curve[0].fee_pct;
-  for (const t of p.fee_curve) {
+  if (!p.fee_curve || !p.fee_curve.length) return p.fee_pct;
+  const curve = sortedCurve(p);
+  let fee = curve[0].fee_pct;
+  for (const t of curve) {
     if (hoursTaught >= t.after_hours) fee = t.fee_pct;
   }
   return fee;
 }
 
 function hoursTier(p, hoursTaught) {
-  if (!p.fee_curve) return '';
+  if (!p.fee_curve || !p.fee_curve.length) return '';
+  const curve = sortedCurve(p);
   let last = 0;
-  for (const t of p.fee_curve) {
+  for (const t of curve) {
     if (hoursTaught >= t.after_hours) last = t.after_hours;
   }
   return last;
