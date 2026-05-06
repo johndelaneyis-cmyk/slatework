@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lesson plan generator — Slatework</title>
+  <meta name="description" content="Generate a structured, level-appropriate language lesson plan for 1:1, small group, or classroom mode — in seconds. Free and private." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/lesson-plan.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>Lesson plan generator <span class="tag">AI</span></h1>
+  <p>Tell it the language, level, mode, and goal — get back a structured 60-minute plan with warmup, core teaching block, practice, wrap-up, and exit ticket.</p>
+
+  <div class="privacy-notice">Your inputs are sent to Anthropic for generation but are not stored by us. Don't include student names.</div>
+
+  <form id="form">
+    <div class="section-row">
+      <div class="field">
+        <label for="target">Target language</label>
+        <input id="target" type="text" placeholder="e.g., Spanish" required />
+      </div>
+      <div class="field">
+        <label for="source">Source language</label>
+        <input id="source" type="text" placeholder="English" value="English" required />
+      </div>
+    </div>
+
+    <div class="section-row">
+      <div class="field">
+        <label for="level">CEFR level</label>
+        <select id="level" required>
+          <option value="A1">A1 — Beginner</option>
+          <option value="A2">A2 — Elementary</option>
+          <option value="B1" selected>B1 — Intermediate</option>
+          <option value="B2">B2 — Upper-intermediate</option>
+          <option value="C1">C1 — Advanced</option>
+          <option value="C2">C2 — Mastery</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="mode">Mode</label>
+        <select id="mode" required>
+          <option value="one_to_one" selected>1:1</option>
+          <option value="small_group">Small group (3–6)</option>
+          <option value="classroom">Classroom (25)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="goal">Lesson goal</label>
+      <textarea id="goal" required minlength="10" maxlength="600" placeholder="e.g., Practise the past simple in the context of weekend activities, focusing on irregular verbs."></textarea>
+      <span class="help">10–600 characters. The clearer the goal, the more useful the plan.</span>
+    </div>
+
+    <button type="submit" id="go">Generate plan</button>
+  </form>
+
+  <section id="result" class="result" style="display:none;"></section>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('go');
+  const result = $('result');
+  btn.disabled = true;
+  result.style.display = 'block';
+  result.innerHTML = '<p>Generating…</p>';
+
+  try {
+    const r = await fetch('/api/lesson-plan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        target_language: $('target').value,
+        source_language: $('source').value,
+        level: $('level').value,
+        mode: $('mode').value,
+        goal: $('goal').value
+      })
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      result.innerHTML = '<p>' + escapeHtml(e.error || 'Could not generate plan. Try again.') + '</p>';
+      return;
+    }
+    const data = await r.json();
+    result.innerHTML = '<div id="md">' + renderMarkdown(data.markdown || '') + '</div><p class="small" style="margin-top:1rem;">Tip: select all and paste into your notes; the formatting comes through.</p>';
+  } catch {
+    result.innerHTML = '<p>Network error. Try again in a moment.</p>';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+function renderMarkdown(md) {
+  // Tiny markdown subset: headers (## ###), lists (- ), paragraphs.
+  const lines = md.split('\n');
+  let html = '';
+  let inList = false;
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) {
+      if (inList) { html += '</ul>'; inList = false; }
+      html += '\n';
+      continue;
+    }
+    if (line.startsWith('### ')) { if (inList) { html += '</ul>'; inList = false; } html += '<h3>' + escapeHtml(line.slice(4)) + '</h3>'; }
+    else if (line.startsWith('## ')) { if (inList) { html += '</ul>'; inList = false; } html += '<h2>' + escapeHtml(line.slice(3)) + '</h2>'; }
+    else if (line.startsWith('- ')) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + escapeHtml(line.slice(2)) + '</li>'; }
+    else { if (inList) { html += '</ul>'; inList = false; } html += '<p>' + escapeHtml(line) + '</p>'; }
+  }
+  if (inList) html += '</ul>';
+  return html;
+}
+
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+</script>
+</body>
+</html>
