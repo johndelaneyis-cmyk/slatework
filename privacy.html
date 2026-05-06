@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Privacy — Slatework</title>
+  <meta name="description" content="Slatework's privacy posture: nothing leaves your device unless we explicitly tell you. No accounts, no tracking, minimal data." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/">
+    <svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>
+    Slatework
+  </a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>Privacy</h1>
+  <p class="small">Last updated: 2026-05-06.</p>
+
+  <h2>The short version</h2>
+  <p>Most of what Slatework does happens in your browser. The few tools that send data anywhere send it only to a language model for processing — we don't store it, log it, or sell it.</p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li><strong>Email address</strong> — only if you sign up for the newsletter. We hash it to deduplicate. You can unsubscribe in one click and we delete the record.</li>
+    <li><strong>Anonymous usage stats</strong> — Cloudflare Web Analytics counts page views and visits. It does not use cookies and does not identify you.</li>
+    <li><strong>Rate-limit fingerprint</strong> — when you use an AI-backed tool, we hash your IP address and time-stamp the request to prevent abuse. We don't store the request body. The hash is rotated daily.</li>
+  </ul>
+
+  <h2>What we don't do</h2>
+  <ul>
+    <li>No accounts, no logins, no profiles.</li>
+    <li>No third-party trackers, no pixels, no Google Analytics.</li>
+    <li>No selling or sharing of your data.</li>
+    <li>No storing the inputs you give to AI-backed tools (lesson plan, worksheet, marking, CEFR AI).</li>
+  </ul>
+
+  <h2>AI-backed tools (lesson plan, worksheet, marking, CEFR AI)</h2>
+  <p>When you use one of these four tools, the text you submit is sent to <a href="https://www.anthropic.com">Anthropic</a> for processing. We don't keep a copy on our servers. Anthropic's data-handling policy applies.</p>
+  <p>For the marking accelerator and the CEFR AI mode specifically: please don't include a student's name or other identifying information in the input. Paste the writing only.</p>
+
+  <h2>Cookies</h2>
+  <p>None.</p>
+
+  <h2>Your rights</h2>
+  <p>If you signed up for the newsletter, email <a href="mailto:hello@slatework.tools">hello@slatework.tools</a> to be removed. We hold no other personal data tied to you.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy materially changes, the change goes here, dated at the top.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Free tools for independent language tutors.<br/>Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+</body>
+</html>
