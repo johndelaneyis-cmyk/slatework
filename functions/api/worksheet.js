@@ -33,7 +33,7 @@ const SYSTEM_PROMPT = [
   "..."
 ].join("\n");
 
-const MODEL = "claude-sonnet-4-6";
+const DEFAULT_MODEL = "claude-sonnet-4-7";
 const PER_IP_DAILY = 15;
 const GLOBAL_DAILY = 1500;
 const VALID_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -74,7 +74,8 @@ export async function onRequestPost({ request, env }) {
   const userMsg = userMsgLines.join('\n');
 
   try {
-    const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2500 });
+    const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
+    const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2500 });
     const idx = text.indexOf('---ANSWER-KEY---');
     if (idx < 0) {
       return jsonResponse({ markdown: text, worksheet: text, answer_key: '' }, 200);

@@ -21,7 +21,7 @@ const SYSTEM_PROMPT = [
   '{"level": "B1", "confidence": "medium", "reasoning": "...", "extracted_text": "Verbatim transcription of what was read from the image."}'
 ].join("\n");
 
-const MODEL = "claude-sonnet-4-6";
+const DEFAULT_MODEL = "claude-sonnet-4-7";
 const PER_IP_DAILY = 15;
 const GLOBAL_DAILY = 1500;
 const MIN_SAMPLE_LEN = 100;
@@ -33,7 +33,9 @@ export async function onRequestPost({ request, env }) {
   let body;
   try { body = await request.json(); } catch { return jsonResponse({ error: 'Invalid request format.' }, 400); }
 
-  const language = String(body.language || '').trim();
+  // Canonical param is `target_language` (matches the other 3 AI endpoints).
+  // `language` accepted for backward-compat with any external integrations.
+  const language = String(body.target_language || body.language || '').trim();
   const sample = String(body.sample || '').trim();
   const imageData = typeof body.image_data === 'string' ? body.image_data : '';
   const imageMime = typeof body.image_mime === 'string' ? body.image_mime : '';
@@ -72,7 +74,8 @@ export async function onRequestPost({ request, env }) {
   }
 
   try {
-    const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userPayload, max_tokens: 800 });
+    const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
+    const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userPayload, max_tokens: 800 });
     let parsed;
     try {
       const m = text.match(/\{[\s\S]*\}/);

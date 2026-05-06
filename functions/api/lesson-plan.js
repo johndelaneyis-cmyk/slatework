@@ -42,7 +42,7 @@ const SYSTEM_PROMPT = [
   "[2–3 sentences on how to adjust if a student is ahead or struggling.]"
 ].join("\n");
 
-const MODEL = "claude-sonnet-4-6";
+const DEFAULT_MODEL = "claude-sonnet-4-7";
 const PER_IP_DAILY = 15;
 const GLOBAL_DAILY = 1500;
 const MIN_GOAL_LEN = 10;
@@ -86,7 +86,8 @@ export async function onRequestPost({ request, env }) {
   const userMsg = userMsgLines.join('\n');
 
   try {
-    const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2000 });
+    const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
+    const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2000 });
     return jsonResponse({ markdown: text }, 200);
   } catch (e) {
     return jsonResponse({ error: 'Could not generate the lesson plan. Try again in a moment.' }, 502);

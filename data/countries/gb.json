@@ -236,16 +236,6 @@
       "url": "https://preply.com"
     },
     {
-      "url": "https://tutorful.co.uk",
-      "key": "tutorful",
-      "name": "Tutorful",
-      "available_in": [
-        "GB",
-        "IE"
-      ],
-      "fee_pct": 12.5
-    },
-    {
       "url": "https://www.mytutor.co.uk",
       "key": "mytutor",
       "name": "MyTutor",

@@ -58,16 +58,6 @@
       ]
     },
     {
-      "key": "tutorful",
-      "name": "Tutorful",
-      "fee_pct": 12.5,
-      "url": "https://tutorful.co.uk",
-      "available_in": [
-        "GB",
-        "IE"
-      ]
-    },
-    {
       "key": "verbling",
       "name": "Verbling",
       "fee_pct": 15,

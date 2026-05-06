@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap');
 
 :root {
   /* Dark slate hero region */
@@ -9,6 +9,11 @@
   --chalk-mute: #cbd5e1;
   --chalk-faint: #64748b;
   --chalk-accent: #fde68a;
+
+  /* Slate-green secondary — the actual color of a real chalkboard */
+  --slate-green: #1a3a32;
+  --slate-green-deep: #0e2521;
+  --chalk-green: #86efac;
 
   /* Light region */
   --bg: #f8fafc;
@@ -34,6 +39,7 @@
   --max-width: 76rem;
   --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --display: 'Newsreader', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
   --transition: 150ms ease-out;
   --transition-state: 250ms ease-out;
 }
@@ -301,16 +307,17 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 
 .hero-slate .mono-caption .dot { background: var(--ok); }
 
-/* The display headline */
+/* The display headline — Newsreader for editorial gravitas, optical-size 72 for grand feel */
 .hero-display {
-  font-family: var(--sans);
-  font-size: clamp(3.25rem, 2rem + 6.5vw, 7rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  font-family: var(--display);
+  font-size: clamp(3rem, 1.75rem + 6vw, 6.5rem);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 72;
+  letter-spacing: -0.018em;
+  line-height: 0.98;
   color: var(--chalk);
   margin: 1.25rem 0 1.75rem;
-  max-width: 14ch;
+  max-width: 16ch;
 }
 
 .hero-display .reveal {
@@ -436,12 +443,14 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 }
 
 .preview-rate {
-  font-family: var(--sans);
-  font-size: clamp(1.625rem, 1.25rem + 1.5vw, 2.25rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-family: var(--display);
+  font-size: clamp(2rem, 1.4rem + 2vw, 2.75rem);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 60;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.012em;
   color: var(--chalk);
-  line-height: 1.1;
+  line-height: 1.05;
   margin-bottom: 0.5rem;
 }
 
@@ -544,10 +553,11 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 .bucket-meta .mono-caption { margin-bottom: 1rem; }
 
 .bucket-meta h2 {
-  font-family: var(--sans);
+  font-family: var(--display);
   font-size: clamp(1.75rem, 1.25rem + 2vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 60;
+  letter-spacing: -0.015em;
   line-height: 1.05;
   margin: 0 0 0.75rem;
   color: var(--ink);
@@ -630,11 +640,13 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
   content: "";
   position: absolute;
   left: 0;
-  bottom: -4px;
+  bottom: -7px;
   width: 0;
-  height: 3px;
-  background: var(--ink);
-  transition: width 200ms ease-out;
+  height: 8px;
+  background-color: var(--ink);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 12' preserveAspectRatio='none'><path d='M3,8 C40,4 80,10 130,6 C170,3 200,9 217,7' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'/></svg>") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 12' preserveAspectRatio='none'><path d='M3,8 C40,4 80,10 130,6 C170,3 200,9 217,7' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'/></svg>") no-repeat center / 100% 100%;
+  transition: width 250ms ease-out;
 }
 
 .tile p {
@@ -831,21 +843,25 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 .faq details > summary::-webkit-details-marker { display: none; }
 
 .faq details > summary::after {
-  content: "+";
-  font-family: var(--mono);
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--chalk-mute);
+  content: "";
+  display: block;
+  width: 22px;
+  height: 22px;
+  background-color: var(--chalk-mute);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M3.5 5.5 L8 10 L12.5 5.5' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'><path d='M3.5 5.5 L8 10 L12.5 5.5' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center / 100% 100%;
   flex: 0 0 auto;
-  transition: transform var(--transition);
+  margin-top: 0.4em;
+  transition: transform var(--transition-state), background-color var(--transition);
 }
 
 .faq details[open] > summary::after {
-  content: "−";
-  color: var(--chalk-accent);
+  transform: rotate(180deg);
+  background-color: var(--chalk-accent);
 }
 
 .faq details > summary:hover { color: var(--chalk-accent); }
+.faq details > summary:hover::after { background-color: var(--chalk-accent); }
 .faq details > summary:focus-visible {
   outline: 2px solid var(--chalk-accent);
   outline-offset: 4px;
@@ -922,12 +938,15 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 }
 
 .maker p {
-  font-family: var(--sans);
-  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
-  line-height: 1.55;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(1.25rem, 1.05rem + 0.85vw, 1.625rem);
+  font-variation-settings: 'opsz' 36;
+  line-height: 1.4;
   color: var(--ink);
   margin: 0;
   font-weight: 400;
+  letter-spacing: -0.005em;
 }
 
 .maker .sig {
@@ -1162,9 +1181,12 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 
 .threshold-callout .threshold-headline strong {
+  font-family: var(--display);
   font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  font-variation-settings: 'opsz' 60;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.005em;
   color: var(--chalk);
 }
 
@@ -1318,4 +1340,139 @@ ul.checklist li::before {
 @media (max-width: 640px) {
   .site-header { padding: 1rem; }
   .site-header nav { gap: 1rem; }
+}
+
+/* =========================================================
+   DESIGN SYSTEM V2 — CHALK SIGNATURE
+   Hand-drawn chalk underline, display utility, grain overlay,
+   bucket icons, accessibility helpers, tabular figures.
+   ========================================================= */
+
+/* Chalk-mark: signature handwritten underline for emphasized words.
+   Uses CSS mask so it picks up `currentColor` and adapts to dark/light. */
+.chalk-mark {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.chalk-mark::after {
+  content: "";
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  bottom: -0.06em;
+  height: 0.34em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 18' preserveAspectRatio='none'><path d='M4,11 C40,6 80,13 130,8 C170,5 200,12 236,9' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/><path d='M8,13 C50,9 100,14 150,11 C190,8 210,13 232,12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' opacity='0.5'/></svg>") no-repeat center / 100% 100%;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 18' preserveAspectRatio='none'><path d='M4,11 C40,6 80,13 130,8 C170,5 200,12 236,9' fill='none' stroke='black' stroke-width='3.5' stroke-linecap='round'/><path d='M8,13 C50,9 100,14 150,11 C190,8 210,13 232,12' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' opacity='0.5'/></svg>") no-repeat center / 100% 100%;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* On dark surfaces, the chalk underline picks up the chalk-accent for that
+   real chalk-on-slate feel. */
+.hero-slate .chalk-mark::after,
+.newsletter .chalk-mark::after,
+.faq .chalk-mark::after {
+  background-color: var(--chalk-accent);
+  opacity: 1;
+}
+
+/* Display utility — opt-in editorial serif (Newsreader). Use sparingly. */
+.display {
+  font-family: var(--display);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 60;
+  letter-spacing: -0.015em;
+}
+
+.display-italic {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-variation-settings: 'opsz' 36;
+  letter-spacing: -0.005em;
+}
+
+/* Bucket icons — chalk-stroke SVGs sitting next to bucket-meta h2.
+   Non-tile pages can reuse for section markers. */
+.bucket-icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 0 1.25rem;
+  color: var(--ink);
+  flex: 0 0 auto;
+}
+
+@media (min-width: 768px) {
+  .bucket-icon { width: 52px; height: 52px; }
+}
+
+/* Visually hidden (replaces ad-hoc -9999px hacks).
+   .sr-only is an alias for compatibility with the common pattern. */
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Tabular figures wherever numbers must align cleanly. */
+[data-tabular],
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   CHALK-DUST GRAIN — applied to dark surfaces via CSS background stack.
+   Layered ABOVE the base color, BELOW any radial-gradient atmospherics
+   on .hero-slate (which has its own ::before).
+   ========================================================= */
+.hero-slate,
+.newsletter,
+.faq,
+.country-band,
+.threshold-callout,
+.site-footer {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  background-repeat: repeat;
+}
+
+.hero-slate { background-color: var(--slate-deep); }
+.newsletter { background-color: var(--slate-board); }
+.faq { background-color: var(--slate-board); }
+.country-band { background-color: var(--slate-deep); }
+.threshold-callout { background-color: var(--slate-board); }
+.site-footer { background-color: var(--slate-deep); }
+
+/* =========================================================
+   TILE GRID — slate-green hover for chalkboard depth.
+   ========================================================= */
+.tile:hover {
+  border-color: var(--slate-green);
+}
+
+.tile:hover .tile-slug {
+  color: var(--slate-green);
+}
+
+/* =========================================================
+   THRESHOLD CALLOUT — chalk-accent border stays, but add a
+   green-bordered variant when used for "go" / positive thresholds.
+   ========================================================= */
+.threshold-callout.positive {
+  border-left-color: var(--chalk-green);
+}
+
+.threshold-callout.positive .mono-caption {
+  color: var(--chalk-green);
 }

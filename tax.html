@@ -114,7 +114,7 @@ async function render() {
   $('form-link').href = t.self_employment_url;
   $('threshold').textContent = t.trading_allowance_amount
     ? `${formatAmount(t.trading_allowance_amount, pack)} (covered without filing)`
-    : 'No general allowance — file from $1 of net income.';
+    : 'No general allowance — file from your first paid lesson.';
   $('vat-threshold').textContent = t.vat_threshold_amount
     ? `${formatAmount(t.vat_threshold_amount, pack)} turnover/year`
     : 'No VAT/GST in this country (or not applicable to tutoring services).';
@@ -133,7 +133,7 @@ async function render() {
     subnoteEl.textContent = `Earn under ${formatAmount(t.trading_allowance_amount, pack)} from tutoring in a tax year and you usually don't need to register as self-employed. Cross it and you do — that's when the form below matters.`;
   } else {
     captionEl.textContent = "// NO GENERAL ALLOWANCE — REGISTER FROM YOUR FIRST PAID LESSON";
-    amountEl.textContent = 'Register from $1 of net income';
+    amountEl.textContent = 'Register from your first paid lesson';
     subnoteEl.textContent = 'This country has no general trading allowance, so registration is expected as soon as you have any net self-employment income. Use the form below to start.';
   }
 

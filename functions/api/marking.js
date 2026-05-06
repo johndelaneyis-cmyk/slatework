@@ -49,7 +49,7 @@ const SYSTEM_PROMPT = [
   "4. **Organisation** — [comment]"
 ].join("\n");
 
-const MODEL = "claude-sonnet-4-6";
+const DEFAULT_MODEL = "claude-sonnet-4-7";
 const PER_IP_DAILY = 20;
 const GLOBAL_DAILY = 2000;
 const MIN_SAMPLE_LEN = 50;
@@ -119,7 +119,8 @@ export async function onRequestPost({ request, env }) {
   }
 
   try {
-    const text = await callClaude(env, { model: MODEL, system: SYSTEM_PROMPT, user: userPayload, max_tokens: 2500 });
+    const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
+    const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userPayload, max_tokens: 2500 });
     return jsonResponse({ markdown: text }, 200);
   } catch {
     return jsonResponse({ error: 'Could not mark the sample. Try again in a moment.' }, 502);

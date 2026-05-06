@@ -47,7 +47,7 @@ export async function onRequestPost({ request, env }) {
         })
       });
       // Buttondown returns 201 on new, 400 on already-subscribed (we treat as success).
-      if (r.status >= 400 && r.status !== 400) {
+      if (!r.ok && r.status !== 400) {
         return jsonResponse({ error: 'Newsletter is temporarily unavailable. Try again later.' }, 502);
       }
     } catch {

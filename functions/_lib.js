@@ -20,6 +20,10 @@ export async function ipHash(request) {
   const day = new Date().toISOString().slice(0, 10);
   const enc = new TextEncoder().encode(ip + ':' + day);
   const hash = await crypto.subtle.digest('SHA-256', enc);
+  // 64-bit (8-byte) fingerprint is sufficient for daily rate-limiting:
+  // collision probability at 10k unique daily IPs is ~3e-12 (birthday-bound).
+  // Truncating shortens the KV key without weakening privacy; the daily
+  // rotation is what does the real privacy work.
   return [...new Uint8Array(hash)].slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 

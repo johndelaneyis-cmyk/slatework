@@ -43,12 +43,12 @@
   <h1>CEFR proficiency mapper</h1>
   <p>Place a student at A1, A2, B1, B2, C1, or C2 using the standard CEFR Can-Do statements. Pick the mode that matches the moment.</p>
 
-  <div role="tablist" style="display:flex; gap:0.5rem; margin: 1rem 0;">
-    <button id="tab-rules" type="button" class="btn" aria-selected="true">Rule-based (private)</button>
-    <button id="tab-ai" type="button" class="btn secondary" aria-selected="false">AI from writing sample</button>
+  <div role="tablist" aria-label="CEFR assessment modes" style="display:flex; gap:0.5rem; margin: 1rem 0;">
+    <button id="tab-rules" type="button" class="btn" role="tab" aria-selected="true" aria-controls="rules-mode" tabindex="0">Rule-based (private)</button>
+    <button id="tab-ai" type="button" class="btn secondary" role="tab" aria-selected="false" aria-controls="ai-mode" tabindex="-1">AI from writing sample</button>
   </div>
 
-  <section id="rules-mode">
+  <section id="rules-mode" role="tabpanel" aria-labelledby="tab-rules" tabindex="0">
     <div class="privacy-notice">Runs entirely in your browser. We don't see anything you enter.</div>
     <form id="rules-form">
       <p>Answer for each statement: <em>Yes</em>, <em>Partial</em>, or <em>No</em>.</p>
@@ -58,7 +58,7 @@
     <section id="rules-result" class="result" style="display:none;"></section>
   </section>
 
-  <section id="ai-mode" style="display:none;">
+  <section id="ai-mode" role="tabpanel" aria-labelledby="tab-ai" tabindex="0" hidden>
     <div class="privacy-notice"><strong>Don't include the student's name or identifying info.</strong> The writing sample is sent to Anthropic for processing and is not stored by us.</div>
     <form id="ai-form">
       <div class="field">
@@ -163,17 +163,36 @@ const aiMode = $('ai-mode');
 const tabRules = $('tab-rules');
 const tabAi = $('tab-ai');
 
-tabRules.addEventListener('click', () => {
-  rulesMode.style.display = '';
-  aiMode.style.display = 'none';
-  tabRules.classList.remove('secondary'); tabAi.classList.add('secondary');
-  tabRules.setAttribute('aria-selected', 'true'); tabAi.setAttribute('aria-selected', 'false');
-});
-tabAi.addEventListener('click', () => {
-  rulesMode.style.display = 'none';
-  aiMode.style.display = '';
-  tabAi.classList.remove('secondary'); tabRules.classList.add('secondary');
-  tabAi.setAttribute('aria-selected', 'true'); tabRules.setAttribute('aria-selected', 'false');
+const TABS = [
+  { tab: tabRules, panel: rulesMode, secondaryWhenInactive: true },
+  { tab: tabAi, panel: aiMode, secondaryWhenInactive: true }
+];
+
+function activateTab(idx, { focus = false } = {}) {
+  TABS.forEach((t, i) => {
+    const active = i === idx;
+    t.panel.hidden = !active;
+    t.tab.setAttribute('aria-selected', String(active));
+    t.tab.setAttribute('tabindex', active ? '0' : '-1');
+    if (active) t.tab.classList.remove('secondary');
+    else t.tab.classList.add('secondary');
+  });
+  if (focus) TABS[idx].tab.focus();
+}
+
+TABS.forEach((t, i) => {
+  t.tab.addEventListener('click', () => activateTab(i));
+  t.tab.addEventListener('keydown', (e) => {
+    let next = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % TABS.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + TABS.length) % TABS.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = TABS.length - 1;
+    if (next !== null) {
+      e.preventDefault();
+      activateTab(next, { focus: true });
+    }
+  });
 });
 
 // --- Rule-based mode
@@ -233,7 +252,7 @@ $('ai-form').addEventListener('submit', async (e) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        language: lang,
+        target_language: lang,
         sample: $('sample').value,
         image_data: imageData,
         image_mime: imageMime
