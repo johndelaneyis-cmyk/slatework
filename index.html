@@ -1,5 +1,5 @@
 <!--
-  Built with the world''s tutors and teachers in mind &mdash; and one in particular.
+  Built with the world's tutors and teachers in mind &mdash; and one in particular.
 -->
 <!doctype html>
 <html lang="en">
@@ -169,7 +169,7 @@
   <section class="newsletter">
     <div class="container newsletter-inner">
       <h2>One short letter every Sunday.</h2>
-      <p class="lead">Notes from independent tutors and teachers &mdash; what''s working this week, what just shipped, useful templates. Unsubscribe in one click.</p>
+      <p class="lead">Notes from independent tutors and teachers &mdash; what's working this week, what just shipped, useful templates. Unsubscribe in one click.</p>
       <form id="newsletter">
         <div class="field">
           <label for="email" style="position:absolute;left:-9999px;">Email</label>
@@ -184,7 +184,7 @@
 
   <section class="container maker">
     <p>
-      Slatework is the second project from the maker of Authorly. Same approach: ten free tools, no signup, no platform fee, no pretending the work isn''t hard. Built quietly in 2026 for the tutors and teachers who already do the work.
+      Slatework is the second project from the maker of Authorly. Same approach: ten free tools, no signup, no platform fee, no pretending the work isn't hard. Built quietly in 2026 for the tutors and teachers who already do the work.
     </p>
     <span class="sig">&mdash; Darren</span>
   </section>
@@ -209,30 +209,30 @@
 console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:italic");
 
 (() => {
-  const form = document.getElementById(''newsletter'');
-  const status = document.getElementById(''newsletter-status'');
+  const form = document.getElementById('newsletter');
+  const status = document.getElementById('newsletter-status');
   if (!form) return;
-  form.addEventListener(''submit'', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = form.email.value.trim();
     if (!email) return;
-    status.textContent = ''Joining...'';
+    status.textContent = 'Joining...';
     try {
-      const r = await fetch(''/api/newsletter'', {
-        method: ''POST'',
-        headers: { ''Content-Type'': ''application/json'' },
+      const r = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       });
       if (r.ok) {
-        status.textContent = ''Welcome aboard.'';
+        status.textContent = 'Welcome aboard.';
         form.reset();
       } else if (r.status === 429) {
-        status.textContent = ''Too many tries -- wait a minute.'';
+        status.textContent = 'Too many tries - wait a minute.';
       } else {
-        status.textContent = ''Could not join right now. Try again in a moment.'';
+        status.textContent = 'Could not join right now. Try again in a moment.';
       }
     } catch {
-      status.textContent = ''Network error. Try again in a moment.'';
+      status.textContent = 'Network error. Try again in a moment.';
     }
   });
 })();
