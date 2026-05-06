@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /tests/
+Disallow: /api/
+
+Sitemap: https://slatework.tools/sitemap.xml
