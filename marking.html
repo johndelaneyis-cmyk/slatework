@@ -51,7 +51,7 @@
         <label for="target">Target language</label>
         <select id="target" required></select>
         <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
-        <span class="help">Pick the target language. Don't see yours? Choose "Other (type below)".</span>
+        <span class="help">Pick the language the student is learning. The two English options distinguish "native/advanced" (test prep, writing improvement) from "ESL/EFL" (English as a second language).</span>
       </div>
       <div class="field">
         <label for="level">Student CEFR level</label>
@@ -77,11 +77,16 @@
       <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Drag a file or click to upload">
         <p class="drop-zone-text">
           <span class="mono-caption">// DROP A FILE OR CLICK TO UPLOAD</span><br/>
-          Accepts .txt &middot; .docx &middot; .pdf &middot; or a photo of handwritten work (jpg/png/heic). Max 10 MB.<br/>
-          <em>Files are processed in your browser. Photos are sent to Anthropic vision (same as pasted text — never stored).</em>
+          Accepts <code>.txt</code>, <code>.md</code>, <code>.docx</code>, <code>.pdf</code>, or a photo of handwritten work (jpg / png / heic). Max 10 MB.
+        </p>
+        <p class="drop-privacy small">
+          <strong>Student names visible in the document?</strong> They're never stored by us. The file (or extracted text) is sent to Anthropic's API for processing and the result is returned — we never keep a copy on our servers, never log the body, never share or sell. <a href="/privacy.html#student-data">Read the full privacy posture →</a>
         </p>
         <p id="drop-status" class="drop-status small"></p>
       </div>
+      <p class="ai-disclaimer small">
+        <strong>About AI vision accuracy:</strong> the model reads handwriting reasonably well — but not perfectly, especially cursive, faded scans, or non-Latin scripts. When you upload an image, the response shows the extracted text first so you can spot-check it before trusting the marks. Edit the pasted text directly if you spot an error.
+      </p>
     </div>
 
     <div class="field">
@@ -112,38 +117,20 @@
 const $ = (id) => document.getElementById(id);
 const SW = window.Slatework;
 
-// Build target language dropdown from languagePairs() — non-English half of each pair.
+// Build target language dropdown from Slatework.targetLanguageList() — curated, deduped.
 (function buildTargetDropdown() {
-  const pairs = SW.languagePairs();
   const sel = $('target');
-  const seen = new Set();
-  for (const p of pairs) {
-    const parts = p.label.split(' — ');
-    const left = parts[0] ? parts[0].trim() : '';
-    const right = parts[1] ? parts[1].trim() : '';
-    const candidates = [];
-    if (left && left !== 'English') candidates.push(left);
-    if (right && right !== 'English') candidates.push(right);
-    if (p.code === 'en-en') candidates.push('English');
-    for (const lang of candidates) {
-      const clean = lang.replace(/\s*\(.*\)\s*$/, '').trim();
-      if (clean && !seen.has(clean)) {
-        seen.add(clean);
-        const opt = document.createElement('option');
-        opt.value = clean;
-        opt.textContent = clean;
-        sel.appendChild(opt);
-      }
-    }
+  const targets = SW.targetLanguageList();
+  for (const t of targets) {
+    const opt = document.createElement('option');
+    opt.value = t.value;
+    opt.textContent = t.label;
+    sel.appendChild(opt);
   }
-  if (seen.has('Spanish')) sel.value = 'Spanish';
-  const other = document.createElement('option');
-  other.value = 'other';
-  other.textContent = 'Other (type below)';
-  sel.appendChild(other);
+  sel.value = 'Spanish';
   sel.addEventListener('change', () => {
     const otherInput = $('target_other');
-    if (sel.value === 'other') {
+    if (sel.value === 'Other') {
       otherInput.style.display = '';
       otherInput.required = true;
     } else {
@@ -155,7 +142,7 @@ const SW = window.Slatework;
 
 function resolveTargetLang() {
   const sel = $('target');
-  if (sel.value === 'other') return $('target_other').value.trim();
+  if (sel.value === 'Other') return $('target_other').value.trim();
   return sel.value;
 }
 

@@ -1261,6 +1261,45 @@ ul.checklist li::before {
 .drop-zone-text em { font-style: italic; color: var(--ink-faint); display: block; margin-top: 0.4rem; font-size: 0.85rem; }
 .drop-status { margin: 0.5rem 0 0; min-height: 1.2em; color: var(--accent); font-weight: 500; }
 
+.drop-privacy {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+  text-align: left;
+}
+.drop-privacy strong { color: var(--ink); }
+.drop-privacy a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+.ai-disclaimer {
+  margin: 0.6rem 0 1rem;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+  padding: 0.7rem 0.9rem;
+  background: var(--surface-2);
+  border-left: 3px solid var(--ink-faint);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.ai-disclaimer strong { color: var(--ink); }
+
+.extracted-text {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface-2);
+  border-left: 3px solid var(--ink-muted);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.extracted-text h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.extracted-text blockquote {
+  margin: 0.6rem 0 0;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
 /* =========================================================
    MOTION REDUCED
    ========================================================= */

@@ -54,6 +54,16 @@
   <p>When you use one of these four tools, the text you submit is sent to <a href="https://www.anthropic.com">Anthropic</a> for processing. We don't keep a copy on our servers. Anthropic's data-handling policy applies.</p>
   <p>For the marking accelerator and the CEFR AI mode specifically: please don't include a student's name or other identifying information in the input. Paste the writing only.</p>
 
+  <h2 id="student-data">Student names in uploads</h2>
+  <p>The marking accelerator and the CEFR AI assessor both let you upload student writing — pasted text, a Word doc, a PDF, or a photo of handwritten work. That writing often contains the student's name. Here's exactly what happens to it:</p>
+  <ul>
+    <li><strong>We never store it.</strong> The file (or its extracted text) is forwarded to Anthropic's API. The response is returned to you. No copy lives on our servers, our database, or our logs.</li>
+    <li><strong>We never log the request body.</strong> Our rate-limit system records only an IP fingerprint, the tool name, and a timestamp — not the content you sent.</li>
+    <li><strong>Anthropic's data policy applies during processing.</strong> Anthropic does not train on API requests by default and processes them according to <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">their privacy policy</a>.</li>
+    <li><strong>We don't share or sell anything.</strong> Period.</li>
+    <li><strong>Best practice we'd suggest:</strong> if you're nervous, redact the student name with a black square in the photo, or replace it with a placeholder ("Student A") in the pasted text. Slatework works the same either way.</li>
+  </ul>
+
   <h2>Cookies</h2>
   <p>None.</p>
 

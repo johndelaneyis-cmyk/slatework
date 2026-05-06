@@ -53,8 +53,31 @@
     ];
   }
 
+  function targetLanguageList() {
+    // Curated list of student-facing target languages, deduped from languagePairs.
+    // Used by all "what language is the student learning?" dropdowns.
+    return [
+      { value: 'Spanish',                 label: 'Spanish' },
+      { value: 'French',                  label: 'French' },
+      { value: 'German',                  label: 'German' },
+      { value: 'Italian',                 label: 'Italian' },
+      { value: 'Portuguese',              label: 'Portuguese' },
+      { value: 'Russian',                 label: 'Russian' },
+      { value: 'Mandarin',                label: 'Mandarin (Chinese)' },
+      { value: 'Cantonese',               label: 'Cantonese (Chinese)' },
+      { value: 'Japanese',                label: 'Japanese' },
+      { value: 'Korean',                  label: 'Korean' },
+      { value: 'Arabic',                  label: 'Arabic' },
+      { value: 'Irish',                   label: 'Irish (Gaeilge)' },
+      { value: 'English (native / advanced / test prep)', label: 'English (native, advanced, or test prep)' },
+      { value: 'English (ESL / EFL)',     label: 'English (ESL / EFL — second-language learners)' },
+      { value: 'Other',                   label: 'Other (type below)' }
+    ];
+  }
+
   window.Slatework = window.Slatework || {};
   window.Slatework.loadCountry = loadCountry;
   window.Slatework.listCountries = listCountries;
   window.Slatework.languagePairs = languagePairs;
+  window.Slatework.targetLanguageList = targetLanguageList;
 })();

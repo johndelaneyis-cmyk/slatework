@@ -12,8 +12,13 @@ const SYSTEM_PROMPT = [
   "- Confidence is one of: high (≥3 strong evidence points), medium (1–2 evidence points), low (limited evidence).",
   "- Output is JSON only — no markdown, no commentary outside the object.",
   "",
-  "Output exactly this JSON shape:",
-  '{"level": "B1", "confidence": "medium", "reasoning": "Multi-paragraph explanation citing specific evidence from the sample."}'
+  "Output exactly this JSON shape (the extracted_text field is REQUIRED only when the input is an image, omitted otherwise):",
+  "",
+  "For pasted text:",
+  '{"level": "B1", "confidence": "medium", "reasoning": "..."}',
+  "",
+  "For an image:",
+  '{"level": "B1", "confidence": "medium", "reasoning": "...", "extracted_text": "Verbatim transcription of what was read from the image."}'
 ].join("\n");
 
 const MODEL = "claude-sonnet-4-6";
@@ -76,11 +81,15 @@ export async function onRequestPost({ request, env }) {
     if (!parsed || !parsed.level) {
       return jsonResponse({ error: 'Assessment came back malformed. Try again.' }, 502);
     }
-    return jsonResponse({
+    const out = {
       level: parsed.level,
       confidence: parsed.confidence || 'medium',
       reasoning: parsed.reasoning || ''
-    }, 200);
+    };
+    if (typeof parsed.extracted_text === 'string' && parsed.extracted_text.trim()) {
+      out.extracted_text = parsed.extracted_text;
+    }
+    return jsonResponse(out, 200);
   } catch {
     return jsonResponse({ error: 'Could not assess. Try again in a moment.' }, 502);
   }

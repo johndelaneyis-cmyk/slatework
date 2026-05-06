@@ -61,7 +61,7 @@
           <label for="target">Target language</label>
           <select id="target" required></select>
           <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
-          <span class="help">Pick the target language. Don't see yours? Choose "Other (type below)".</span>
+          <span class="help">Pick the language the student is learning. The two English options distinguish "native/advanced" (test prep, writing improvement) from "ESL/EFL" (English as a second language).</span>
         </div>
         <div class="field">
           <label for="level">CEFR level</label>
@@ -127,38 +127,20 @@
 const $ = (id) => document.getElementById(id);
 const SW = window.Slatework;
 
-// Build target language dropdown from languagePairs() — non-English half of each pair.
+// Build target language dropdown from Slatework.targetLanguageList() — curated, deduped.
 (function buildTargetDropdown() {
-  const pairs = SW.languagePairs();
   const sel = $('target');
-  const seen = new Set();
-  for (const p of pairs) {
-    const parts = p.label.split(' — ');
-    const left = parts[0] ? parts[0].trim() : '';
-    const right = parts[1] ? parts[1].trim() : '';
-    const candidates = [];
-    if (left && left !== 'English') candidates.push(left);
-    if (right && right !== 'English') candidates.push(right);
-    if (p.code === 'en-en') candidates.push('English');
-    for (const lang of candidates) {
-      const clean = lang.replace(/\s*\(.*\)\s*$/, '').trim();
-      if (clean && !seen.has(clean)) {
-        seen.add(clean);
-        const opt = document.createElement('option');
-        opt.value = clean;
-        opt.textContent = clean;
-        sel.appendChild(opt);
-      }
-    }
+  const targets = SW.targetLanguageList();
+  for (const t of targets) {
+    const opt = document.createElement('option');
+    opt.value = t.value;
+    opt.textContent = t.label;
+    sel.appendChild(opt);
   }
-  if (seen.has('French')) sel.value = 'French';
-  const other = document.createElement('option');
-  other.value = 'other';
-  other.textContent = 'Other (type below)';
-  sel.appendChild(other);
+  sel.value = 'Spanish';
   sel.addEventListener('change', () => {
     const otherInput = $('target_other');
-    if (sel.value === 'other') {
+    if (sel.value === 'Other') {
       otherInput.style.display = '';
       otherInput.required = true;
     } else {
@@ -170,7 +152,7 @@ const SW = window.Slatework;
 
 function resolveTargetLang() {
   const sel = $('target');
-  if (sel.value === 'other') return $('target_other').value.trim();
+  if (sel.value === 'Other') return $('target_other').value.trim();
   return sel.value;
 }
 
