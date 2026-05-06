@@ -867,6 +867,20 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 .faq details .answer p { margin: 0 0 0.85rem; }
 .faq details .answer p:last-child { margin-bottom: 0; }
 
+.faq details .answer ol,
+.faq details .answer ul {
+  margin: 0.4rem 0 1rem;
+  padding-left: 1.6rem;
+}
+.faq details .answer ol { list-style: decimal; }
+.faq details .answer ul { list-style: disc; }
+.faq details .answer li {
+  margin: 0 0 0.6rem;
+  padding-left: 0.4rem;
+}
+.faq details .answer li::marker { color: var(--chalk-accent); font-weight: 600; }
+.faq details .answer li:last-child { margin-bottom: 0; }
+
 .faq details .answer strong { color: var(--chalk); font-weight: 600; }
 
 .faq details .answer a {
