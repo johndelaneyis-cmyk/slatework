@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hourly rate calculator — Slatework</title>
+  <meta name="description" content="Set a defensible hourly rate as an independent language tutor. See your private rate range and your platform-net side-by-side across italki, Preply, Wyzant, Cambly, and Tutorful — country-aware for 7 markets." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/rates.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>Hourly rate calculator</h1>
+  <p>Set a rate that reflects your language pair, experience, and country — and see what each platform actually pays you at that rate after their commission.</p>
+
+  <div class="privacy-notice">
+    Everything happens in your browser. We don't see your rate, your country, or any other input.
+  </div>
+
+  <form id="form">
+    <div class="section-row">
+      <div class="field">
+        <label for="country">Country</label>
+        <select id="country" name="country" required></select>
+        <span class="help">Currency, rate ranges, and platforms adjust to match.</span>
+      </div>
+      <div class="field">
+        <label for="pair">Language pair</label>
+        <select id="pair" name="pair" required></select>
+        <span class="help">Pick the pair you teach most. Rates differ per pair.</span>
+      </div>
+    </div>
+
+    <div class="section-row">
+      <div class="field">
+        <label for="experience">Experience</label>
+        <select id="experience" name="experience" required>
+          <option value="new">New (under 1 year)</option>
+          <option value="early" selected>Early (1–3 years)</option>
+          <option value="mid">Mid (3–7 years)</option>
+          <option value="senior">Senior (7+ years)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="hours">Hours per week</label>
+        <input id="hours" name="hours" type="number" min="0" max="60" step="1" value="10" required />
+        <span class="help">Used for the annual projection.</span>
+      </div>
+    </div>
+
+    <div class="section-row">
+      <div class="field">
+        <label for="rate">Your hourly rate (optional)</label>
+        <input id="rate" name="rate" type="number" min="0" step="1" placeholder="leave blank to use the median" />
+        <span class="help">If blank, we use the median for your country + pair.</span>
+      </div>
+    </div>
+  </form>
+
+  <section id="result" class="result" style="display:none;">
+    <h2 style="margin-top:0;">Your rate</h2>
+    <div id="suggestion-block"></div>
+
+    <h2>Platform-net comparison</h2>
+    <p class="small">If you charged the same gross hourly rate on each platform, here's what you'd actually take home after commission.</p>
+    <div id="platforms-block"></div>
+
+    <h2>Annual projection</h2>
+    <div id="annual-block"></div>
+
+    <p class="small" id="fx-note" style="margin-top:1rem;"></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script src="/src/lib/countries.js"></script>
+<script src="/src/lib/currency.js"></script>
+
+<script>
+const SW = window.Slatework;
+
+const EXPERIENCE_MULTIPLIER = {
+  new: 0.85,
+  early: 1.0,
+  mid: 1.2,
+  senior: 1.5
+};
+
+const $ = (id) => document.getElementById(id);
+
+(async function init() {
+  // Populate countries
+  const countrySel = $('country');
+  for (const c of SW.listCountries()) {
+    const o = document.createElement('option');
+    o.value = c.code;
+    o.textContent = c.name;
+    countrySel.appendChild(o);
+  }
+  countrySel.value = 'US';
+
+  // Populate language pairs
+  const pairSel = $('pair');
+  for (const p of SW.languagePairs()) {
+    const o = document.createElement('option');
+    o.value = p.code;
+    o.textContent = p.label;
+    pairSel.appendChild(o);
+  }
+  pairSel.value = 'en-es';
+
+  // Recalc on any change
+  const form = $('form');
+  form.addEventListener('input', recalc);
+  await recalc();
+})();
+
+async function recalc() {
+  const code = $('country').value;
+  const pairKey = $('pair').value;
+  const exp = $('experience').value;
+  const hours = parseInt($('hours').value, 10) || 0;
+  const userRate = parseFloat($('rate').value);
+
+  const pack = await SW.loadCountry(code);
+  const pairData = pack.rates_by_language_pair[pairKey];
+
+  if (!pairData) {
+    renderUnavailablePair(pack, pairKey);
+    return;
+  }
+
+  const mult = EXPERIENCE_MULTIPLIER[exp] || 1.0;
+  const low = pairData.low * mult;
+  const median = pairData.median * mult;
+  const high = pairData.high * mult;
+  const grossRate = (!isNaN(userRate) && userRate > 0) ? userRate : median;
+  const ccy = pack.currency;
+  const locale = pack.locale_default;
+
+  // Suggestion block
+  const suggestion = document.createElement('div');
+  suggestion.innerHTML = 
+    <div class="row"><span>Suggested low</span><strong>$\{SW.formatCurrency(low, ccy, locale)}/hr</strong></div>
+    <div class="row"><span>Suggested median</span><strong>$\{SW.formatCurrency(median, ccy, locale)}/hr</strong></div>
+    <div class="row"><span>Suggested high</span><strong>$\{SW.formatCurrency(high, ccy, locale)}/hr</strong></div>
+    <div class="row"><span>Your gross rate (used below)</span><strong>$\{SW.formatCurrency(grossRate, ccy, locale)}/hr</strong></div>
+  ;
+  const sb = $('suggestion-block');
+  sb.innerHTML = '';
+  sb.appendChild(suggestion);
+
+  // Platforms block
+  const platforms = pack.platforms.filter(p => (p.available_in || []).includes(code));
+  const pb = $('platforms-block');
+  pb.innerHTML = '';
+  for (const p of platforms) {
+    const fee = pickFee(p, hours);
+    const net = p.fee_pct === 0 && p.notes
+      ? null
+      : grossRate * (1 - fee / 100);
+    const row = document.createElement('div');
+    row.className = 'row';
+    if (net == null) {
+      row.innerHTML = <span>$\{escapeHtml(p.name)}</span><strong class="small">$\{escapeHtml(p.notes || 'Different pricing model')}</strong>;
+    } else {
+      const feeLabel = p.fee_curve ? \$\{fee}% (after \$\{hoursTier(p, hours)} hrs taught) : \$\{fee}%;
+      row.innerHTML = <span>$\{escapeHtml(p.name)} <span class="small">— $\{feeLabel}</span></span><strong>$\{SW.formatCurrency(net, ccy, locale)}/hr</strong>;
+    }
+    pb.appendChild(row);
+  }
+  if (platforms.length === 0) {
+    pb.innerHTML = '<p class="small">No platforms in our list operate here. Private rates apply directly.</p>';
+  }
+
+  // Annual block
+  const weeklyHours = hours;
+  const grossYear = grossRate * weeklyHours * 50; // 50 working weeks
+  const ab = $('annual-block');
+  ab.innerHTML = 
+    <div class="row"><span>Hours / week</span><strong>$\{weeklyHours}</strong></div>
+    <div class="row"><span>Gross / year (50 weeks)</span><strong>$\{SW.formatCurrency(grossYear, ccy, locale)}</strong></div>
+    <div class="row"><span>Tax-relevant threshold</span><strong>$\{taxThresholdNote(pack, ccy, locale)}</strong></div>
+  ;
+
+  // FX note
+  const r = await SW.rates();
+  $('fx-note').textContent = Rates and platform fees verified \$\{pack.data_source_last_verified}. FX rates \$\{r.source === 'fallback' ? 'using fallback table' : 'live'}.;
+
+  $('result').style.display = 'block';
+}
+
+function renderUnavailablePair(pack, pairKey) {
+  $('platforms-block').innerHTML = '';
+  $('annual-block').innerHTML = '';
+  $('suggestion-block').innerHTML = <p class="small">No published median for \$\{escapeHtml(pairKey)} in \$\{escapeHtml(pack.name)} yet. Pick another pair, or use the closest neighbor as a starting point.</p>;
+  $('result').style.display = 'block';
+}
+
+function pickFee(p, hoursTaught) {
+  if (!p.fee_curve) return p.fee_pct;
+  // Find the highest tier whose threshold is <= hoursTaught
+  let fee = p.fee_curve[0].fee_pct;
+  for (const t of p.fee_curve) {
+    if (hoursTaught >= t.after_hours) fee = t.fee_pct;
+  }
+  return fee;
+}
+
+function hoursTier(p, hoursTaught) {
+  if (!p.fee_curve) return '';
+  let last = 0;
+  for (const t of p.fee_curve) {
+    if (hoursTaught >= t.after_hours) last = t.after_hours;
+  }
+  return last;
+}
+
+function taxThresholdNote(pack, ccy, locale) {
+  const t = pack.tax;
+  const lines = [];
+  if (t.trading_allowance_amount) lines.push(Trading allowance: \$\{SW.formatCurrency(t.trading_allowance_amount, ccy, locale)});
+  if (t.vat_threshold_amount) lines.push(VAT/GST threshold: \$\{SW.formatCurrency(t.vat_threshold_amount, ccy, locale)});
+  return lines.length ? lines.join(' · ') : 'See ' + (t.self_employment_form || 'local tax form');
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\"/g, '&quot;').replace(/'/g, '&#39;');
+}
+</script>
+
+</body>
+</html>
