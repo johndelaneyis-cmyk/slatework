@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Worksheet + answer-key generator — Slatework</title>
+  <meta name="description" content="Generate a printable language worksheet plus a matching answer key in seconds — pick the topic, level, format, and question count. Free and private." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/worksheet.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; }
+      .container { max-width: none; padding: 1.5cm; }
+      .result { box-shadow: none; border: none; padding: 0; }
+    }
+    #worksheet, #answer-key { font-family: Georgia, "Times New Roman", serif; line-height: 1.7; }
+  </style>
+</head>
+<body>
+<header class="site-header no-print">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <div class="no-print">
+    <h1>Worksheet + answer-key generator <span class="tag">AI</span></h1>
+    <p>Pick the language, level, topic, format, and question count — get a printable worksheet plus the answer key. Use the browser's print dialog to save as PDF.</p>
+
+    <div class="privacy-notice">Your inputs are sent to Anthropic for generation. Don't include student names.</div>
+
+    <form id="form">
+      <div class="section-row">
+        <div class="field">
+          <label for="target">Target language</label>
+          <input id="target" type="text" placeholder="e.g., French" required />
+        </div>
+        <div class="field">
+          <label for="level">CEFR level</label>
+          <select id="level" required>
+            <option value="A1">A1</option>
+            <option value="A2" selected>A2</option>
+            <option value="B1">B1</option>
+            <option value="B2">B2</option>
+            <option value="C1">C1</option>
+            <option value="C2">C2</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="topic">Topic</label>
+        <input id="topic" type="text" placeholder="e.g., Past tense with irregular verbs; ordering food at a restaurant" required maxlength="200" />
+      </div>
+      <div class="section-row">
+        <div class="field">
+          <label for="format">Format</label>
+          <select id="format" required>
+            <option value="gap_fill" selected>Gap fill</option>
+            <option value="multiple_choice">Multiple choice</option>
+            <option value="short_answer">Short answer</option>
+            <option value="reading_comprehension">Reading comprehension</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="count">Question count</label>
+          <input id="count" type="number" min="3" max="20" step="1" value="8" required />
+        </div>
+      </div>
+      <button type="submit" id="go">Generate worksheet</button>
+    </form>
+  </div>
+
+  <section id="result" style="display:none;">
+    <div class="no-print" style="display:flex; gap:0.5rem; margin: 1rem 0;">
+      <button id="print-ws" class="btn">Print worksheet</button>
+      <button id="print-ak" class="btn secondary">Print answer key</button>
+    </div>
+
+    <article id="worksheet" class="result"></article>
+    <article id="answer-key" class="result" style="display:none;"></article>
+  </section>
+</main>
+
+<footer class="site-footer no-print">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('go');
+  btn.disabled = true;
+  $('result').style.display = 'block';
+  $('worksheet').innerHTML = '<p>Generating…</p>';
+  $('answer-key').style.display = 'none';
+  try {
+    const r = await fetch('/api/worksheet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        target_language: $('target').value,
+        level: $('level').value,
+        topic: $('topic').value,
+        format: $('format').value,
+        count: parseInt($('count').value, 10)
+      })
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      $('worksheet').innerHTML = '<p>' + escapeHtml(e.error || 'Could not generate.') + '</p>';
+      return;
+    }
+    const data = await r.json();
+    $('worksheet').innerHTML = renderMarkdown(data.worksheet || '');
+    if (data.answer_key) {
+      $('answer-key').innerHTML = renderMarkdown(data.answer_key);
+    }
+  } catch {
+    $('worksheet').innerHTML = '<p>Network error. Try again.</p>';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+$('print-ws').addEventListener('click', () => {
+  $('answer-key').style.display = 'none';
+  $('worksheet').style.display = '';
+  window.print();
+});
+$('print-ak').addEventListener('click', () => {
+  $('worksheet').style.display = 'none';
+  $('answer-key').style.display = '';
+  window.print();
+  setTimeout(() => { $('worksheet').style.display = ''; }, 500);
+});
+
+function renderMarkdown(md) {
+  const lines = md.split('\n');
+  let html = '';
+  let inList = false;
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) {
+      if (inList) { html += '</ol>'; inList = false; }
+      html += '\n';
+      continue;
+    }
+    if (/^\d+\.\s/.test(line)) {
+      if (!inList) { html += '<ol>'; inList = true; }
+      html += '<li>' + escapeHtml(line.replace(/^\d+\.\s/, '')) + '</li>';
+    } else if (line.startsWith('## ')) { if (inList) { html += '</ol>'; inList = false; } html += '<h2>' + escapeHtml(line.slice(3)) + '</h2>'; }
+    else if (line.startsWith('### ')) { if (inList) { html += '</ol>'; inList = false; } html += '<h3>' + escapeHtml(line.slice(4)) + '</h3>'; }
+    else if (line.startsWith('**') && line.endsWith('**')) { if (inList) { html += '</ol>'; inList = false; } html += '<p><strong>' + escapeHtml(line.slice(2, -2)) + '</strong></p>'; }
+    else { if (inList) { html += '</ol>'; inList = false; } html += '<p>' + escapeHtml(line) + '</p>'; }
+  }
+  if (inList) html += '</ol>';
+  return html;
+}
+
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+</script>
+</body>
+</html>
