@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Start tutoring privately — Slatework</title>
+  <meta name="description" content="A country-aware checklist for starting as an independent language tutor. Registration, background checks, working-with-minors basics, and the platform vs. private decision." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/setup.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>Start tutoring privately</h1>
+  <p>A short, country-aware walkthrough — what you actually have to do, in order, to start taking private students legally.</p>
+
+  <form id="form">
+    <div class="field">
+      <label for="country">Country</label>
+      <select id="country" name="country" required></select>
+    </div>
+  </form>
+
+  <section id="result" style="display:none;">
+    <h2 id="country-title"></h2>
+
+    <h3>1. Register your business</h3>
+    <ol id="reg-steps"></ol>
+
+    <h3>2. Background check (if you'll teach minors)</h3>
+    <div id="bgc-block" class="result"></div>
+
+    <h3>3. Insurance signpost</h3>
+    <p class="small">Most independent tutors carry public-liability + professional-indemnity insurance, especially when teaching minors. <a href="/insurance.html">See the insurance &amp; safeguarding page</a> for what's typical in your country.</p>
+
+    <h3>4. Tax setup</h3>
+    <p class="small">You'll register for self-assessed income tax. <a href="/tax.html">See the tax page</a> for the form, deadline, and thresholds.</p>
+
+    <p class="small" id="last-verified"></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script src="/src/lib/countries.js"></script>
+<script>
+const SW = window.Slatework;
+const $ = (id) => document.getElementById(id);
+
+(async function init() {
+  const sel = $('country');
+  for (const c of SW.listCountries()) {
+    const o = document.createElement('option');
+    o.value = c.code;
+    o.textContent = c.name;
+    sel.appendChild(o);
+  }
+  sel.value = 'GB';
+  sel.addEventListener('change', render);
+  await render();
+})();
+
+async function render() {
+  const code = $('country').value;
+  const pack = await SW.loadCountry(code);
+
+  $('country-title').textContent = pack.name;
+
+  const reg = $('reg-steps');
+  reg.innerHTML = '';
+  for (const step of pack.tax.registration_steps) {
+    const li = document.createElement('li');
+    li.textContent = step;
+    reg.appendChild(li);
+  }
+
+  const bgc = pack.background_check;
+  const bgcBlock = $('bgc-block');
+  bgcBlock.innerHTML = `
+    <div class="row"><span><strong>Name</strong></span><strong>${escapeHtml(bgc.name)}</strong></div>
+    <div class="row"><span><strong>Cost</strong></span><strong>${bgc.cost_amount != null ? formatCost(bgc.cost_amount, pack) : '–'}</strong></div>
+    <div class="row"><span><strong>Where</strong></span><strong><a href="${escapeAttr(bgc.url)}" target="_blank" rel="noopener">Apply →</a></strong></div>
+    ${bgc.notes ? `<p class="small" style="margin-top:0.6rem;">${escapeHtml(bgc.notes)}</p>` : ''}
+  `;
+
+  $('last-verified').textContent = `This information was last verified ${pack.data_source_last_verified}. Confirm with your country's authority before relying on any single step.`;
+  $('result').style.display = 'block';
+}
+
+function formatCost(amount, pack) {
+  if (amount === 0) return 'Free';
+  return new Intl.NumberFormat(pack.locale_default, { style: 'currency', currency: pack.currency, maximumFractionDigits: 0 }).format(amount);
+}
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+function escapeAttr(s) { return escapeHtml(s); }
+</script>
+</body>
+</html>
