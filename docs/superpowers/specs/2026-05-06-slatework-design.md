@@ -191,7 +191,7 @@ Each endpoint: rate-limited, no body logging, returns within 15s or fails clearl
 | Color palette | Slate gray primary (`#475569`-ish range), warm cream accent, single brand color for CTAs |
 | Voice | Practical, dignified, indie. No emoji-heavy startup energy. Same tonal family as Authorly. |
 | Typography | Match Authorly's font family for visual continuity |
-| Dedication (About page) | One quiet line at the bottom: *"Built for the teacher who's currently grading at her kitchen table at 11pm."* No name. The site's whole emphasis on *correcting + prepping* tools speaks to her implicitly. |
+| Dedication (About page) | One quiet line at the bottom: *"Built for the teacher who's currently grading in her bedroom at 11pm."* No name. The site's whole emphasis on *correcting + prepping* tools speaks to her implicitly. |
 | Easter egg (HTML comment in `index.html`) | `<!-- Built with the world's tutors and teachers in mind — and one in particular. -->` Source-view discoverable; preserves privacy of the dedicatee. |
 | Easter egg (console.log on page load) | `console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:italic")` — appears in DevTools, costs nothing on the page. |
 
