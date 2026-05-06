@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Marking accelerator — Slatework</title>
+  <meta name="description" content="Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants (warm, direct, rubric-mapped). Built for language tutors and teachers." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://slatework.tools/marking.html" />
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
+  <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
+</header>
+
+<main class="container">
+  <h1>Marking accelerator <span class="tag">AI</span></h1>
+  <p>Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants. The model speeds the work; you stay in charge of the call.</p>
+
+  <div class="privacy-notice"><strong>Don't include the student's name or identifying info — paste the writing only.</strong> The sample is sent to Anthropic for processing and not stored by us.</div>
+
+  <form id="form">
+    <div class="section-row">
+      <div class="field">
+        <label for="target">Target language</label>
+        <input id="target" type="text" placeholder="e.g., Spanish" required />
+      </div>
+      <div class="field">
+        <label for="level">Student CEFR level</label>
+        <select id="level" required>
+          <option value="A1">A1</option>
+          <option value="A2">A2</option>
+          <option value="B1" selected>B1</option>
+          <option value="B2">B2</option>
+          <option value="C1">C1</option>
+          <option value="C2">C2</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="rubric">Rubric tag (optional)</label>
+      <input id="rubric" type="text" placeholder="e.g., GCSE Spanish writing 90-word essay" maxlength="200" />
+      <span class="help">Helps the model match feedback to a known marking scheme. Skip if you grade freely.</span>
+    </div>
+
+    <div class="field">
+      <label for="sample">Anonymised student writing</label>
+      <textarea id="sample" required minlength="50" maxlength="4000" placeholder="Paste the writing only. Remove names and identifying details first."></textarea>
+    </div>
+
+    <button type="submit" id="go">Mark and suggest feedback</button>
+  </form>
+
+  <section id="result" class="result" style="display:none;"></section>
+</main>
+
+<footer class="site-footer">
+  <div class="row">
+    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = $('go');
+  const result = $('result');
+  btn.disabled = true;
+  result.style.display = 'block';
+  result.innerHTML = '<p>Marking…</p>';
+
+  try {
+    const r = await fetch('/api/marking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        target_language: $('target').value,
+        level: $('level').value,
+        rubric: $('rubric').value,
+        sample: $('sample').value
+      })
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      result.innerHTML = '<p>' + escapeHtml(e.error || 'Could not mark. Try again.') + '</p>';
+      return;
+    }
+    const data = await r.json();
+    result.innerHTML = renderMarkdown(data.markdown || '');
+  } catch {
+    result.innerHTML = '<p>Network error. Try again.</p>';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+function renderMarkdown(md) {
+  const lines = md.split('\n');
+  let html = '';
+  let listType = null; // 'ul' | 'ol' | null
+  const closeList = () => { if (listType) { html += `</${listType}>`; listType = null; } };
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) { closeList(); html += '\n'; continue; }
+    if (line.startsWith('### ')) { closeList(); html += '<h3>' + inlineMd(line.slice(4)) + '</h3>'; }
+    else if (line.startsWith('## ')) { closeList(); html += '<h2>' + inlineMd(line.slice(3)) + '</h2>'; }
+    else if (line.startsWith('- ')) {
+      if (listType !== 'ul') { closeList(); html += '<ul>'; listType = 'ul'; }
+      html += '<li>' + inlineMd(line.slice(2)) + '</li>';
+    }
+    else if (/^\d+\.\s/.test(line)) {
+      if (listType !== 'ol') { closeList(); html += '<ol>'; listType = 'ol'; }
+      html += '<li>' + inlineMd(line.replace(/^\d+\.\s/, '')) + '</li>';
+    }
+    else { closeList(); html += '<p>' + inlineMd(line) + '</p>'; }
+  }
+  closeList();
+  return html;
+}
+
+function inlineMd(s) {
+  return escapeHtml(s)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+</script>
+</body>
+</html>
