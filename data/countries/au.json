@@ -72,6 +72,12 @@
       "median": 60,
       "unit": "per_hour",
       "high": 110
+    },
+    "en-en": {
+      "low": 40,
+      "median": 68,
+      "unit": "per_hour",
+      "high": 130
     }
   },
   "locale_default": "en-AU",

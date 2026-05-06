@@ -72,6 +72,12 @@
       "median": 45,
       "unit": "per_hour",
       "high": 90
+    },
+    "en-en": {
+      "low": 28,
+      "median": 52,
+      "unit": "per_hour",
+      "high": 110
     }
   },
   "locale_default": "en-CA",
