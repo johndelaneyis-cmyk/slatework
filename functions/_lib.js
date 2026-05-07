@@ -121,7 +121,7 @@ export async function callClaude(env, { model, system, user, max_tokens = 1500, 
 
   if (!r.ok) {
     const errText = await r.text().catch(() => '');
-    const snippet = errText.slice(0, 400);
+    const snippet = errText.slice(0, 800);
     let code;
     if (r.status === 401 || r.status === 403) code = 'auth';
     else if (r.status === 429) code = 'rate_limit';
@@ -135,19 +135,51 @@ export async function callClaude(env, { model, system, user, max_tokens = 1500, 
   return (data.content || []).map(c => c.text || '').join('');
 }
 
-// Pull Anthropic's human-readable "message" field out of an error body
-// snippet. Anthropic's error payloads look like:
-//   {"type":"error","error":{"type":"...","message":"<readable>"}}
-function extractUpstreamMessage(snippet) {
+// Pull human-readable detail out of an Anthropic error body. Tries (in
+// order): JSON.parse the whole snippet, regex for nested error.message,
+// regex for any top-level message, then falls back to the raw bytes
+// truncated. We also surface error.type when present (e.g.
+// "permission_error", "invalid_request_error") because that's
+// diagnostically useful even without a message.
+function extractUpstreamDetail(snippet) {
   if (!snippet) return '';
-  // Try the nested error.message first — that's the spec shape.
-  const m1 = /"error"\s*:\s*\{[^}]*"message"\s*:\s*"((?:[^"\\]|\\.)*)"/m.exec(snippet);
-  if (m1) return m1[1].replace(/\\"/g, '"').replace(/\\n/g, ' ');
-  // Fallback to top-level "message" if the body is shaped differently.
+  // 1. Try strict JSON parse
+  try {
+    const obj = JSON.parse(snippet);
+    const inner = obj && obj.error;
+    if (inner && typeof inner === 'object') {
+      const parts = [];
+      if (inner.type) parts.push(inner.type);
+      if (inner.message) parts.push(inner.message);
+      if (parts.length) return parts.join(': ');
+    }
+    if (obj && obj.message) return String(obj.message);
+  } catch {}
+
+  // 2. Regex for nested error.message
+  const m1 = /"error"\s*:\s*\{[^}]*?"message"\s*:\s*"((?:[^"\\]|\\.)*)"/m.exec(snippet);
+  if (m1) {
+    const typeMatch = /"error"\s*:\s*\{[^}]*?"type"\s*:\s*"((?:[^"\\]|\\.)*)"/m.exec(snippet);
+    const msg = m1[1].replace(/\\"/g, '"').replace(/\\n/g, ' ');
+    return typeMatch ? `${typeMatch[1]}: ${msg}` : msg;
+  }
+
+  // 3. Regex for any top-level message
   const m2 = /"message"\s*:\s*"((?:[^"\\]|\\.)*)"/m.exec(snippet);
   if (m2) return m2[1].replace(/\\"/g, '"').replace(/\\n/g, ' ');
-  return '';
+
+  // 4. Regex for error.type alone (e.g. body has type but no message)
+  const m3 = /"error"\s*:\s*\{[^}]*?"type"\s*:\s*"((?:[^"\\]|\\.)*)"/m.exec(snippet);
+  if (m3) return m3[1].replace(/\\"/g, '"');
+
+  // 5. Last resort: include the raw body so the user has SOMETHING. Trim
+  // whitespace and cap at 200 chars; surround with brackets so they know
+  // it's verbatim from the upstream provider.
+  const raw = snippet.replace(/\s+/g, ' ').trim().slice(0, 200);
+  return raw ? `(raw response: ${raw})` : '';
 }
+// Backwards-compat alias for any future callers
+const extractUpstreamMessage = extractUpstreamDetail;
 
 // Translate a thrown error into a user-facing { error, status } pair so
 // each endpoint's catch block can speak the same language. The `action`
@@ -167,8 +199,8 @@ export function userFacingClaudeError(err, action = 'complete the request') {
     console.error(`[claude_error] action="${action}" ref=${ts} non-ClaudeError name=${err && err.name} message=${err && err.message}`);
   }
   if (err instanceof ClaudeError) {
-    const upstream = extractUpstreamMessage(err.bodySnippet);
-    const upstreamSuffix = upstream ? ` Upstream said: "${upstream.slice(0, 200)}${upstream.length > 200 ? '…' : ''}"` : '';
+    const upstream = extractUpstreamDetail(err.bodySnippet);
+    const upstreamSuffix = upstream ? ` Upstream said: "${upstream.slice(0, 250)}${upstream.length > 250 ? '…' : ''}"` : '';
     switch (err.code) {
       case 'auth':
         return {
