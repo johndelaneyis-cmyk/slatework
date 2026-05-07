@@ -334,7 +334,10 @@
             return;
           }
 
-          await imageHandler(normalized.base64, normalized.mime);
+          // Show preview FIRST so the user sees the file is staged, then call
+          // imageHandler (which may run OCR / async work and update status
+          // text on its own). DO NOT call onStatus afterwards — imageHandler
+          // owns the final status message.
           const sizeNote = normalized.originalW !== normalized.finalW || normalized.finalH !== normalized.originalH
             ? `${normalized.finalW}×${normalized.finalH} (resized from ${normalized.originalW}×${normalized.originalH})`
             : `${normalized.finalW}×${normalized.finalH}`;
@@ -345,7 +348,7 @@
             dataUrl: normalized.dataUrl,
             summary: sizeNote
           });
-          onStatus(`Attached ${file.name} (${formatBytes(normalized.sizeBytes)} after resize). Click Mark when ready.`);
+          await imageHandler(normalized.base64, normalized.mime);
           return;
         }
         if (ext === 'txt' || ext === 'md' || file.type === 'text/plain' || file.type === 'text/markdown') {
