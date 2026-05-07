@@ -46,8 +46,8 @@ const SYSTEM_PROMPT = [
 ].join("\n");
 
 const DEFAULT_MODEL = "claude-sonnet-4-6";
-const PER_IP_DAILY = 15;
-const GLOBAL_DAILY = 1500;
+const PER_IP_DAILY = 30;
+const GLOBAL_DAILY = 3000;
 const MIN_GOAL_LEN = 10;
 const MAX_GOAL_LEN = 600;
 
