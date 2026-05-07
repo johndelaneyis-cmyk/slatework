@@ -1616,6 +1616,22 @@ ul.checklist li::before {
 
 [hidden] { display: none !important; }
 
+/* Error block in result panels — preserves multi-line + bullet content
+   from server errors (notably the content_blocked message which has a
+   "What to try:" list inline). */
+.error-block {
+  background: rgba(185, 28, 28, 0.06);
+  border-left: 3px solid var(--err);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+}
+.error-block p {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
 /* Drop-zone enhanced preview state. Shows when a file is attached:
    thumbnail (for images), filename + size, and a Remove button. */
 .drop-zone {

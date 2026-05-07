@@ -242,8 +242,36 @@ export function userFacingClaudeError(err, action = 'complete the request') {
   if (err instanceof ClaudeError) {
     const upstream = extractUpstreamDetail(err.bodySnippet);
     const upstreamSuffix = upstream ? ` Upstream said: "${upstream.slice(0, 250)}${upstream.length > 250 ? '…' : ''}"` : '';
+    // Detect content-classifier 403s — Anthropic returns 403 with bodies
+    // like "forbidden: Request not allowed" / "content_filter" / "blocked"
+    // when an image trips their safety classifier (photos containing a
+    // child's face/hand/name, identity docs, etc.). Different code path
+    // and very different user message — there's an immediate workaround.
+    const upstreamLower = (upstream || '').toLowerCase();
+    const looksContentBlocked = err.status === 403 && (
+      upstreamLower.includes('not allowed') ||
+      upstreamLower.includes('forbidden') ||
+      upstreamLower.includes('content') && upstreamLower.includes('block') ||
+      upstreamLower.includes('safety') ||
+      upstreamLower.includes('content_filter') ||
+      upstreamLower.includes('refused')
+    );
     switch (err.code) {
       case 'auth':
+        if (looksContentBlocked) {
+          return {
+            error: `Our AI provider's content filter declined this specific image. Their classifier sometimes blocks photos that contain (or appear to contain) a child's face, hand, name, or school context — even when the writing itself is fine.
+
+What to try:
+• Type or paste the writing into the text box below — that always works.
+• Or crop the photo to just the page text and re-attach.
+• Or re-photograph against a plain background.
+
+(Server ref ${ts})`,
+            status: 422,  // Unprocessable Entity — the content was rejected, not an auth issue
+            content_blocked: true
+          };
+        }
         return {
           error: err.status === 0
             ? `Slatework's AI key isn't configured on the server. This is on us, not you — please email hello@slatework.tools and mention ref ${ts}.`

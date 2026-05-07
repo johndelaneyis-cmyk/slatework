@@ -156,7 +156,23 @@ $('ai-form').addEventListener('submit', async (e) => {
     });
     if (!r.ok) {
       const e = await r.json().catch(() => ({}));
-      result.innerHTML = '<p>' + escapeHtml(e.error || 'Could not assess. Try again in a moment.') + '</p>';
+      const msg = e.error || 'Could not assess. Try again in a moment.';
+      result.innerHTML = `<div class="error-block"><p>${escapeHtml(msg).replace(/\n/g, '<br>')}</p></div>`;
+      if (e.content_blocked) {
+        $('image-data').value = '';
+        $('image-mime').value = '';
+        const dropZone = $('drop-zone');
+        if (dropZone) {
+          dropZone.classList.remove('has-file');
+          const previewEl = dropZone.querySelector('.drop-preview');
+          if (previewEl) previewEl.hidden = true;
+        }
+        const sample = $('sample');
+        if (sample) {
+          sample.focus();
+          sample.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
       return;
     }
     const data = await r.json();

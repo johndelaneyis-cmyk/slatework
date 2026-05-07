@@ -82,7 +82,29 @@ $('form').addEventListener('submit', async (e) => {
     });
     if (!r.ok) {
       const e = await r.json().catch(() => ({}));
-      result.innerHTML = '<p>' + escapeHtml(e.error || 'Could not mark. Try again.') + '</p>';
+      const msg = e.error || 'Could not mark. Try again.';
+      // Render with line breaks preserved (the new content_blocked message
+      // has bullet points across multiple lines).
+      result.innerHTML = `<div class="error-block"><p>${escapeHtml(msg).replace(/\n/g, '<br>')}</p></div>`;
+      // If the upstream content classifier blocked the image, give the
+      // user an immediate path forward: clear the image and put focus on
+      // the textarea so they can type instead.
+      if (e.content_blocked) {
+        $('image-data').value = '';
+        $('image-mime').value = '';
+        // Tell file-extract.js to clear its preview state too
+        const dropZone = $('drop-zone');
+        if (dropZone) {
+          dropZone.classList.remove('has-file');
+          const previewEl = dropZone.querySelector('.drop-preview');
+          if (previewEl) previewEl.hidden = true;
+        }
+        const sample = $('sample');
+        if (sample) {
+          sample.focus();
+          sample.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
       return;
     }
     const data = await r.json();
