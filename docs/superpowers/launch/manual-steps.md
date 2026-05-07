@@ -26,10 +26,10 @@ Verification: send a test email to `reddit@slatework.tools` from your phone — 
 2. Go to https://reddit.com/register
 3. Email: `reddit@slatework.tools`
 4. Username: try in this order, take the first that's available:
-   - `slatework_dev`
-   - `slatework_maker`
-   - `slate_work`
-   - `by_slatework`
+   - `Slatework`
+   - `SlateworkApp`
+   - `SlateworkTools`
+   - `mkslatework`
 5. Pick a strong password (save it in your password manager — you'll need it next Tuesday)
 6. Skip the "interests" onboarding
 7. Profile → Settings → About → Bio: *"Building free tools for independent language tutors at slatework.tools."* Save.
@@ -44,7 +44,7 @@ Do NOT post or comment yet — that comes Friday.
 **Goal:** Have an HN account with at least one week of (any) activity before posting Show HN.
 
 1. https://news.ycombinator.com/signup
-2. Username: `slatework_dev` if available, else same fallbacks as Reddit
+2. Username: `Slatework` if available, else same fallbacks as Reddit
 3. Email: `hn@slatework.tools`
 4. Password — save it
 5. Set the "about" field on your profile (optional): *"Building free tools for independent language tutors. https://slatework.tools"*
@@ -90,7 +90,7 @@ I've built a free toolkit for independent language tutors at slatework.tools
 — ten tools, country-aware for 7 markets, no signup or platform fee. I'd like 
 to submit a "Resource" post on Tue or Wed this week.
 
-I've been commenting on the sub for the past few days (u/slatework_dev) and 
+I've been commenting on the sub for the past few days (u/Slatework) and 
 want to be respectful of the rules. Would a Resource flair post be welcome, 
 or would you prefer I post elsewhere?
 

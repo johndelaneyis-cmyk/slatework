@@ -12,9 +12,9 @@
 
 Manual user actions (see `manual-steps.md`):
 1. Add `reddit@slatework.tools` alias in Cloudflare Email Routing → forward to your real inbox.
-2. Register Reddit account at `reddit.com/register` using that alias. Pick `u/slatework_dev` if available, else `u/slatework_maker`, `u/slate_work`, `u/by_slatework`. Avoid `u/slateworkofficial` — reads brand-y, attracts flag.
+2. Register Reddit account at `reddit.com/register` using that alias. Pick `u/Slatework` if available, else `u/slatework_maker`, `u/slate_work`, `u/by_slatework`. Avoid `u/slateworkofficial` — reads brand-y, attracts flag.
 3. Set bio: *"Building free tools for independent language tutors at slatework.tools."* Do **not** add the URL anywhere subreddit-scoped yet.
-4. (Optional but recommended) Register an HN account at `news.ycombinator.com/signup` using `hn@slatework.tools` alias. Same naming logic — `slatework_dev` if available.
+4. (Optional but recommended) Register an HN account at `news.ycombinator.com/signup` using `hn@slatework.tools` alias. Same naming logic — `Slatework` if available.
 
 ### Fri May 8 → Mon May 11 — Seasoning (4 days)
 
