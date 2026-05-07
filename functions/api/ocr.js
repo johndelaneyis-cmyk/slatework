@@ -12,8 +12,8 @@ import { jsonResponse, ipHash, rateCheck, callGoogleVision, corsPreflight, metho
 export const onRequestOptions = () => corsPreflight('POST');
 export const onRequest = () => methodNotAllowed('POST');
 
-const PER_IP_DAILY = 40;
-const GLOBAL_DAILY = 4000;
+const PER_IP_DAILY = 100;
+const GLOBAL_DAILY = 10000;
 const MAX_IMAGE_BASE64 = 5 * 1024 * 1024;
 const VALID_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 
