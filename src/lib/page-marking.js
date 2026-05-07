@@ -45,7 +45,10 @@ function resolveTargetLang() {
     imageHandler: async (base64, mime) => {
       $('image-data').value = base64;
       $('image-mime').value = mime;
-      dropStatus.textContent = 'Image attached. Click Mark when ready.';
+    },
+    clearImageHandler: () => {
+      $('image-data').value = '';
+      $('image-mime').value = '';
     }
   });
 })();

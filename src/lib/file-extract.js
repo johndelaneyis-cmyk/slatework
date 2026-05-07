@@ -99,11 +99,18 @@
     }
   }
 
+  function formatBytes(n) {
+    if (n < 1024) return `${n} B`;
+    if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+    return `${(n / 1024 / 1024).toFixed(2)} MB`;
+  }
+
   function attachFileDrop(options) {
     const opts = options || {};
     const dropZone = opts.dropZone;
     const textarea = opts.textarea;
     const imageHandler = opts.imageHandler;
+    const clearImageHandler = typeof opts.clearImageHandler === 'function' ? opts.clearImageHandler : () => {};
     const onStatus = typeof opts.onStatus === 'function' ? opts.onStatus : () => {};
     const maxBytes = opts.maxBytes || 10 * 1024 * 1024;
     if (!dropZone || !textarea) return;
@@ -114,7 +121,63 @@
     fileInput.style.display = 'none';
     dropZone.appendChild(fileInput);
 
-    dropZone.addEventListener('click', () => fileInput.click());
+    // Inject the preview element. Lives inside dropZone so layout stays
+    // contained. Hidden until a file is attached.
+    const preview = document.createElement('div');
+    preview.className = 'drop-preview';
+    preview.hidden = true;
+    preview.innerHTML = `
+      <img class="drop-thumb" alt="" />
+      <div class="drop-meta">
+        <p class="drop-filename"></p>
+        <p class="drop-filesize small"></p>
+      </div>
+      <button type="button" class="drop-clear" aria-label="Remove attached file">Remove</button>
+    `;
+    dropZone.appendChild(preview);
+
+    const thumbEl = preview.querySelector('.drop-thumb');
+    const nameEl = preview.querySelector('.drop-filename');
+    const sizeEl = preview.querySelector('.drop-filesize');
+    const clearBtn = preview.querySelector('.drop-clear');
+
+    function showPreview({ name, size, isImage, dataUrl, summary }) {
+      nameEl.textContent = name;
+      sizeEl.textContent = `${formatBytes(size)}${summary ? ' · ' + summary : ''}`;
+      if (isImage && dataUrl) {
+        thumbEl.src = dataUrl;
+        thumbEl.hidden = false;
+      } else {
+        thumbEl.removeAttribute('src');
+        thumbEl.hidden = true;
+      }
+      preview.hidden = false;
+      dropZone.classList.add('has-file');
+    }
+
+    function hidePreview() {
+      preview.hidden = true;
+      thumbEl.removeAttribute('src');
+      nameEl.textContent = '';
+      sizeEl.textContent = '';
+      dropZone.classList.remove('has-file');
+    }
+
+    clearBtn.addEventListener('click', (e) => {
+      // Don't trigger the dropZone click → file picker
+      e.stopPropagation();
+      hidePreview();
+      textarea.value = '';
+      try { clearImageHandler(); } catch {}
+      onStatus('');
+    });
+
+    dropZone.addEventListener('click', (e) => {
+      // If clicking inside the preview area (e.g. on the Remove button), don't
+      // open the file picker — the click was handled there.
+      if (preview.contains(e.target)) return;
+      fileInput.click();
+    });
     dropZone.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -149,22 +212,26 @@
       handleFile(dt.files[0]);
     });
 
-    function applyTextToTextarea(text, fileName) {
+    function applyTextToTextarea(text, fileName, fileSize) {
       // Respect textarea.maxLength (set by each tool to match its API cap).
       // Fallback to 8000 chars if no maxlength on the element.
       const cap = (textarea.maxLength && textarea.maxLength > 0) ? textarea.maxLength : 8000;
+      let summary;
       if (text.length > cap) {
         textarea.value = text.slice(0, cap);
-        onStatus(`Loaded ${fileName} — extracted text was ${text.length.toLocaleString()} characters; trimmed to the ${cap.toLocaleString()}-char limit. Edit if needed.`);
+        summary = `extracted ${text.length.toLocaleString()} chars, trimmed to ${cap.toLocaleString()}`;
+        onStatus(`Loaded ${fileName} — text trimmed to ${cap.toLocaleString()}-char limit. Edit if needed.`);
       } else {
         textarea.value = text;
+        summary = `${text.length.toLocaleString()} chars extracted`;
         onStatus('Loaded ' + fileName);
       }
+      showPreview({ name: fileName, size: fileSize, isImage: false, summary });
     }
 
     async function handleFile(file) {
       if (file.size > maxBytes) {
-        onStatus('File too big — max 10 MB');
+        onStatus(`"${file.name}" is ${formatBytes(file.size)} — max 10 MB.`);
         return;
       }
       const ext = getExt(file.name);
@@ -187,24 +254,32 @@
           );
           const b64 = await readAsBase64(file);
           await imageHandler(b64, mime);
+          showPreview({
+            name: file.name,
+            size: file.size,
+            isImage: true,
+            dataUrl: `data:${mime};base64,${b64}`,
+            summary: 'attached'
+          });
+          onStatus(`Attached ${file.name}. Click Mark when ready.`);
           return;
         }
         if (ext === 'txt' || ext === 'md' || file.type === 'text/plain' || file.type === 'text/markdown') {
           onStatus('Reading text…');
           const text = await readAsText(file);
-          applyTextToTextarea(text, file.name);
+          applyTextToTextarea(text, file.name, file.size);
           return;
         }
         if (ext === 'docx' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
           onStatus('Extracting from .docx…');
           const text = await extractDocx(file);
-          applyTextToTextarea(text, file.name);
+          applyTextToTextarea(text, file.name, file.size);
           return;
         }
         if (ext === 'pdf' || file.type === 'application/pdf') {
           onStatus('Extracting from PDF…');
           const text = await extractPdf(file);
-          applyTextToTextarea(text, file.name);
+          applyTextToTextarea(text, file.name, file.size);
           return;
         }
         onStatus('Unsupported file type. Use .txt, .md, .docx, .pdf, or an image.');

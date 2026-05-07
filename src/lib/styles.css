@@ -1616,6 +1616,88 @@ ul.checklist li::before {
 
 [hidden] { display: none !important; }
 
+/* Drop-zone enhanced preview state. Shows when a file is attached:
+   thumbnail (for images), filename + size, and a Remove button. */
+.drop-zone {
+  position: relative;
+  transition: border-color 150ms ease-out, background-color 150ms ease-out;
+}
+.drop-zone.has-file {
+  border-color: var(--ok);
+  background: rgba(34, 197, 94, 0.04);
+}
+.drop-zone.has-file::before {
+  content: "✓";
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  color: var(--ok);
+  font-weight: 700;
+  font-size: 1rem;
+  pointer-events: none;
+}
+/* Hide the original "drop or click" prompt + privacy paragraph when a file
+   is attached — the preview card becomes the focal point. The drop zone
+   itself stays clickable / drop-able so the user can replace by dragging
+   another file or clicking again. */
+.drop-zone.has-file > .drop-zone-text,
+.drop-zone.has-file > .drop-privacy {
+  display: none;
+}
+.drop-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  text-align: left;
+}
+.drop-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  background: var(--surface-2);
+}
+.drop-meta {
+  flex: 1;
+  min-width: 0;
+}
+.drop-filename {
+  font-family: var(--sans);
+  font-weight: 600;
+  margin: 0 0 2px;
+  color: var(--ink);
+  word-break: break-word;
+  font-size: 0.9375rem;
+}
+.drop-filesize {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 0.8125rem;
+}
+.drop-clear {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  background: transparent;
+  color: var(--ink-muted);
+  border: 1px solid var(--line);
+  min-height: 0;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+.drop-clear:hover {
+  background: var(--surface-2);
+  color: var(--err);
+  border-color: var(--err);
+}
+
 /* Margin / spacing utilities (small set, used at most a handful of places each) */
 .mt-0   { margin-top: 0 !important; }
 .mt-half{ margin-top: 0.5rem; }
