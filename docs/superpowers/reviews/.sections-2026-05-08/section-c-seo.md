@@ -1,0 +1,97 @@
+# Section C — SEO — Slatework
+
+**Score:** 8.4/10 — Strong static-HTML foundation: every indexable page has a unique title, meta description, canonical, OG/Twitter cards, single H1, and `WebApplication` JSON-LD. Site-level signals are clean (sitemap.xml, robots.txt, strict CSP, HSTS preload, mobile viewport on every page, no images to mishandle, no JS-rendering risk). FAQPage schema matches the Authorly pattern and ships on the homepage. The remaining ~1.5 points are recoverable in ~90 minutes of static edits: BreadcrumbList missing on every interior page, no `Organization` schema on the homepage, sitemap `<lastmod>` absent, eight tool/info pages pure form-shells with <100 visible words pre-interaction (thin-content risk), no `llms.txt` for AI crawler hinting, no `apple-touch-icon`/web manifest, no `robots` meta on `404.html`. Content depth is the largest gap to a 9.5/10: today the tool pages will struggle for organic long-tail without an "/about-this-tool" expansion or a thin-content FAQ block.
+
+## Sub-scores
+
+| Sub-dim | Score | Note |
+|---|---|---|
+| Title/meta per page | 9 | All 14 indexable pages have unique titles (19–56 chars) and descriptions (126–232 chars). Three minor: index desc 232 chars (truncates ~155), about desc 58 chars (under-utilised), terms desc 25 chars (under-utilised). 404 has no description — acceptable. |
+| Canonical/OG/Twitter | 9.5 | All 14 indexable pages have canonical, og:type, og:title, og:description, og:image, og:url, twitter:card=summary_large_image. 404 has OG/Twitter but no canonical (correct — should not be canonicalised). One minor: 404 OG `og:url` points to `/` which is fine. |
+| H1 hierarchy | 9 | One H1 per page, all match page intent. H1→H2→H3 progression clean across tools. Minor: lesson-plan/marking/worksheet H1s contain `<span class="tag">AI</span>` which adds the literal word "AI" to the H1 — fine but worth noting for keyword precision. |
+| Internal linking | 7 | Homepage links to all 10 tool pages from the bucket grid (good). Footer-only nav from interior pages back to /about, /privacy, /terms — no contextual cross-links between related tools (e.g., setup → tax, tax → insurance, rates → payments) except on setup.html. No breadcrumbs. Header nav is just `About | Tools` — leaves equity on the table for hub-and-spoke. |
+| Schema/JSON-LD | 7.5 | Homepage has WebSite + SoftwareApplication + FAQPage (3 blocks, all valid). Each tool page has WebApplication. Missing: Organization on homepage, BreadcrumbList anywhere, Article/HowTo for any future content. WebSite block missing `potentialAction.SearchAction` (no on-site search). All `softwareVersion` values are `0.1.0` on homepage only — no versioning on per-tool blocks. |
+| Sitemap/robots | 7 | sitemap.xml lists 14 URLs (all indexable except 404 — correct). robots.txt allows all, blocks `/tests/` and `/api/`, references sitemap. Missing: `<lastmod>` on every URL (all 14 entries have `changefreq` + `priority` only); no AI-crawler-specific rules (GPTBot, ClaudeBot, PerplexityBot, Google-Extended). Sitemap encodes 14 URLs but the site has 15 HTML files — `404.html` correctly excluded. |
+| Image SEO | 10 | Zero `<img>` tags across all 15 pages. All graphics are inline SVG with `aria-hidden="true"` (correct for decorative icons). OG image is 1200×630 PNG, 73KB, brand-clear. Nothing to optimise — this is the rare site where image SEO is a non-issue by design. |
+| Technical (headers, redirects) | 9.5 | Strict CSP (no `'unsafe-inline'` per the latest review), HSTS with preload + includeSubDomains, X-Frame-Options DENY, COOP same-origin, CORP same-origin, Referrer-Policy strict-origin-when-cross-origin, Permissions-Policy locks down camera/mic/geo/payment/usb + opts out of FLoC. Cache-Control sensible per route. Cloudflare Pages auto-strips `.html` (canonicals are extensionless — correct). No `_redirects` file. Missing: 404 page lacks `<meta name="robots" content="noindex">` (the 404 status alone is sufficient for Google but explicit is cheap). |
+| Content depth (tool pages) | 5.5 | This is the rate-limiting score. **8 of 10 tool pages are form-shells with <100 visible words above the fold pre-interaction.** Setup (43 words pre-interaction), insurance (52), tax (46), payments (40), rates (60), cefr (60), lesson-plan (62), marking (78), worksheet (78), contract (45). Index page is rich (~700 words including hero, 4 buckets, FAQ, maker note). About is rich (~280 words). Privacy/terms appropriately moderate. The four AI-output tools (lesson-plan, marking, worksheet, cefr) generate content client-side after the user submits, so the indexable HTML is only the form. **For organic long-tail, this is the biggest blocker** — Google ranks the homepage and About fine, but the tool pages will struggle to rank for "free CEFR test", "language tutor contract template", "tutor tax UK self-employment" without an "/about-this-tool" expansion. |
+| AI/generative search readiness | 7 | Strong: server-rendered HTML for all static content, FAQPage schema on homepage, clear "X is..." patterns in About and FAQ, named entities (italki, Preply, Wyzant, Cambly, Wise, Stripe, Anthropic, country codes). Strict CSP doesn't impede AI crawlers (they don't execute JS anyway). Weak: no `/llms.txt`, no `Organization.sameAs` linking to Wikipedia/Reddit/LinkedIn, no author Person schema, no robots.txt entries acknowledging AI crawlers (currently bundled into `User-agent: *` which is acceptable but signals nothing). Tool pages have minimal cite-able passages — the rich, citable content lives on index/about only. |
+
+## Per-page snapshot
+
+Title char counts include rendered `—` (1 char each); descriptions decoded from entities. Lengths from grep above.
+
+| Page | Title len | Desc len | Canonical | OG | Schema | H1 | Notes |
+|---|---|---|---|---|---|---|---|
+| index.html | 56 | **232** | yes | yes | WebSite + SoftwareApp + FAQPage | yes | desc truncates ~155; rich content; missing Organization + BreadcrumbList |
+| 404.html | 23 | 0 | absent (correct) | yes | none | yes | no canonical correct; should add `<meta name="robots" content="noindex">` |
+| about.html | 19 | **58** | yes | yes | none | yes | desc under-utilised; should add Organization + Person; ~280 words |
+| cefr.html | 37 | 149 | yes | yes | WebApplication | yes | thin pre-interaction (~60 words); needs "How CEFR placement works" expansion |
+| contract.html | 43 | 154 | yes | yes | WebApplication | yes | thin pre-interaction (~45 words); high-volume keyword opportunity |
+| insurance.html | 49 | 175 | yes | yes | WebApplication | yes | form-shell; result block populated by JS post-interaction |
+| lesson-plan.html | 35 | 135 | yes | yes | WebApplication | yes | H1 includes "AI" tag; thin pre-interaction |
+| marking.html | 33 | 177 | yes | yes | WebApplication | yes | H1 includes "AI" tag; ~78 words pre-interaction |
+| payments.html | 40 | 179 | yes | yes | WebApplication | yes | form-shell; rich data is JSON-driven post-select |
+| privacy.html | 21 | 126 | yes | yes | none | yes | content-rich (legal); ok as-is |
+| rates.html | 36 | 200 | yes | yes | WebApplication | yes | form-shell; rate-calculator widget on index loads with same data |
+| setup.html | 38 | 172 | yes | yes | WebApplication | yes | thin pre-interaction; cross-links to /tax + /insurance (good) |
+| tax.html | 46 | 179 | yes | yes | WebApplication | yes | form-shell; threshold-callout populated post-select |
+| terms.html | 19 | **25** | yes | yes | none | yes | desc under-utilised; legal page, modest priority |
+| worksheet.html | 46 | 150 | yes | yes | WebApplication | yes | H1 includes "AI" tag; print-friendly layout |
+
+Title-length sweet spot is 50–60. Slatework's titles trend short (19–49 outside the homepage), which is fine — they read clean and pixel-truncation in SERPs is generous. Description-length sweet spot is 150–160; outliers are index (232 — will truncate), about (58 — short), terms (25 — short).
+
+## Findings
+
+### Critical
+
+None. Nothing blocks indexing or causes penalties. The only "almost-critical" is that the homepage `<meta name="description">` at 232 chars exceeds the SERP truncation point and will be cut off mid-clause around char 155, which loses the seven-country and "across the US, UK..." selling point. Fix in 30 seconds.
+
+### Important
+
+1. **Homepage meta description over-length** — `index.html:12` — 232 chars, will truncate in SERPs around char 155. Tighten to ~155–160 chars: `"Free privacy-first toolkit for independent language tutors. Country-aware setup, rates, contracts, lesson planning, and grading across 7 markets."` (148 chars).
+2. **No `Organization` JSON-LD on homepage** — `index.html:27-100` — Three other JSON-LD blocks ship, but `Organization` (with `name`, `url`, `logo`, `email`, `sameAs`) is the canonical brand-identity block that Google's Knowledge Graph attaches to. Authorly should be in `sameAs`. Cheap to add (~15 lines).
+3. **No `BreadcrumbList` on any interior page** — all 13 interior pages — Breadcrumbs are a SERP enhancement (replacing the URL line in Google results) and a known schema win. Single JSON-LD block per page: Home → Tool Name. ~5 lines per page, 65 lines total.
+4. **Sitemap missing `<lastmod>`** — `sitemap.xml:3-16` — Every URL has `<changefreq>` and `<priority>` but no `<lastmod>`. Modern Google treats lastmod as the strongest of the three. Generate from `git log -1 --format=%cI <file>` per URL at build time, or hardcode the v0.1.0 launch date for now (`2026-05-07`).
+5. **Eight tool/info pages are form-shells with <100 visible words pre-interaction** — `setup.html:42-78`, `tax.html:42-79`, `insurance.html:42-82`, `payments.html:42-61`, `rates.html:42-103`, `cefr.html:42-94`, `lesson-plan.html:42-102`, `marking.html:42-101`, `worksheet.html:42-106`, `contract.html:42-110` — Indexable HTML is too thin to rank for the keywords each page targets. Each needs a 200–400 word "Why this exists / How it works / What you'll get" block above the form, OR a per-tool FAQ section (3–5 Q&A) below the form. Without this, the tool pages will not rank for long-tail queries — they'll only get traffic via the homepage.
+6. **No `llms.txt` at root** — AI crawlers (GPTBot, ClaudeBot, PerplexityBot) increasingly read `/llms.txt` for structured site-content guidance. Single file, ~30 lines, summarises the 10 tools and their URLs. High citation value for an AI-search-driven discovery channel.
+7. **No AI-crawler-specific rules in `robots.txt`** — `robots.txt:1-7` — Currently `User-agent: *` covers all, which is fine for "allow all" semantics but signals nothing. Explicitly listing `User-agent: GPTBot`, `User-agent: ClaudeBot`, `User-agent: PerplexityBot` with `Allow: /` makes Slatework's AI-friendliness machine-detectable and visible in crawl-policy audits. This is signaling, not blocking.
+8. **404 page missing `<meta name="robots" content="noindex">`** — `404.html:8` — Cloudflare Pages serves the 404 with a 404 status, which is sufficient for Google to skip indexing. Explicit noindex is cheap belt-and-suspenders. Also the OG `og:url` on the 404 points to `/` — should either be removed entirely or kept as-is (acceptable).
+9. **About page meta description under-utilised** — `about.html:7,13,17` — 58 chars. Could be 150 chars and pull keywords like "independent language tutors", "free toolkit", "country-aware". E.g., `"The story behind Slatework — a free, privacy-first toolkit for independent language tutors. Why it exists, who it's for, and how it stays free."` (148 chars).
+10. **Terms page meta description under-utilised** — `terms.html:7` — 25 chars (`"Slatework's terms of use."`). Low priority but trivial to fix to ~120 chars.
+
+### Nice-to-have
+
+11. **Add `apple-touch-icon` and a minimal `manifest.webmanifest`** — Currently only `<link rel="icon" href="/favicon.svg" type="image/svg+xml" />`. Adding a 180×180 PNG for iOS home-screen and a tiny PWA manifest improves brand presence on mobile installs. Brand assets exist (`brand/logo-pfp-256.png`, `brand/logo-pfp-512.png`, `brand/logo-pfp-1024.jpg`) — just rename/copy to root and link.
+12. **Add `Person` schema to About** — `about.html` references "Built by Darren · 2026" but no structured data. A `Person` block with `name: "Darren"` (per memory: first-name only public-facing), `url: "https://slatework.tools/about"`, `worksFor: { @type: "Organization", name: "Slatework" }` ties Slatework to a named maker without exposing the legal name. Pairs with `Organization.founder`.
+13. **Add per-tool `FAQPage` JSON-LD on tool pages** — Authorly pattern. Each of the 10 tool pages could carry 3–5 Q&A specific to that tool (e.g., on rates: "How do italki commissions work?" "What's a defensible hourly rate for a new tutor?"). These currently live as a single FAQPage on the homepage. Splitting drives FAQ-rich-result visibility per tool.
+14. **Add `WebSite.potentialAction.SearchAction`** — `index.html:27-39` — Slatework has no site search today, but adding `SearchAction` with a placeholder query template enables Google's site-search-box SERP feature *if* a `/search` route is added later. Either skip until search ships, or build a minimal client-side search over the 10 tools.
+15. **Cross-link related tools in body content** — currently only `setup.html` links contextually to `/tax` and `/insurance`. `tax.html` should link to `/insurance` and `/rates`; `payments.html` should link to `/rates`; `rates.html` should link to `/payments` and `/tax`; `marking.html` should link to `/cefr` (CEFR placement → marking is a natural flow); `lesson-plan.html` should link to `/worksheet` and `/cefr`. Single sentence per link, end-of-page "Related tools" block.
+16. **Header nav too sparse** — every page header has only `About | Tools` (where "Tools" goes back to `/`). Adding an in-header dropdown or a horizontal "By topic" strip showing all 10 tools improves crawl depth and user navigation. Not an SEO emergency, but the bucket structure on the homepage doesn't propagate to tool pages.
+17. **No `<meta name="robots" content="index, follow">` anywhere** — implicit default, so this is just hygiene. Skip unless you want explicit signaling.
+18. **No `theme-color` meta on tool pages** — `index.html:13` has `<meta name="theme-color" content="#020617" />` but no other page does. Cosmetic for mobile browser chrome; SEO-irrelevant.
+19. **Sitemap `priority` and `changefreq` carry diminishing returns** — Google has publicly downplayed both. Keep them (they cost nothing) but invest the maintenance budget in `<lastmod>` accuracy instead.
+20. **No `hreflang`** — site is English-only and serves all 7 markets in one en page. Correct decision; flagged here only because the audit prompt asked. If country-specific pages ever ship (`/us/`, `/uk/`), add `hreflang` then.
+21. **Add `noscript` fallbacks on JS-only tools** — `cefr.html`, `lesson-plan.html`, `marking.html`, `worksheet.html`, `rates.html`, `setup.html`, `tax.html`, `insurance.html`, `payments.html`, `contract.html` all require JS to populate. Adding a `<noscript>` block with "This tool requires JavaScript. Here's what it does..." gives non-JS crawlers a content fingerprint. Aligns with the December 2025 Google JS-SEO clarification (non-200 + JS-injected content is invisible — but 200 + form-only is just thin).
+22. **Verify Cloudflare Pages `.html` strip** — All 14 canonicals point to extensionless URLs (`/about`, `/cefr`, etc.) but the files are `.html`. Cloudflare Pages auto-serves both `/about` and `/about.html` to the same content with the extensionless form as the canonical request. Confirm with `curl -I https://slatework.tools/about.html` returns a 301 to `/about` (not just a 200 on both URLs) to avoid duplicate-content soft signals. If Cloudflare's behaviour is "both 200, no redirect", add a `_redirects` file: `/about.html /about 301`.
+
+## Ship-now top 3
+
+1. **Tighten homepage meta description to 148–160 chars + add Organization + BreadcrumbList JSON-LD across all interior pages** — single PR, ~30 minutes, fixes the SERP-truncation issue, gives Google a brand-Knowledge-Graph hook, and adds breadcrumb-rich-result eligibility to 13 pages. Highest ROI per minute spent.
+
+2. **Add `<lastmod>2026-05-07</lastmod>` to every URL in `sitemap.xml` and create `/llms.txt`** — 15 minutes. Lastmod is Google's strongest sitemap signal; llms.txt is the single highest-leverage AI-search-discovery move available right now and the format is so simple a markdown export will do.
+
+3. **Pad the 8 thin tool pages with a 200–300 word "How it works / Why this exists / What you'll get" block above the form, plus a 3-Q FAQ block below** — 2–3 hours. This is the single change that moves the content-depth sub-score from 5.5 to 8.5 and unlocks long-tail organic for queries like "free language tutor contract template", "tutor self-employment tax UK", "CEFR placement test free". Without it, Slatework will rank only on brand and homepage queries.
+
+## What Slatework does well
+
+- **Every indexable page has the full SEO header set.** Title, description, canonical, og:type, og:site_name, og:title, og:description, og:image, og:url, twitter:card, twitter:title, twitter:description, twitter:image, viewport, theme-color (homepage), favicon. Zero pages missing canonicals among the 14 indexable.
+- **OG image is brand-quality.** 1200×630 PNG, 73 KB, high contrast, bold display type, brand-clear, country codes visible. Matches Authorly's polish bar.
+- **WebApplication schema on every tool page** — the right type per the seo-schema rubric for a "free, no-signup, browser-based tool" — with `isAccessibleForFree`, `offers.price=0`, `applicationCategory: BusinessApplication`. Validates clean.
+- **FAQPage on the homepage** — five well-structured Q&A pairs covering the high-intent objection queries ("Why use this instead of ChatGPT?", "Is this legal advice?", "Is my student's writing private?"). Matches the Authorly pattern shipped 2026-05-07.
+- **Strict CSP without `'unsafe-inline'` on script or style** per the v0.3 refactor noted in `~/.claude/projects/.../MEMORY.md`. CSP doesn't impede crawlers (they don't execute JS) and the security headers are unambiguously a quality signal in 2026 SERPs.
+- **Mobile-first by default** — single viewport meta on every page, responsive layout, no horizontal scroll, font sizes ≥16px. Mobile-first indexing has been universal since July 2024 and Slatework is correctly aligned.
+- **No images means no image-SEO debt.** SVGs are inline with `aria-hidden="true"`, OG image is the only raster. The decision to skip photography for a tool-shell aesthetic eliminates a whole category of optimisation work.
+- **Sensible cache headers per route** — short-lived (300s with stale-while-revalidate=3600) for HTML, longer (86400s) for static SVG/PNG, yet-longer with revalidation for JS lib bundles. Helps Core Web Vitals (LCP) and reduces edge load.
+- **Text content is honest, scannable, and in plain English.** The hero copy ("Tutor tools that don't waste your evening"), the FAQ tone, and the privacy/terms pages all read as written by a single voice — high E-E-A-T signal density without any of the LLM-padding tells. AI search engines (especially Perplexity) reward this.
+- **Internal-link discipline is good where it exists** — `setup.html` cross-links to `/tax` and `/insurance` correctly. The bucket grid on the homepage gives Google four clear topical clusters with anchor text matching each tool's primary keyword. The structure is right; only the volume of cross-links between siblings is light.

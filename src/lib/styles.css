@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap');
+/* Fonts loaded via <link rel="preconnect"> + <link rel="stylesheet"> in each HTML <head> — see Wave 2 of 2026-05-08 audit */
 
 :root {
   /* Dark slate hero region */
@@ -22,19 +22,22 @@
   --ink: #020617;
   --ink-2: #0f172a;
   --ink-muted: #475569;
-  --ink-faint: #94a3b8;
+  --ink-faint: #64748b;
   --accent: #d97706;
   --accent-soft: rgba(217, 119, 6, 0.08);
   --accent-hover: #b45309;
-  --ok: #22c55e;
+  --ok: #16a34a;
   --warn: #b45309;
   --err: #b91c1c;
   --line: #e2e8f0;
   --line-strong: #cbd5e1;
-  --ring: #020617;
+  --ring: #d97706;
 
   --radius-sm: 4px;
   --radius-md: 6px;
+  --radius: 6px; /* alias for legacy --radius references */
+  --shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.05);
+  --shadow-md: 0 2px 4px rgba(2, 6, 23, 0.06), 0 4px 8px rgba(2, 6, 23, 0.04);
 
   --max-width: 76rem;
   --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
@@ -284,13 +287,16 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
   margin-top: 2.5rem;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1100px) {
   .hero-grid {
-    grid-template-columns: 60% 40%;
-    gap: 4rem;
+    grid-template-columns: minmax(0, 60%) minmax(360px, 40%);
+    gap: 3rem;
     margin-top: 4rem;
     align-items: center;
   }
+}
+@media (min-width: 1280px) {
+  .hero-grid { gap: 4rem; }
 }
 
 /* Dark mono caption */
@@ -662,7 +668,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
   margin: 0;
 }
 
-.tile:hover { border-color: var(--ink-muted); }
+/* Tile hover — `.tile:hover` border now lives at line ~1591 (--slate-green). Underline grow stays here. */
 .tile:hover h3::after { width: 100%; }
 
 .tile:focus-visible {
@@ -1077,7 +1083,7 @@ button:focus-visible, .btn:focus-visible {
   outline-offset: 2px;
 }
 
-button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+button:disabled, .btn:disabled { cursor: not-allowed; transform: none; }
 
 @media (prefers-reduced-motion: no-preference) {
   button:not(:disabled):active, .btn:not(:disabled):active { transform: scale(0.97); }
@@ -1382,7 +1388,8 @@ ul.checklist li::before {
 .drop-zone.drag-over { border-color: var(--accent); background: rgba(217, 119, 6, 0.05); }
 .drop-zone-text { margin: 0; color: var(--ink-muted); font-size: 0.95rem; line-height: 1.55; }
 .drop-zone-text em { font-style: italic; color: var(--ink-faint); display: block; margin-top: 0.4rem; font-size: 0.85rem; }
-.drop-status { margin: 0.5rem 0 0; min-height: 1.2em; color: var(--accent); font-weight: 500; }
+.drop-status { margin: 0.5rem 0 0; min-height: 1.2em; color: var(--ink-muted); font-weight: 500; }
+.drop-status.is-error { color: var(--err); }
 
 .drop-privacy {
   margin: 0.6rem 0 0;
@@ -1551,6 +1558,54 @@ ul.checklist li::before {
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
+}
+
+/* Skip link — visible on keyboard focus only. WCAG 2.4.1 (Bypass Blocks). */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 1000;
+  background: var(--ink);
+  color: var(--chalk);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+  transition: top 150ms ease-out;
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 1rem;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Invalid / aria-invalid input state (WCAG 1.3.5, 3.3.1). */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-color: var(--err);
+  box-shadow: 0 0 0 1px var(--err);
+}
+input[aria-invalid="true"]:focus,
+select[aria-invalid="true"]:focus,
+textarea[aria-invalid="true"]:focus {
+  outline-color: var(--err);
+}
+
+/* Disabled button — explicit (replaces opacity-only). */
+button:disabled,
+.btn:disabled,
+button[disabled],
+.btn[disabled] {
+  background: var(--surface-2);
+  color: var(--ink-muted);
+  border-color: var(--line);
+  cursor: not-allowed;
 }
 
 /* Tabular figures wherever numbers must align cleanly. */

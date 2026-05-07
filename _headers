@@ -16,6 +16,10 @@
 
 /favicon.svg
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/apple-touch-icon.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/manifest.webmanifest
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 /og.svg
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
 /og.png
@@ -25,8 +29,10 @@
 /data/countries/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 /src/lib/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800, immutable
 /robots.txt
   Cache-Control: public, max-age=3600
 /sitemap.xml
   Cache-Control: public, max-age=3600
+/llms.txt
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
