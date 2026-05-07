@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="Marking accelerator — Slatework" />
   <meta name="twitter:description" content="Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants (warm, direct, rubric-mapped). Built for language tutors and teachers." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=10" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=11" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -85,7 +85,7 @@
         <p id="drop-status" class="drop-status small"></p>
       </div>
       <p class="ai-disclaimer small">
-        <strong>About AI vision accuracy:</strong> the model reads handwriting reasonably well — but not perfectly, especially cursive, faded scans, or non-Latin scripts. When you upload an image, the response shows the extracted text first so you can spot-check it before trusting the marks. Edit the pasted text directly if you spot an error.
+        <strong>How photo upload works:</strong> when you attach an image, we extract the text via Google Cloud Vision OCR (handwriting-trained) and drop it into the box below. Review and edit the extracted text — OCR isn't perfect, especially cursive — then click Mark. The marking model only ever sees text, not your photo.
       </p>
     </div>
 
@@ -93,9 +93,6 @@
       <label for="sample">Anonymised student writing</label>
       <textarea id="sample" minlength="50" maxlength="4000" placeholder="Paste the writing only — or attach a file/photo above. Remove names and identifying details first."></textarea>
     </div>
-
-    <input type="hidden" id="image-data" name="image_data" value="" />
-    <input type="hidden" id="image-mime" name="image_mime" value="" />
 
     <button type="submit" id="go">Mark and suggest feedback</button>
   </form>
@@ -110,9 +107,9 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=10"></script>
-<script src="/src/lib/file-extract.js?v=10"></script>
-<script src="/feedback.js?v=10" defer></script>
-<script src="/src/lib/page-marking.js?v=10" defer></script>
+<script src="/src/lib/countries.js?v=11"></script>
+<script src="/src/lib/file-extract.js?v=11"></script>
+<script src="/feedback.js?v=11" defer></script>
+<script src="/src/lib/page-marking.js?v=11" defer></script>
 </body>
 </html>

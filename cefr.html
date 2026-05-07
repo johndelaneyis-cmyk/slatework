@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="CEFR proficiency mapper — Slatework" />
   <meta name="twitter:description" content="Place a language student at A1–C2 using the CEFR Can-Do framework. Default rule-based assessment with an optional AI mode for sample-writing input." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=10" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=11" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -80,15 +80,13 @@
           <p id="drop-status" class="drop-status small"></p>
         </div>
         <p class="ai-disclaimer small">
-          <strong>About AI vision accuracy:</strong> the model reads handwriting reasonably well — but not perfectly, especially cursive, faded scans, or non-Latin scripts. When you upload an image, the response shows the extracted text first so you can spot-check it before trusting the marks. Edit the pasted text directly if you spot an error.
+          <strong>How photo upload works:</strong> when you attach an image, we extract the text via Google Cloud Vision OCR (handwriting-trained) and drop it into the box below. Review and edit the extracted text — OCR isn't perfect, especially cursive — then click Assess. The placement model only ever sees text, not your photo.
         </p>
       </div>
       <div class="field">
         <label for="sample">Anonymised writing sample (50–500 words)</label>
         <textarea id="sample" minlength="100" maxlength="3000" placeholder="Paste the student's writing — or attach a file/photo above. Remove names and identifying details first."></textarea>
       </div>
-      <input type="hidden" id="image-data" name="image_data" value="" />
-      <input type="hidden" id="image-mime" name="image_mime" value="" />
       <button type="submit" id="ai-go">Assess</button>
     </form>
     <section id="ai-result" class="result" hidden></section>
@@ -102,10 +100,10 @@
   </div>
 </footer>
 
-<script src="/src/lib/cefr-rules.js?v=10"></script>
-<script src="/src/lib/countries.js?v=10"></script>
-<script src="/src/lib/file-extract.js?v=10"></script>
-<script src="/feedback.js?v=10" defer></script>
-<script src="/src/lib/page-cefr.js?v=10" defer></script>
+<script src="/src/lib/cefr-rules.js?v=11"></script>
+<script src="/src/lib/countries.js?v=11"></script>
+<script src="/src/lib/file-extract.js?v=11"></script>
+<script src="/feedback.js?v=11" defer></script>
+<script src="/src/lib/page-cefr.js?v=11" defer></script>
 </body>
 </html>

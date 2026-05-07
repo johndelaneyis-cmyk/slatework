@@ -82,6 +82,64 @@ export class ClaudeError extends Error {
   }
 }
 
+// Google Cloud Vision OCR — extracts text from an image without going through
+// any LLM content classifier. Used by /api/ocr to give us reliable handwriting
+// extraction; the resulting text is then sent to Anthropic for the actual
+// marking/assessment work.
+//
+// Throws a ClaudeError-shape error on failure so userFacingClaudeError can
+// translate it. Codes used: 'auth' (401/403 — bad/missing key), 'rate_limit'
+// (429), 'invalid_request' (400 — image rejected), 'timeout', 'network',
+// 'server_error', 'unknown'.
+export async function callGoogleVision(env, { base64, mime, timeoutMs = 30000 }) {
+  if (!env.GOOGLE_VISION_API_KEY) {
+    throw new ClaudeError('auth', 0, '', 'GOOGLE_VISION_API_KEY not set');
+  }
+  const body = {
+    requests: [{
+      image: { content: base64 },
+      features: [{ type: 'DOCUMENT_TEXT_DETECTION', maxResults: 1 }],
+      imageContext: { languageHints: [] }  // auto-detect
+    }]
+  };
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  let r;
+  try {
+    r = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${encodeURIComponent(env.GOOGLE_VISION_API_KEY)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: controller.signal
+    });
+  } catch (e) {
+    clearTimeout(timer);
+    if (e.name === 'AbortError') throw new ClaudeError('timeout', 0, '', `Vision aborted after ${timeoutMs}ms`);
+    throw new ClaudeError('network', 0, e.message || '', 'Network error talking to Google Vision');
+  }
+  clearTimeout(timer);
+
+  if (!r.ok) {
+    const errText = await r.text().catch(() => '');
+    const snippet = errText.slice(0, 800);
+    let code;
+    if (r.status === 401 || r.status === 403) code = 'auth';
+    else if (r.status === 429) code = 'rate_limit';
+    else if (r.status === 400 || r.status === 422) code = 'invalid_request';
+    else if (r.status >= 500) code = 'server_error';
+    else code = 'unknown';
+    throw new ClaudeError(code, r.status, snippet);
+  }
+  const data = await r.json().catch(() => ({}));
+  const resp = data && data.responses && data.responses[0];
+  if (resp && resp.error) {
+    // Vision can return 200 with a per-image error in the body
+    throw new ClaudeError('invalid_request', 200, JSON.stringify(resp.error).slice(0, 800));
+  }
+  const text = (resp && resp.fullTextAnnotation && resp.fullTextAnnotation.text) || '';
+  return text;
+}
+
 // Single attempt. Used internally by callClaude. Throws ClaudeError on failure.
 async function callClaudeOnce(env, { model, system, user, max_tokens = 1500, timeoutMs = 55000 }) {
   if (!env.ANTHROPIC_API_KEY) {

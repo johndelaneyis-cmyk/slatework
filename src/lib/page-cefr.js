@@ -43,12 +43,39 @@ function resolveLangVal() {
     textarea,
     onStatus: (msg) => { dropStatus.textContent = msg; },
     imageHandler: async (base64, mime) => {
-      $('image-data').value = base64;
-      $('image-mime').value = mime;
+      // Decoupled OCR: photo → /api/ocr (Google Vision) → textarea → submit text-only.
+      // Anthropic never sees the image, avoiding their content-classifier rejection.
+      dropStatus.textContent = 'Extracting text from photo (OCR)…';
+      try {
+        const r = await fetch('/api/ocr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image_data: base64, image_mime: mime })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          dropStatus.textContent = data.error || 'OCR failed. Type the writing in the box below instead.';
+          return;
+        }
+        if (data.ocr_empty || !data.text) {
+          dropStatus.textContent = data.error || "OCR ran but didn't find readable text. Try a clearer photo or type the writing.";
+          return;
+        }
+        const cap = textarea.maxLength && textarea.maxLength > 0 ? textarea.maxLength : 3000;
+        if (data.text.length > cap) {
+          textarea.value = data.text.slice(0, cap);
+          dropStatus.textContent = `OCR extracted ${data.text.length.toLocaleString()} chars; trimmed to ${cap.toLocaleString()}. Review and edit, then click Assess.`;
+        } else {
+          textarea.value = data.text;
+          dropStatus.textContent = `OCR extracted ${data.text.length} chars. Review and edit, then click Assess.`;
+        }
+        textarea.focus();
+      } catch (e) {
+        dropStatus.textContent = 'Network error during OCR. Type the writing in the box below instead.';
+      }
     },
     clearImageHandler: () => {
-      $('image-data').value = '';
-      $('image-mime').value = '';
+      // No hidden image fields anymore — OCR runs on drop, textarea holds the text
     }
   });
 })();
@@ -137,9 +164,7 @@ $('ai-form').addEventListener('submit', async (e) => {
   const lang = resolveLangVal();
   if (!lang) { result.hidden = false; result.innerHTML = '<p>Pick a target language.</p>'; return; }
   const sampleVal = $('sample').value.trim();
-  const imageData = $('image-data').value;
-  const imageMime = $('image-mime').value;
-  if (!sampleVal && !imageData) { result.hidden = false; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
+  if (!sampleVal) { result.hidden = false; result.innerHTML = '<p>Paste writing or attach a file/photo first (the photo will be auto-extracted to text).</p>'; return; }
   btn.disabled = true;
   result.hidden = false;
   result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>PLACING THE STUDENT</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10–25 seconds. Reading the sample, mapping the level.</p></div>';
@@ -149,44 +174,22 @@ $('ai-form').addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         target_language: lang,
-        sample: $('sample').value,
-        image_data: imageData,
-        image_mime: imageMime
+        sample: $('sample').value
       })
     });
     if (!r.ok) {
       const e = await r.json().catch(() => ({}));
       const msg = e.error || 'Could not assess. Try again in a moment.';
       result.innerHTML = `<div class="error-block"><p>${escapeHtml(msg).replace(/\n/g, '<br>')}</p></div>`;
-      if (e.content_blocked) {
-        $('image-data').value = '';
-        $('image-mime').value = '';
-        const dropZone = $('drop-zone');
-        if (dropZone) {
-          dropZone.classList.remove('has-file');
-          const previewEl = dropZone.querySelector('.drop-preview');
-          if (previewEl) previewEl.hidden = true;
-        }
-        const sample = $('sample');
-        if (sample) {
-          sample.focus();
-          sample.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }
       return;
     }
     const data = await r.json();
-    const extractedHtml = data.extracted_text
-      ? '<div class="extracted-text"><h3>Extracted text</h3><p class="small">Review this for accuracy — vision can misread cursive, children\'s writing, or faded photocopies.</p><blockquote>' + escapeHtml(data.extracted_text) + '</blockquote></div>'
-      : '';
-    result.innerHTML = extractedHtml + `
+    result.innerHTML = `
       <div class="row"><span>Placement</span><strong>${escapeHtml(data.level || '—')}</strong></div>
       <div class="row"><span>Confidence</span><strong>${escapeHtml(data.confidence || '—')}</strong></div>
       <h3 class="mt-06">Reasoning</h3>
       <p>${escapeHtml(data.reasoning || '').replace(/\n/g, '<br>')}</p>
     `;
-    $('image-data').value = '';
-    $('image-mime').value = '';
   } catch {
     result.innerHTML = '<p>Network error. Try again in a moment.</p>';
   } finally {

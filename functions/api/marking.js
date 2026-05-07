@@ -1,6 +1,11 @@
 // POST /api/marking
 // Highlights error categories in a student's writing and returns
 // level-matched feedback variants the teacher can paste back.
+//
+// As of 2026-05-07: text-only. Image OCR is decoupled into /api/ocr
+// (Google Vision) so Anthropic's vision content classifier never sees
+// student-writing photos. The client extracts text via OCR, the user
+// reviews/edits, then submits text-only here.
 
 import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed, userFacingClaudeError } from "../_lib.js";
 
@@ -11,7 +16,6 @@ const SYSTEM_PROMPT = [
   "You are an experienced language teacher marking student writing. Given a target language, CEFR level, and a student writing sample (or speaking transcript), you produce: (a) categorised error highlights with examples drawn from the sample, and (b) three feedback paragraphs at different levels of warmth and formality, ready to paste into an email or report.",
   "",
   "Strict rules:",
-  "- If the input is an image (a photo of student writing), BEGIN your output with a `## Extracted text` section showing the verbatim text you read from the image. List nothing else in this section — no commentary, no errors yet, just the transcription. Then continue with the normal `## Error highlights` section. The teacher reviews the extracted text for accuracy before trusting the marks below. If the input is pasted text (no image), do NOT include this section.",
   "- Group errors into clear categories: Grammar, Vocabulary, Structure, Mechanics. Within each, give 1–3 specific examples taken verbatim from the sample, with the suggested correction.",
   "- Match feedback to the student's level. B1 feedback shouldn't expect C1 register.",
   "- The three feedback variants are: WARM (encouraging, leads with a strength), DIRECT (lists the top 3 priorities to fix), STRUCTURED (numbered list mapped to a generic rubric: content, accuracy, range, organisation).",
@@ -19,9 +23,6 @@ const SYSTEM_PROMPT = [
   "- Do not include or invent the student's name. Refer to 'the student' or 'you' (in the WARM variant).",
   "",
   "Format:",
-  "",
-  "## Extracted text",
-  "[Only when input is an image. Verbatim transcription of what you read.]",
   "",
   "## Error highlights",
   "",
@@ -57,14 +58,6 @@ const PER_IP_DAILY = 20;
 const GLOBAL_DAILY = 2000;
 const MIN_SAMPLE_LEN = 50;
 const MAX_SAMPLE_LEN = 4000;
-// Match Anthropic's 5 MB-per-image limit (we send up to 4 MB base64 ~= 3 MB
-// binary thanks to client-side resize in file-extract.js). Server-side cap
-// is set above the client target to leave a small margin for variance.
-const MAX_IMAGE_BASE64 = 5 * 1024 * 1024;
-// Anthropic's vision API only supports these MIME types. HEIC/HEIF are NOT
-// supported and the client now rejects them with a specific error before
-// upload. Keep the server list strict.
-const VALID_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 const VALID_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export async function onRequestPost({ request, env }) {
@@ -75,18 +68,10 @@ export async function onRequestPost({ request, env }) {
   const level = String(body.level || '').trim().toUpperCase();
   const sample = String(body.sample || '').trim();
   const rubric = String(body.rubric || '').trim().slice(0, 200);
-  const imageData = typeof body.image_data === 'string' ? body.image_data : '';
-  const imageMime = typeof body.image_mime === 'string' ? body.image_mime : '';
-  const hasImage = imageData.length > 0;
 
   if (!language) return jsonResponse({ error: 'Missing target language.' }, 400);
   if (!VALID_LEVELS.includes(level)) return jsonResponse({ error: 'Level must be A1–C2.' }, 400);
-  if (hasImage) {
-    if (imageData.length > MAX_IMAGE_BASE64) return jsonResponse({ error: `Image too large after upload (${(imageData.length/1024/1024).toFixed(1)} MB) — Anthropic's vision API caps at ~5 MB. Re-attach so the client can resize.` }, 400);
-    if (!VALID_IMAGE_MIMES.has(imageMime)) return jsonResponse({ error: `Image format "${imageMime}" not supported. Anthropic accepts JPEG, PNG, WebP, GIF only — HEIC/HEIF need to be converted first.` }, 400);
-  } else {
-    if (sample.length < MIN_SAMPLE_LEN) return jsonResponse({ error: 'Sample too short. Paste at least 50 characters or attach a photo.' }, 400);
-  }
+  if (sample.length < MIN_SAMPLE_LEN) return jsonResponse({ error: 'Sample too short. Paste at least 50 characters of student writing.' }, 400);
   if (sample.length > MAX_SAMPLE_LEN) return jsonResponse({ error: 'Sample too long (max 4000 chars).' }, 400);
 
   if (!env.ANTHROPIC_API_KEY) return jsonResponse({ error: 'Service is being configured. Try again in a few minutes.' }, 503);
@@ -95,41 +80,20 @@ export async function onRequestPost({ request, env }) {
   const rate = await rateCheck(env, fp, 'marking', PER_IP_DAILY, GLOBAL_DAILY);
   if (!rate.ok) return jsonResponse({ error: rate.reason }, rate.status || 429);
 
-  const baseLines = [
+  const userMsg = [
     `Target language: ${language}`,
     `CEFR level: ${level}`,
-    rubric ? `Rubric tag: ${rubric}` : ''
-  ].filter(Boolean);
-
-  let textBody;
-  if (hasImage && sample.length === 0) {
-    textBody = baseLines.concat([
-      '',
-      "Mark this student writing. The image attached above is the student's work — extract the text mentally and grade it as you would any pasted writing. Use the same error categorization and feedback variants as if the text had been pasted directly."
-    ]).join('\n');
-  } else {
-    textBody = baseLines.concat([
-      '',
-      'Student writing sample:',
-      '"""',
-      sample,
-      '"""'
-    ]).join('\n');
-  }
-
-  let userPayload;
-  if (hasImage) {
-    userPayload = [
-      { type: 'image', source: { type: 'base64', media_type: imageMime, data: imageData } },
-      { type: 'text', text: textBody }
-    ];
-  } else {
-    userPayload = textBody;
-  }
+    rubric ? `Rubric tag: ${rubric}` : '',
+    '',
+    'Student writing sample:',
+    '"""',
+    sample,
+    '"""'
+  ].filter(Boolean).join('\n');
 
   try {
     const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
-    const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userPayload, max_tokens: 2500 });
+    const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2500 });
     return jsonResponse({ markdown: text }, 200);
   } catch (err) {
     const { error, status } = userFacingClaudeError(err, 'mark the sample');

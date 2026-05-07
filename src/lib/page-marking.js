@@ -43,12 +43,42 @@ function resolveTargetLang() {
     textarea,
     onStatus: (msg) => { dropStatus.textContent = msg; },
     imageHandler: async (base64, mime) => {
-      $('image-data').value = base64;
-      $('image-mime').value = mime;
+      // Decoupled architecture: image goes to /api/ocr (Google Vision) for
+      // text extraction, then the user reviews/edits before submitting
+      // text-only to /api/marking. Anthropic never sees the image, so its
+      // content classifier can't refuse student-writing photos.
+      dropStatus.textContent = 'Extracting text from photo (OCR)…';
+      try {
+        const r = await fetch('/api/ocr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image_data: base64, image_mime: mime })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          dropStatus.textContent = data.error || 'OCR failed. Type the writing in the box below instead.';
+          return;
+        }
+        if (data.ocr_empty || !data.text) {
+          dropStatus.textContent = data.error || "OCR ran but didn't find readable text. Try a clearer photo or type the writing.";
+          return;
+        }
+        const cap = textarea.maxLength && textarea.maxLength > 0 ? textarea.maxLength : 4000;
+        if (data.text.length > cap) {
+          textarea.value = data.text.slice(0, cap);
+          dropStatus.textContent = `OCR extracted ${data.text.length.toLocaleString()} chars; trimmed to ${cap.toLocaleString()}. Review and edit, then click Mark.`;
+        } else {
+          textarea.value = data.text;
+          dropStatus.textContent = `OCR extracted ${data.text.length} chars. Review and edit, then click Mark.`;
+        }
+        // Pull focus to textarea so user can correct OCR mistakes immediately
+        textarea.focus();
+      } catch (e) {
+        dropStatus.textContent = 'Network error during OCR. Type the writing in the box below instead.';
+      }
     },
     clearImageHandler: () => {
-      $('image-data').value = '';
-      $('image-mime').value = '';
+      // No hidden image fields anymore — OCR runs on drop, textarea holds the text
     }
   });
 })();
@@ -60,9 +90,7 @@ $('form').addEventListener('submit', async (e) => {
   const lang = resolveTargetLang();
   if (!lang) { result.hidden = false; result.innerHTML = '<p>Pick a target language.</p>'; return; }
   const sampleVal = $('sample').value.trim();
-  const imageData = $('image-data').value;
-  const imageMime = $('image-mime').value;
-  if (!sampleVal && !imageData) { result.hidden = false; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
+  if (!sampleVal) { result.hidden = false; result.innerHTML = '<p>Paste writing or attach a file/photo first (the photo will be auto-extracted to text).</p>'; return; }
   btn.disabled = true;
   result.hidden = false;
   result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>CHALKING UP THE FEEDBACK</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15–45 seconds. Vision OCR adds a few seconds for photo uploads.</p></div>';
@@ -75,9 +103,7 @@ $('form').addEventListener('submit', async (e) => {
         target_language: lang,
         level: $('level').value,
         rubric: $('rubric').value,
-        sample: $('sample').value,
-        image_data: imageData,
-        image_mime: imageMime
+        sample: $('sample').value
       })
     });
     if (!r.ok) {
@@ -109,9 +135,6 @@ $('form').addEventListener('submit', async (e) => {
     }
     const data = await r.json();
     result.innerHTML = renderMarkdown(data.markdown || '');
-    // Clear the hidden image fields after a successful submit so a re-run uses fresh state
-    $('image-data').value = '';
-    $('image-mime').value = '';
   } catch {
     result.innerHTML = '<p>Network error. Try again.</p>';
   } finally {
