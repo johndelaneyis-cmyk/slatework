@@ -1483,10 +1483,13 @@ ul.checklist li::before {
   opacity: 0;
   pointer-events: none;
   /* Chalk-write reveal: clipped left-to-right just after the headline
-     letters finish (last char ~ 35 * 20ms + 600ms = 1.3s). */
+     letters finish. The delay is dynamic — page-index.js sets
+     --chalk-mark-delay based on the actual character count, so the
+     underline always fires after the last character draws (was a
+     hardcoded 1.25s; broke if the headline length changed). */
   -webkit-clip-path: inset(0 100% 0 0);
   clip-path: inset(0 100% 0 0);
-  animation: chalk-write 0.75s cubic-bezier(0.65, 0, 0.35, 1) 1.25s forwards;
+  animation: chalk-write 0.75s cubic-bezier(0.65, 0, 0.35, 1) var(--chalk-mark-delay, 1.25s) forwards;
 }
 
 @keyframes chalk-write {
@@ -1878,6 +1881,43 @@ button[disabled],
   margin-top: 0.5rem;
 }
 .fb-actions:not([hidden]) { display: flex; }
+
+/* Payment-method rows (no fee column — name + note only) */
+.payment-row {
+  display: flex;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+.payment-row:last-child { border-bottom: 0; }
+.payment-row span:first-child { flex: 1; }
+
+/* Related-tools aside on tool pages */
+.related-tools {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.related-tools .mono-caption {
+  color: var(--ink-muted);
+  margin-bottom: 0.75rem;
+}
+.related-tools ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+.related-tools li {
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+.related-tools a {
+  color: var(--ink);
+  font-weight: 600;
+}
 
 /* Contract preview (was inline <style> in contract.html) */
 .preview {

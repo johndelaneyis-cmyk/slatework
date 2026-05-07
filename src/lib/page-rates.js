@@ -2,6 +2,16 @@
 // Loaded via <script src="/src/lib/page-rates.js" defer> from rates.html.
 const SW = window.Slatework;
 
+// Debounce helper — used to avoid recalc on every keystroke (Section D
+// Important — INP > 200ms risk on slow Android keyboards).
+function debounce(fn, ms = 100) {
+  let t = null;
+  return function debounced(...args) {
+    if (t) clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args), ms);
+  };
+}
+
 const EXPERIENCE_MULTIPLIER = {
   new: 0.85,
   early: 1.0,
@@ -32,9 +42,12 @@ const $ = (id) => document.getElementById(id);
   }
   pairSel.value = 'en-es';
 
-  // Recalc on any change
+  // Recalc on any change. Debounced 120ms so number-input keystrokes don't
+  // re-render six DOM nodes per keypress.
   const form = $('form');
-  form.addEventListener('input', recalc);
+  form.addEventListener('input', debounce(recalc, 120));
+  // First paint is immediate (no debounce) so the result panel shows up
+  // without a 120ms delay on page load.
   await recalc();
 })();
 

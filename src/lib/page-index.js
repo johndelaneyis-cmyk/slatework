@@ -2,7 +2,10 @@
 // Loaded via <script src="/src/lib/page-index.js" defer> from index.html.
 console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:italic");
 
-/* Headline letter-by-letter chalk reveal — first paint only, respects reduced-motion */
+/* Headline letter-by-letter chalk reveal — first paint only, respects reduced-motion.
+   Counts characters and sets --chalk-mark-delay on each .chalk-mark so the
+   underline animation fires AFTER the last character finishes drawing
+   (Section A Important — was hardcoded 1.25s). */
 (() => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const el = document.getElementById('hero-display');
@@ -40,18 +43,35 @@ console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:itali
     }
   };
   walk(el);
+
+  // After wrapping, calculate when the last character finishes drawing
+  // (i*20ms reveal delay + 600ms reveal duration = full reveal end), and
+  // set --chalk-mark-delay on every .chalk-mark inside the hero so its
+  // underline draws after the headline completes regardless of length.
+  const totalRevealMs = (i * 20) + 600;
+  const chalkMarks = el.querySelectorAll('.chalk-mark');
+  chalkMarks.forEach((m) => m.style.setProperty('--chalk-mark-delay', totalRevealMs + 'ms'));
 })();
 
-/* Newsletter submit */
+/* Newsletter submit — disables button during in-flight fetch, sets
+   aria-invalid on bad email, restores on completion. */
 (() => {
   const form = document.getElementById('newsletter');
   const status = document.getElementById('newsletter-status');
   if (!form) return;
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = form.email.value.trim();
-    if (!email) return;
-    status.textContent = 'Joining...';
+  const btn = form.querySelector('button[type="submit"]');
+  const emailEl = form.email;
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    emailEl.removeAttribute('aria-invalid');
+    const email = emailEl.value.trim();
+    if (!email) {
+      emailEl.setAttribute('aria-invalid', 'true');
+      emailEl.focus();
+      return;
+    }
+    if (btn) btn.disabled = true;
+    status.textContent = 'Joining…';
     try {
       const r = await fetch('/api/newsletter', {
         method: 'POST',
@@ -62,12 +82,17 @@ console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:itali
         status.textContent = 'Welcome aboard.';
         form.reset();
       } else if (r.status === 429) {
-        status.textContent = 'Too many tries - wait a minute.';
+        status.textContent = 'Too many tries — wait a minute.';
+      } else if (r.status === 400) {
+        emailEl.setAttribute('aria-invalid', 'true');
+        status.textContent = 'That email looks off. Check the spelling.';
       } else {
         status.textContent = 'Could not join right now. Try again in a moment.';
       }
     } catch {
       status.textContent = 'Network error. Try again in a moment.';
+    } finally {
+      if (btn) btn.disabled = false;
     }
   });
 })();

@@ -20,7 +20,10 @@
   if (SKIP_PATHS.some(p => path.startsWith(p))) return;
   if (path === '/' || path === '/index.html') return; // Homepage has its own newsletter form.
 
-  const slug = path.replace(/^\//, '').replace(/\.html$/, '') || 'home';
+  // Map raw URL slug to server-side whitelisted tool name (functions/api/feedback.js).
+  // Hyphenated routes (e.g. "lesson-plan") become snake_case ("lesson_plan").
+  const rawSlug = path.replace(/^\//, '').replace(/\.html$/, '') || 'home';
+  const slug = rawSlug === 'home' ? 'index' : rawSlug.replace(/-/g, '_');
 
   function mount() {
     const main = document.querySelector('main');

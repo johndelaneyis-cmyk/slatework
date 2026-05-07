@@ -26,7 +26,12 @@ export async function onRequestGet({ env }) {
     const r = await fetch(SOURCE_URL, { cf: { cacheTtl: 600 } });
     if (!r.ok) throw new Error('upstream ' + r.status);
     const data = await r.json();
-    if (!data.rates || !data.rates.GBP) throw new Error('malformed upstream response');
+    if (!data.rates || !data.rates.GBP) {
+      // Log full snippet so a future shape-change is debuggable from CF
+      // logs instead of silently surfacing as "FX upstream unavailable".
+      console.error('[fx_malformed]', JSON.stringify(data).slice(0, 500));
+      throw new Error('malformed upstream response');
+    }
     const payload = {
       rates: {
         USD: 1.0,

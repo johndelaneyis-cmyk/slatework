@@ -441,5 +441,21 @@
 
 <script src="/src/lib/page-index.js?v=13" defer></script>
 
+<script type="speculationrules">
+{
+  "prerender": [
+    {
+      "where": { "and": [
+        { "href_matches": "/*" },
+        { "not": { "href_matches": "/api/*" } },
+        { "not": { "href_matches": "/*.svg" } },
+        { "not": { "href_matches": "/*.png" } }
+      ] },
+      "eagerness": "moderate"
+    }
+  ]
+}
+</script>
+
 </body>
 </html>

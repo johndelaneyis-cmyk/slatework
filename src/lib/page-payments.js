@@ -1,9 +1,13 @@
 // Extracted from payments.html during CSP-nonce refactor (2026-05-07).
 // Loaded via <script src="/src/lib/page-payments.js" defer> from payments.html.
-// Note: the original inline block had backticks stripped by a prior transform
-// (renderRow was syntactically invalid JS) — that bug is fixed here.
 const SW = window.Slatework;
 const $ = (id) => document.getElementById(id);
+const escapeHtml = (SW && SW.escapeHtml) || function (s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+};
+const escapeAttr = escapeHtml;
 
 (async function init() {
   const countrySel = $('country');
@@ -39,18 +43,10 @@ async function render() {
 
 function renderRow(m) {
   const link = m.url
-    ? `<a href="${escapeAttr(m.url)}" target="_blank" rel="noopener">${escapeHtml(m.name)}</a>`
+    ? '<a href="' + escapeAttr(m.url) + '" target="_blank" rel="noopener">' + escapeHtml(m.name) + '</a>'
     : escapeHtml(m.name);
-  const note = m.notes ? ` <span class="small">— ${escapeHtml(m.notes)}</span>` : '';
-  return `<div class="row"><span>${link}${note}</span><strong></strong></div>`;
+  const note = m.notes ? ' <span class="small">&mdash; ' + escapeHtml(m.notes) + '</span>' : '';
+  // No fee column on payment methods (the column was a holdover from an
+  // earlier rate-vs-fee table — Section E #12). Just render the name + note.
+  return '<div class="payment-row"><span>' + link + note + '</span></div>';
 }
-
-function escapeHtml(s) {
-  return String(s == null ? '' : s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-function escapeAttr(s) { return escapeHtml(s); }
