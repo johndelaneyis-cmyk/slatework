@@ -21,7 +21,7 @@ function render() {
   const yearsRaw = $('years_teaching') ? $('years_teaching').value : '';
   const years = yearsRaw === '' ? null : parseInt(yearsRaw, 10);
   const customField = $('welcome_custom_field');
-  if (customField) customField.style.display = welcomeTone === 'custom' ? '' : 'none';
+  if (customField) customField.hidden = welcomeTone !== 'custom';
   const customText = $('welcome_custom') ? $('welcome_custom').value : '';
 
   const welcome = welcomePara(welcomeTone, tutor, subject, years, customText);
@@ -35,11 +35,11 @@ function render() {
   })();
 
   $('preview').innerHTML = `
-    <h2 style="text-align:center;">${escapeHtml(subject)} — Lesson Agreement</h2>
-    <p style="text-align:center;">between <strong>${escapeHtml(biz)}</strong> ("the Tutor") and the Parent or Guardian named below ("the Parent")</p>
+    <h2 class="text-center">${escapeHtml(subject)} — Lesson Agreement</h2>
+    <p class="text-center">between <strong>${escapeHtml(biz)}</strong> ("the Tutor") and the Parent or Guardian named below ("the Parent")</p>
 
     <h3>1. Welcome</h3>
-    <p style="white-space: pre-line;">${escapeHtml(welcome)}</p>
+    <p class="preserve-newlines">${escapeHtml(welcome)}</p>
 
     <h3>2. Lessons</h3>
     <p>The Tutor will provide <strong>${escapeHtml(subject)}</strong> lessons of <strong>${escapeHtml(duration)}</strong> at the agreed rate of <strong>${escapeHtml(rate)}</strong>, delivered <strong>${escapeHtml(location)}</strong>. Lessons are scheduled by mutual agreement.</p>
@@ -65,11 +65,11 @@ function render() {
     <h3>9. Term</h3>
     <p>This agreement runs lesson by lesson. Either side may end it with one full week's notice.</p>
 
-    <p style="margin-top: 3rem;">Date: <strong>${today}</strong></p>
-    <p style="margin-top: 1.5rem;">Tutor signature: ___________________________</p>
-    <p style="margin-top: 1rem;">Parent signature: ___________________________</p>
-    <p style="margin-top: 1rem;">Parent name: ___________________________</p>
-    <p style="margin-top: 1rem;">Student name: ___________________________</p>
+    <p class="mt-3">Date: <strong>${today}</strong></p>
+    <p class="mt-15">Tutor signature: ___________________________</p>
+    <p class="mt-1">Parent signature: ___________________________</p>
+    <p class="mt-1">Parent name: ___________________________</p>
+    <p class="mt-1">Student name: ___________________________</p>
   `;
 }
 

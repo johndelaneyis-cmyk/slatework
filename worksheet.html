@@ -17,16 +17,7 @@
   <meta name="twitter:title" content="Worksheet + answer-key generator — Slatework" />
   <meta name="twitter:description" content="Generate a printable language worksheet plus a matching answer key in seconds — pick the topic, level, format, and question count. Free and private." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
-  <style>
-    @media print {
-      .no-print { display: none !important; }
-      body { background: #fff; }
-      .container { max-width: none; padding: 1.5cm; }
-      .result { box-shadow: none; border: none; padding: 0; }
-    }
-    #worksheet, #answer-key { font-family: Georgia, "Times New Roman", serif; line-height: 1.7; }
-  </style>
+  <link rel="stylesheet" href="/src/lib/styles.css?v=6" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -60,7 +51,7 @@
         <div class="field">
           <label for="target">Target language</label>
           <select id="target" required></select>
-          <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
+          <input id="target_other" type="text" placeholder="Type the target language" class="field-other-input" hidden />
           <span class="help">Pick the language the student is learning. The two English options distinguish "native/advanced" (test prep, writing improvement) from "ESL/EFL" (English as a second language).</span>
         </div>
         <div class="field">
@@ -103,14 +94,14 @@
     </form>
   </div>
 
-  <section id="result" style="display:none;">
-    <div class="no-print" style="display:flex; gap:0.5rem; margin: 1rem 0;">
+  <section id="result" hidden>
+    <div class="no-print tab-row">
       <button id="print-ws" class="btn">Print worksheet</button>
       <button id="print-ak" class="btn secondary">Print answer key</button>
     </div>
 
     <article id="worksheet" class="result"></article>
-    <article id="answer-key" class="result" style="display:none;"></article>
+    <article id="answer-key" class="result" hidden></article>
   </section>
 </main>
 

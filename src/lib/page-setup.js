@@ -36,11 +36,11 @@ async function render() {
     <div class="row"><span><strong>Name</strong></span><strong>${escapeHtml(bgc.name)}</strong></div>
     <div class="row"><span><strong>Cost</strong></span><strong>${bgc.cost_amount != null ? formatCost(bgc.cost_amount, pack) : '–'}</strong></div>
     <div class="row"><span><strong>Where</strong></span><strong><a href="${escapeAttr(bgc.url)}" target="_blank" rel="noopener">Apply →</a></strong></div>
-    ${bgc.notes ? `<p class="small" style="margin-top:0.6rem;">${escapeHtml(bgc.notes)}</p>` : ''}
+    ${bgc.notes ? `<p class="small" class="mt-06">${escapeHtml(bgc.notes)}</p>` : ''}
   `;
 
   $('last-verified').textContent = `This information was last verified ${pack.data_source_last_verified}. Confirm with your country's authority before relying on any single step.`;
-  $('result').style.display = 'block';
+  $('result').hidden = false;
 }
 
 function formatCost(amount, pack) {

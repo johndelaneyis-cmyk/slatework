@@ -17,10 +17,10 @@ const $ = (id) => document.getElementById(id);
   sel.addEventListener('change', () => {
     const otherInput = $('lang_other');
     if (sel.value === 'Other') {
-      otherInput.style.display = '';
+      otherInput.hidden = false;
       otherInput.required = true;
     } else {
-      otherInput.style.display = 'none';
+      otherInput.hidden = true;
       otherInput.required = false;
     }
   });
@@ -96,7 +96,7 @@ for (const s of stmts) {
   div.className = 'field';
   div.innerHTML = `
     <label>${escapeHtml(s.q)}</label>
-    <div style="display:flex; gap:1rem;">
+    <div class="cefr-radio-group">
       <label><input type="radio" name="${s.id}" value="yes" /> Yes</label>
       <label><input type="radio" name="${s.id}" value="partial" /> Partial</label>
       <label><input type="radio" name="${s.id}" value="no" /> No</label>
@@ -114,16 +114,16 @@ $('rules-go').addEventListener('click', () => {
   const out = SW.cefrPlace(answers);
   const r = $('rules-result');
   if (out.insufficient) {
-    r.innerHTML = `<p class="small" style="margin:0;">${escapeHtml(out.notes)}</p>`;
-    r.style.display = 'block';
+    r.innerHTML = `<p class="small m-0">${escapeHtml(out.notes)}</p>`;
+    r.hidden = false;
     return;
   }
   r.innerHTML = `
     <div class="row"><span>Placement</span><strong>${out.level}</strong></div>
     <div class="row"><span>Confidence</span><strong>${out.confidence}</strong></div>
-    <p class="small" style="margin-top:0.6rem;">${escapeHtml(out.notes)}</p>
+    <p class="small mt-06">${escapeHtml(out.notes)}</p>
   `;
-  r.style.display = 'block';
+  r.hidden = false;
 });
 
 // --- AI mode (wired in Phase 2 — endpoint exists in Phase 2)
@@ -132,13 +132,13 @@ $('ai-form').addEventListener('submit', async (e) => {
   const result = $('ai-result');
   const btn = $('ai-go');
   const lang = resolveLangVal();
-  if (!lang) { result.style.display = 'block'; result.innerHTML = '<p>Pick a target language.</p>'; return; }
+  if (!lang) { result.hidden = false; result.innerHTML = '<p>Pick a target language.</p>'; return; }
   const sampleVal = $('sample').value.trim();
   const imageData = $('image-data').value;
   const imageMime = $('image-mime').value;
-  if (!sampleVal && !imageData) { result.style.display = 'block'; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
+  if (!sampleVal && !imageData) { result.hidden = false; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
   btn.disabled = true;
-  result.style.display = 'block';
+  result.hidden = false;
   result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>PLACING THE STUDENT</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10–25 seconds. Reading the sample, mapping the level.</p></div>';
   try {
     const r = await fetch('/api/cefr-assess', {
@@ -163,7 +163,7 @@ $('ai-form').addEventListener('submit', async (e) => {
     result.innerHTML = extractedHtml + `
       <div class="row"><span>Placement</span><strong>${escapeHtml(data.level || '—')}</strong></div>
       <div class="row"><span>Confidence</span><strong>${escapeHtml(data.confidence || '—')}</strong></div>
-      <h3 style="margin-top:0.6rem;">Reasoning</h3>
+      <h3 class="mt-06">Reasoning</h3>
       <p>${escapeHtml(data.reasoning || '').replace(/\n/g, '<br>')}</p>
     `;
     $('image-data').value = '';

@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="Marking accelerator — Slatework" />
   <meta name="twitter:description" content="Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants (warm, direct, rubric-mapped). Built for language tutors and teachers." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=6" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -50,7 +50,7 @@
       <div class="field">
         <label for="target">Target language</label>
         <select id="target" required></select>
-        <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
+        <input id="target_other" type="text" placeholder="Type the target language" class="field-other-input" hidden />
         <span class="help">Pick the language the student is learning. The two English options distinguish "native/advanced" (test prep, writing improvement) from "ESL/EFL" (English as a second language).</span>
       </div>
       <div class="field">
@@ -100,7 +100,7 @@
     <button type="submit" id="go">Mark and suggest feedback</button>
   </form>
 
-  <section id="result" class="result" style="display:none;"></section>
+  <section id="result" class="result" hidden></section>
 </main>
 
 <footer class="site-footer">

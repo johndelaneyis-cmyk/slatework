@@ -52,7 +52,7 @@ async function recalc() {
     $('suggestion-block').innerHTML = '<p class="small">Could not load country data. Refresh the page or pick a different country.</p>';
     $('platforms-block').innerHTML = '';
     $('annual-block').innerHTML = '';
-    $('result').style.display = 'block';
+    $('result').hidden = false;
     return;
   }
   const pairData = pack.rates_by_language_pair[pairKey];
@@ -119,14 +119,14 @@ async function recalc() {
   const r = await SW.rates();
   $('fx-note').textContent = `Rates and platform fees verified ${pack.data_source_last_verified}. FX rates ${r.source === 'fallback' ? 'using fallback table' : 'live'}.`;
 
-  $('result').style.display = 'block';
+  $('result').hidden = false;
 }
 
 function renderUnavailablePair(pack, pairKey) {
   $('platforms-block').innerHTML = '';
   $('annual-block').innerHTML = '';
   $('suggestion-block').innerHTML = `<p class="small">No published median for ${escapeHtml(pairKey)} in ${escapeHtml(pack.name)} yet. Pick another pair, or use the closest neighbor as a starting point.</p>`;
-  $('result').style.display = 'block';
+  $('result').hidden = false;
 }
 
 function sortedCurve(p) {

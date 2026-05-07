@@ -17,10 +17,10 @@ const SW = window.Slatework;
   sel.addEventListener('change', () => {
     const otherInput = $('target_other');
     if (sel.value === 'Other') {
-      otherInput.style.display = '';
+      otherInput.hidden = false;
       otherInput.required = true;
     } else {
-      otherInput.style.display = 'none';
+      otherInput.hidden = true;
       otherInput.required = false;
     }
   });
@@ -55,13 +55,13 @@ $('form').addEventListener('submit', async (e) => {
   const btn = $('go');
   const result = $('result');
   const lang = resolveTargetLang();
-  if (!lang) { result.style.display = 'block'; result.innerHTML = '<p>Pick a target language.</p>'; return; }
+  if (!lang) { result.hidden = false; result.innerHTML = '<p>Pick a target language.</p>'; return; }
   const sampleVal = $('sample').value.trim();
   const imageData = $('image-data').value;
   const imageMime = $('image-mime').value;
-  if (!sampleVal && !imageData) { result.style.display = 'block'; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
+  if (!sampleVal && !imageData) { result.hidden = false; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
   btn.disabled = true;
-  result.style.display = 'block';
+  result.hidden = false;
   result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>CHALKING UP THE FEEDBACK</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15–45 seconds. Vision OCR adds a few seconds for photo uploads.</p></div>';
 
   try {

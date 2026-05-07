@@ -26,7 +26,7 @@ async function render() {
 
   $('pl-block').innerHTML = `
     <div class="row"><span>Typical public-liability cover</span><strong>${ins.public_liability_typical_amount ? formatAmount(ins.public_liability_typical_amount, pack) : '—'}</strong></div>
-    ${ins.notes ? `<p class="small" style="margin: 0.6rem 0 0;">${escapeHtml(ins.notes)}</p>` : ''}
+    ${ins.notes ? `<p class="small helper-margin">${escapeHtml(ins.notes)}</p>` : ''}
   `;
 
   const ul = $('provider-list');
@@ -43,7 +43,7 @@ async function render() {
   $('bgc-notes').textContent = bgc.notes || '';
 
   $('last-verified').textContent = `Verified ${pack.data_source_last_verified}.`;
-  $('result').style.display = 'block';
+  $('result').hidden = false;
 }
 
 function formatAmount(n, pack) {

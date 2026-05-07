@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="CEFR proficiency mapper — Slatework" />
   <meta name="twitter:description" content="Place a language student at A1–C2 using the CEFR Can-Do framework. Default rule-based assessment with an optional AI mode for sample-writing input." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=6" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -43,7 +43,7 @@
   <h1>CEFR proficiency mapper</h1>
   <p>Place a student at A1, A2, B1, B2, C1, or C2 using the standard CEFR Can-Do statements. Pick the mode that matches the moment.</p>
 
-  <div role="tablist" aria-label="CEFR assessment modes" style="display:flex; gap:0.5rem; margin: 1rem 0;">
+  <div role="tablist" aria-label="CEFR assessment modes" class="tab-row">
     <button id="tab-rules" type="button" class="btn" role="tab" aria-selected="true" aria-controls="rules-mode" tabindex="0">Rule-based (private)</button>
     <button id="tab-ai" type="button" class="btn secondary" role="tab" aria-selected="false" aria-controls="ai-mode" tabindex="-1">AI from writing sample</button>
   </div>
@@ -53,9 +53,9 @@
     <form id="rules-form">
       <p>Answer for each statement: <em>Yes</em>, <em>Partial</em>, or <em>No</em>.</p>
       <div id="statements"></div>
-      <button type="button" id="rules-go" style="margin-top:1rem;">Place the student</button>
+      <button type="button" id="rules-go" class="mt-1">Place the student</button>
     </form>
-    <section id="rules-result" class="result" style="display:none;"></section>
+    <section id="rules-result" class="result" hidden></section>
   </section>
 
   <section id="ai-mode" role="tabpanel" aria-labelledby="tab-ai" tabindex="0" hidden>
@@ -64,7 +64,7 @@
       <div class="field">
         <label for="lang">Language being assessed</label>
         <select id="lang" required></select>
-        <input id="lang_other" type="text" placeholder="Type the language" style="display:none; margin-top:6px;" />
+        <input id="lang_other" type="text" placeholder="Type the language" class="field-other-input" hidden />
         <span class="help">Pick the language the student is learning. The two English options distinguish "native/advanced" (test prep, writing improvement) from "ESL/EFL" (English as a second language).</span>
       </div>
       <div class="field">
@@ -91,7 +91,7 @@
       <input type="hidden" id="image-mime" name="image_mime" value="" />
       <button type="submit" id="ai-go">Assess</button>
     </form>
-    <section id="ai-result" class="result" style="display:none;"></section>
+    <section id="ai-result" class="result" hidden></section>
   </section>
 </main>
 

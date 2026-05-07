@@ -34,7 +34,7 @@ async function render() {
     .map(renderRow)
     .join('') || '<p class="small">For international clients, default to Wise or Stripe Link.</p>';
 
-  $('result').style.display = 'block';
+  $('result').hidden = false;
 }
 
 function renderRow(m) {

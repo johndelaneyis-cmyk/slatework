@@ -17,10 +17,10 @@ const SW = window.Slatework;
   sel.addEventListener('change', () => {
     const otherInput = $('target_other');
     if (sel.value === 'Other') {
-      otherInput.style.display = '';
+      otherInput.hidden = false;
       otherInput.required = true;
     } else {
-      otherInput.style.display = 'none';
+      otherInput.hidden = true;
       otherInput.required = false;
     }
   });
@@ -36,9 +36,9 @@ $('form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = $('go');
   btn.disabled = true;
-  $('result').style.display = 'block';
+  $('result').hidden = false;
   $('worksheet').innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>DRAFTING THE WORKSHEET</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15–40 seconds. Worksheet first, answer key after.</p></div>';
-  $('answer-key').style.display = 'none';
+  $('answer-key').hidden = true;
   try {
     const r = await fetch('/api/worksheet', {
       method: 'POST',
@@ -70,15 +70,15 @@ $('form').addEventListener('submit', async (e) => {
 });
 
 $('print-ws').addEventListener('click', () => {
-  $('answer-key').style.display = 'none';
-  $('worksheet').style.display = '';
+  $('answer-key').hidden = true;
+  $('worksheet').hidden = false;
   window.print();
 });
 $('print-ak').addEventListener('click', () => {
-  $('worksheet').style.display = 'none';
-  $('answer-key').style.display = '';
+  $('worksheet').hidden = true;
+  $('answer-key').hidden = false;
   window.print();
-  setTimeout(() => { $('worksheet').style.display = ''; }, 500);
+  setTimeout(() => { $('worksheet').hidden = false; }, 500);
 });
 
 function renderMarkdown(md) {

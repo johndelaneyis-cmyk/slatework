@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="Lesson plan generator — Slatework" />
   <meta name="twitter:description" content="Generate a structured, level-appropriate language lesson plan for 1:1, small group, or classroom mode — in seconds. Free and private." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=6" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -50,13 +50,13 @@
       <div class="field">
         <label for="target">Target language</label>
         <select id="target" required></select>
-        <input id="target_other" type="text" placeholder="Type the target language" style="display:none; margin-top:6px;" />
+        <input id="target_other" type="text" placeholder="Type the target language" class="field-other-input" hidden />
         <span class="help">Pick the language the student is learning. The two English options distinguish "native/advanced" (test prep, writing improvement) from "ESL/EFL" (English as a second language).</span>
       </div>
       <div class="field">
         <label for="source">Source language</label>
         <select id="source" required></select>
-        <input id="source_other" type="text" placeholder="Type the source language" style="display:none; margin-top:6px;" />
+        <input id="source_other" type="text" placeholder="Type the source language" class="field-other-input" hidden />
         <span class="help">The language the student already speaks. Defaults to English.</span>
       </div>
     </div>
@@ -98,7 +98,7 @@
     <button type="submit" id="go">Generate plan</button>
   </form>
 
-  <section id="result" class="result" style="display:none;"></section>
+  <section id="result" class="result" hidden></section>
 </main>
 
 <footer class="site-footer">

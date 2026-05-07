@@ -59,7 +59,7 @@ async function render() {
 
   $('notes').textContent = t.notes || '';
   $('last-verified').textContent = `Verified ${pack.data_source_last_verified}. Tax rules change; confirm before filing.`;
-  $('result').style.display = 'block';
+  $('result').hidden = false;
 }
 
 function formatAmount(n, pack) {

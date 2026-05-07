@@ -53,10 +53,10 @@ const SW = window.Slatework;
     selectEl.addEventListener('change', () => {
       const otherInput = document.getElementById(otherInputId);
       if (selectEl.value === 'Other') {
-        otherInput.style.display = '';
+        otherInput.hidden = false;
         otherInput.required = true;
       } else {
-        otherInput.style.display = 'none';
+        otherInput.hidden = true;
         otherInput.required = false;
       }
     });
@@ -76,7 +76,7 @@ $('form').addEventListener('submit', async (e) => {
   const btn = $('go');
   const result = $('result');
   btn.disabled = true;
-  result.style.display = 'block';
+  result.hidden = false;
   result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>COMPOSING ON THE SLATE</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10–40 seconds. Don\'t refresh — the model is writing, not stuck.</p></div>';
 
   try {
@@ -98,7 +98,7 @@ $('form').addEventListener('submit', async (e) => {
       return;
     }
     const data = await r.json();
-    result.innerHTML = '<div id="md">' + renderMarkdown(data.markdown || '') + '</div><p class="small" style="margin-top:1rem;">Tip: select all and paste into your notes; the formatting comes through.</p>';
+    result.innerHTML = '<div id="md">' + renderMarkdown(data.markdown || '') + '</div><p class="small mt-1">Tip: select all and paste into your notes; the formatting comes through.</p>';
   } catch {
     result.innerHTML = '<p>Network error. Try again in a moment.</p>';
   } finally {

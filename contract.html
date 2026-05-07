@@ -17,26 +17,7 @@
   <meta name="twitter:title" content="Parent-tutor contract builder — Slatework" />
   <meta name="twitter:description" content="Generate a printable parent-tutor lesson agreement with your name, rate, cancellation policy, and a parent-welcome paragraph — entirely in your browser." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
-  <style>
-    @media print {
-      .no-print { display: none !important; }
-      body { background: #fff; }
-      .container { max-width: none; padding: 1.5cm; }
-      .preview { box-shadow: none; border: none; }
-    }
-    .preview {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow-sm);
-      font-family: Georgia, "Times New Roman", serif;
-      line-height: 1.7;
-    }
-    .preview h2 { font-family: inherit; font-size: 1.4rem; }
-    .preview h3 { font-family: inherit; font-size: 1.05rem; margin-top: 1.6rem; }
-  </style>
+  <link rel="stylesheet" href="/src/lib/styles.css?v=6" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -106,13 +87,13 @@
           <option value="custom">Custom (write your own)</option>
         </select>
       </div>
-      <div class="field" id="welcome_custom_field" style="display:none;">
+      <div class="field" id="welcome_custom_field" hidden>
         <label for="welcome_custom">Custom welcome paragraph</label>
         <textarea id="welcome_custom" placeholder="Type your own welcome paragraph here."></textarea>
         <span class="help">Tip: keep it under 80 words. The contract preview updates as you type.</span>
       </div>
 
-      <div class="field" style="margin-top:1.5rem;">
+      <div class="field mt-15">
         <button type="button" id="print-btn">Print / save as PDF</button>
       </div>
     </form>

@@ -1604,3 +1604,153 @@ ul.checklist li::before {
 .threshold-callout.positive .mono-caption {
   color: var(--chalk-green);
 }
+
+/* ============================================================================
+   Strict-CSP utility / state classes (added 2026-05-07)
+   Replaces inline style="..." attrs across the site so CSP style-src can
+   drop 'unsafe-inline'. Direct .style.X = Y JS access is still allowed
+   under strict CSP (only setAttribute('style', ...) and inline attrs are
+   blocked) — JS toggles via element.hidden or .style.display continue to
+   work below.
+   ============================================================================ */
+
+[hidden] { display: none !important; }
+
+/* Margin / spacing utilities (small set, used at most a handful of places each) */
+.mt-0   { margin-top: 0 !important; }
+.mt-half{ margin-top: 0.5rem; }
+.mt-06  { margin-top: 0.6rem; }
+.mt-07  { margin-top: 0.7rem; }
+.mt-1   { margin-top: 1rem; }
+.mt-15  { margin-top: 1.5rem; }
+.mt-2   { margin-top: 2rem; }
+.mt-3   { margin-top: 3rem; }
+.m-0    { margin: 0; }
+.helper-margin { margin: 0.6rem 0 0; }
+
+/* Text */
+.text-center { text-align: center; }
+.preserve-newlines { white-space: pre-line; }
+
+/* Forms / tab patterns */
+.tab-row {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.cefr-radio-group {
+  display: flex;
+  gap: 1rem;
+}
+.field-other-input { margin-top: 6px; }
+
+/* 404 page */
+.notfound-main {
+  text-align: center;
+  padding-top: 4rem;
+}
+
+/* About page rule + dedication */
+.about-rule {
+  margin: 3rem 0 1.5rem;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.about-dedication {
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 1.0625rem;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+/* Feedback widget (extracted from feedback.js inline-style soup) */
+.feedback-widget {
+  margin: 3rem 0 1rem;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.fb-prompt { margin: 0 0 0.5rem; font-size: 0.95rem; }
+.fb-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.fb-btn {
+  font: inherit;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.fb-btn-send {
+  font: inherit;
+  padding: 0.4rem 0.8rem;
+  background: var(--ink);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.fb-btn-skip {
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  background: transparent;
+  color: var(--ink-muted);
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.fb-status {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin-left: 0.5rem;
+}
+.fb-note {
+  margin-top: 0.7rem;
+  width: 100%;
+  min-height: 4rem;
+  font: inherit;
+  padding: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+.fb-actions {
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.fb-actions:not([hidden]) { display: flex; }
+
+/* Contract preview (was inline <style> in contract.html) */
+.preview {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.7;
+}
+.preview h2 { font-family: inherit; font-size: 1.4rem; }
+.preview h3 { font-family: inherit; font-size: 1.05rem; margin-top: 1.6rem; }
+
+/* Worksheet preview (was inline <style> in worksheet.html) */
+#worksheet,
+#answer-key {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.7;
+}
+
+/* Print rules (consolidated from contract.html + worksheet.html inline blocks) */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  .container { max-width: none; padding: 1.5cm; }
+  .preview { box-shadow: none; border: none; }
+  .result { box-shadow: none; border: none; padding: 0; }
+}
