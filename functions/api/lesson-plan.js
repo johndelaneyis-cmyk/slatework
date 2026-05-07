@@ -1,7 +1,7 @@
 // POST /api/lesson-plan
 // Generates a structured language lesson plan (1:1, small group, or classroom).
 
-import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed, userFacingClaudeError } from "../_lib.js";
 
 export const onRequestOptions = () => corsPreflight('POST');
 export const onRequest = () => methodNotAllowed('POST');
@@ -92,7 +92,8 @@ export async function onRequestPost({ request, env }) {
     const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
     const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userMsg, max_tokens: 2000 });
     return jsonResponse({ markdown: text }, 200);
-  } catch (e) {
-    return jsonResponse({ error: 'Could not generate the lesson plan. Try again in a moment.' }, 502);
+  } catch (err) {
+    const { error, status } = userFacingClaudeError(err, 'generate the lesson plan');
+    return jsonResponse({ error }, status);
   }
 }

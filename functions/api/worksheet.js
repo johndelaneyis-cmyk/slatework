@@ -1,7 +1,7 @@
 // POST /api/worksheet
 // Generates a printable language worksheet plus a matching answer key.
 
-import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed, userFacingClaudeError } from "../_lib.js";
 
 export const onRequestOptions = () => corsPreflight('POST');
 export const onRequest = () => methodNotAllowed('POST');
@@ -87,7 +87,8 @@ export async function onRequestPost({ request, env }) {
       worksheet: text.slice(0, idx).trim(),
       answer_key: text.slice(idx + '---ANSWER-KEY---'.length).trim()
     }, 200);
-  } catch {
-    return jsonResponse({ error: 'Could not generate the worksheet. Try again in a moment.' }, 502);
+  } catch (err) {
+    const { error, status } = userFacingClaudeError(err, 'generate the worksheet');
+    return jsonResponse({ error }, status);
   }
 }

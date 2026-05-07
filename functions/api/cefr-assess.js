@@ -1,7 +1,7 @@
 // POST /api/cefr-assess
 // Assesses a writing sample against the CEFR scale and returns level + reasoning.
 
-import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed, userFacingClaudeError } from "../_lib.js";
 
 export const onRequestOptions = () => corsPreflight('POST');
 export const onRequest = () => methodNotAllowed('POST');
@@ -85,7 +85,7 @@ export async function onRequestPost({ request, env }) {
       parsed = m ? JSON.parse(m[0]) : null;
     } catch {}
     if (!parsed || !parsed.level) {
-      return jsonResponse({ error: 'Assessment came back malformed. Try again.' }, 502);
+      return jsonResponse({ error: 'Assessment came back malformed (no level field in response). Try again, or shorten the sample.' }, 502);
     }
     const out = {
       level: parsed.level,
@@ -96,7 +96,8 @@ export async function onRequestPost({ request, env }) {
       out.extracted_text = parsed.extracted_text;
     }
     return jsonResponse(out, 200);
-  } catch {
-    return jsonResponse({ error: 'Could not assess. Try again in a moment.' }, 502);
+  } catch (err) {
+    const { error, status } = userFacingClaudeError(err, 'assess the writing');
+    return jsonResponse({ error }, status);
   }
 }

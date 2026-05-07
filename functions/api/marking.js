@@ -2,7 +2,7 @@
 // Highlights error categories in a student's writing and returns
 // level-matched feedback variants the teacher can paste back.
 
-import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed, userFacingClaudeError } from "../_lib.js";
 
 export const onRequestOptions = () => corsPreflight('POST');
 export const onRequest = () => methodNotAllowed('POST');
@@ -125,7 +125,8 @@ export async function onRequestPost({ request, env }) {
     const model = env.ANTHROPIC_MODEL || DEFAULT_MODEL;
     const text = await callClaude(env, { model, system: SYSTEM_PROMPT, user: userPayload, max_tokens: 2500 });
     return jsonResponse({ markdown: text }, 200);
-  } catch {
-    return jsonResponse({ error: 'Could not mark the sample. Try again in a moment.' }, 502);
+  } catch (err) {
+    const { error, status } = userFacingClaudeError(err, 'mark the sample');
+    return jsonResponse({ error }, status);
   }
 }
