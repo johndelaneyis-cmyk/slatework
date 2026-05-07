@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="Parent-tutor contract builder — Slatework" />
   <meta name="twitter:description" content="Generate a printable parent-tutor lesson agreement with your name, rate, cancellation policy, and a parent-welcome paragraph — entirely in your browser." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=3" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=4" />
   <style>
     @media print {
       .no-print { display: none !important; }
@@ -162,7 +162,13 @@ function render() {
 
   const welcome = welcomePara(welcomeTone, tutor, subject, years, customText);
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = (() => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  })();
 
   $('preview').innerHTML = `
     <h2 style="text-align:center;">${escapeHtml(subject)} — Lesson Agreement</h2>

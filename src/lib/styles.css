@@ -1067,7 +1067,7 @@ button, .btn {
   gap: 8px;
   min-height: 44px;
   letter-spacing: -0.005em;
-  transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+  transition: background-color var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
 }
 
 button:hover, .btn:hover { background: var(--ink-2); border-color: var(--ink-2); color: #ffffff; }
@@ -1077,7 +1077,11 @@ button:focus-visible, .btn:focus-visible {
   outline-offset: 2px;
 }
 
-button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  button:not(:disabled):active, .btn:not(:disabled):active { transform: scale(0.97); }
+}
 
 .btn.secondary, button.secondary {
   background: transparent;

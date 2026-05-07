@@ -82,13 +82,21 @@
     const ab = await readAsArrayBuffer(file);
     const doc = await pdfjs.getDocument({ data: ab }).promise;
     const out = [];
-    for (let i = 1; i <= doc.numPages; i++) {
-      const page = await doc.getPage(i);
-      const content = await page.getTextContent();
-      const pageText = content.items.map(it => (it.str || '')).join(' ');
-      out.push(pageText);
+    try {
+      for (let i = 1; i <= doc.numPages; i++) {
+        const page = await doc.getPage(i);
+        try {
+          const content = await page.getTextContent();
+          const pageText = content.items.map(it => (it.str || '')).join(' ');
+          out.push(pageText);
+        } finally {
+          page.cleanup();
+        }
+      }
+      return out.join('\n\n');
+    } finally {
+      try { await doc.destroy(); } catch {}
     }
-    return out.join('\n\n');
   }
 
   function attachFileDrop(options) {
@@ -134,7 +142,10 @@
       e.stopPropagation();
       dropZone.classList.remove('drag-over');
       const dt = e.dataTransfer;
-      if (!dt || !dt.files || !dt.files[0]) return;
+      if (!dt || !dt.files || !dt.files.length) return;
+      if (dt.files.length > 1) {
+        onStatus(`Multi-file drops aren't supported — using "${dt.files[0].name}", ignoring ${dt.files.length - 1} other file${dt.files.length - 1 === 1 ? '' : 's'}.`);
+      }
       handleFile(dt.files[0]);
     });
 
