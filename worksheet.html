@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="Worksheet + answer-key generator — Slatework" />
   <meta name="twitter:description" content="Generate a printable language worksheet plus a matching answer key in seconds — pick the topic, level, format, and question count. Free and private." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=4" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
   <style>
     @media print {
       .no-print { display: none !important; }
@@ -161,7 +161,7 @@ $('form').addEventListener('submit', async (e) => {
   const btn = $('go');
   btn.disabled = true;
   $('result').style.display = 'block';
-  $('worksheet').innerHTML = '<p>Generating…</p>';
+  $('worksheet').innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>DRAFTING THE WORKSHEET</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15–40 seconds. Worksheet first, answer key after.</p></div>';
   $('answer-key').style.display = 'none';
   try {
     const r = await fetch('/api/worksheet', {

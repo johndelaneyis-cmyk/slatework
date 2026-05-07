@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="CEFR proficiency mapper — Slatework" />
   <meta name="twitter:description" content="Place a language student at A1–C2 using the CEFR Can-Do framework. Default rule-based assessment with an optional AI mode for sample-writing input." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=4" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -246,7 +246,7 @@ $('ai-form').addEventListener('submit', async (e) => {
   if (!sampleVal && !imageData) { result.style.display = 'block'; result.innerHTML = '<p>Paste writing or attach a file/photo first.</p>'; return; }
   btn.disabled = true;
   result.style.display = 'block';
-  result.innerHTML = '<p>Assessing…</p>';
+  result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>PLACING THE STUDENT</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10–25 seconds. Reading the sample, mapping the level.</p></div>';
   try {
     const r = await fetch('/api/cefr-assess', {
       method: 'POST',

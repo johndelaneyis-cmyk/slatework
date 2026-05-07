@@ -1150,6 +1150,98 @@ button:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: n
 .result .row:last-child { border-bottom: none; }
 .result .row strong { color: var(--ink); font-weight: 600; }
 
+/* Slate-loading: chalkboard-themed loading state for AI tools.
+   Replaces the bare "<p>Generating…</p>" with a panel that matches the
+   hero's chalk vibe — dark slate, chalk-dust texture, chalk-dot ellipsis,
+   honest time-estimate caption. */
+.slate-loading {
+  background: linear-gradient(180deg, var(--slate-board) 0%, var(--slate-deep) 100%);
+  border: 1px solid var(--slate-rim);
+  border-radius: var(--radius-md);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+}
+
+.slate-loading::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(248, 250, 252, 0.05) 0px, transparent 1.2px),
+    radial-gradient(circle at 75% 70%, rgba(248, 250, 252, 0.04) 0px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(248, 250, 252, 0.03) 0px, transparent 0.8px);
+  background-size: 5px 5px, 7px 7px, 4px 4px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.slate-loading > * { position: relative; z-index: 1; }
+
+.slate-loading .mono-caption {
+  color: var(--chalk-faint);
+  margin: 0 0 1.25rem 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.slate-loading .mono-caption .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--chalk-accent);
+  margin-right: 8px;
+  vertical-align: 1px;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.chalk-dots {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 1.25rem 0;
+}
+
+.chalk-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--chalk-mute);
+  opacity: 0.25;
+  animation: chalk-bounce 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+.chalk-dot:nth-child(2) { animation-delay: 0.18s; }
+.chalk-dot:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes chalk-bounce {
+  0%, 70%, 100% { opacity: 0.25; transform: translateY(0); }
+  35% { opacity: 0.95; transform: translateY(-5px); }
+}
+
+.slate-loading-sub {
+  color: var(--chalk-faint);
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  font-style: italic;
+  margin: 0.75rem 0 0;
+  max-width: 32ch;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chalk-dot { animation: none; opacity: 0.7; }
+  .slate-loading .mono-caption .dot { animation: none; }
+}
+
 /* Privacy notice */
 .privacy-notice {
   background: var(--surface-2);

@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="Lesson plan generator — Slatework" />
   <meta name="twitter:description" content="Generate a structured, level-appropriate language lesson plan for 1:1, small group, or classroom mode — in seconds. Free and private." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=4" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=5" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -188,7 +188,7 @@ $('form').addEventListener('submit', async (e) => {
   const result = $('result');
   btn.disabled = true;
   result.style.display = 'block';
-  result.innerHTML = '<p>Generating…</p>';
+  result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>COMPOSING ON THE SLATE</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10–40 seconds. Don\'t refresh — the model is writing, not stuck.</p></div>';
 
   try {
     const r = await fetch('/api/lesson-plan', {
