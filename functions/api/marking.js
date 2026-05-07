@@ -78,7 +78,10 @@ export async function onRequestPost({ request, env }) {
 
   const fp = await ipHash(request);
   const rate = await rateCheck(env, fp, 'marking', PER_IP_DAILY, GLOBAL_DAILY);
-  if (!rate.ok) return jsonResponse({ error: rate.reason }, rate.status || 429);
+  if (!rate.ok) {
+    const headers = rate.retryAfterSec ? { 'Retry-After': String(rate.retryAfterSec) } : {};
+    return jsonResponse({ error: rate.reason }, rate.status || 429, headers);
+  }
 
   const userMsg = [
     `Target language: ${language}`,

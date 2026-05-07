@@ -45,6 +45,18 @@ export async function ipHash(request) {
   return [...new Uint8Array(hash)].slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+// Seconds remaining until 00:00 UTC tomorrow — used for Retry-After on
+// daily-bucket rate limits so polite clients can backoff intelligently.
+function secondsUntilMidnightUtc() {
+  const now = new Date();
+  const tomorrow = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() + 1
+  ));
+  return Math.max(60, Math.floor((tomorrow.getTime() - now.getTime()) / 1000));
+}
+
 export async function rateCheck(env, fingerprint, tool, perIpDaily, globalDaily) {
   if (!env.RATE_LIMITS) {
     return { ok: true, reason: 'KV not configured (dev)' };
@@ -60,8 +72,9 @@ export async function rateCheck(env, fingerprint, tool, perIpDaily, globalDaily)
   const ipCount = parseInt(ipCountStr || '0', 10);
   const globalCount = parseInt(globalCountStr || '0', 10);
 
-  if (ipCount >= perIpDaily) return { ok: false, status: 429, reason: 'Personal daily limit reached. Try tomorrow.' };
-  if (globalCount >= globalDaily) return { ok: false, status: 429, reason: 'Site-wide daily limit reached. Try in a few hours.' };
+  const retryAfterSec = secondsUntilMidnightUtc();
+  if (ipCount >= perIpDaily) return { ok: false, status: 429, reason: 'Personal daily limit reached. Try tomorrow.', retryAfterSec };
+  if (globalCount >= globalDaily) return { ok: false, status: 429, reason: 'Site-wide daily limit reached. Try in a few hours.', retryAfterSec: Math.min(3600, retryAfterSec) };
 
   await Promise.all([
     env.RATE_LIMITS.put(ipKey, String(ipCount + 1), { expirationTtl: 86400 * 2 }),
@@ -141,17 +154,36 @@ export async function callGoogleVision(env, { base64, mime, timeoutMs = 30000 })
 }
 
 // Single attempt. Used internally by callClaude. Throws ClaudeError on failure.
-async function callClaudeOnce(env, { model, system, user, max_tokens = 1500, timeoutMs = 55000 }) {
+//
+// Prompt caching: when the system prompt is a long stable string (>1024 chars
+// is roughly the threshold worth caching), automatically wrap it in a
+// content-array form with cache_control: ephemeral so Anthropic caches the
+// prefix for 5 minutes. Cuts input-token cost ~90% on cache hits during
+// launch traffic. Endpoints can opt out by passing `cache: false`.
+async function callClaudeOnce(env, { model, system, user, max_tokens = 1500, timeoutMs = 55000, cache = true }) {
   if (!env.ANTHROPIC_API_KEY) {
     throw new ClaudeError('auth', 0, '', 'ANTHROPIC_API_KEY not set');
   }
   const userContent = typeof user === 'string'
     ? [{ type: 'text', text: user }]
     : user;
+
+  // Build the system param. If it's a string and long enough, wrap with
+  // ephemeral cache_control. If it's already an array, pass through (caller
+  // has full control). If it's short or cache=false, leave as a plain string.
+  let systemParam;
+  if (Array.isArray(system)) {
+    systemParam = system;
+  } else if (typeof system === 'string' && cache && system.length > 1024) {
+    systemParam = [{ type: 'text', text: system, cache_control: { type: 'ephemeral' } }];
+  } else {
+    systemParam = system;
+  }
+
   const body = {
     model,
     max_tokens,
-    system,
+    system: systemParam,
     messages: [{ role: 'user', content: userContent }]
   };
 

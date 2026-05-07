@@ -2,6 +2,7 @@
 // Loaded via <script src="/src/lib/page-cefr.js" defer> from cefr.html.
 const SW = window.Slatework;
 const $ = (id) => document.getElementById(id);
+const escapeHtml = SW.escapeHtml;
 
 // Build language dropdown from Slatework.targetLanguageList() — curated, deduped.
 (function buildLangDropdown() {
@@ -156,45 +157,58 @@ $('rules-go').addEventListener('click', () => {
   r.hidden = false;
 });
 
-// --- AI mode (wired in Phase 2 — endpoint exists in Phase 2)
-$('ai-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+// --- AI mode
+$('ai-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
   const result = $('ai-result');
   const btn = $('ai-go');
+  const langEl = $('lang');
+  const sampleEl = $('sample');
+  langEl.removeAttribute('aria-invalid');
+  sampleEl.removeAttribute('aria-invalid');
   const lang = resolveLangVal();
-  if (!lang) { result.hidden = false; result.innerHTML = '<p>Pick a target language.</p>'; return; }
-  const sampleVal = $('sample').value.trim();
-  if (!sampleVal) { result.hidden = false; result.innerHTML = '<p>Paste writing or attach a file/photo first (the photo will be auto-extracted to text).</p>'; return; }
+  if (!lang) {
+    langEl.setAttribute('aria-invalid', 'true');
+    result.hidden = false;
+    result.innerHTML = '<p>Pick a target language.</p>';
+    langEl.focus();
+    return;
+  }
+  const sampleVal = sampleEl.value.trim();
+  if (!sampleVal) {
+    sampleEl.setAttribute('aria-invalid', 'true');
+    result.hidden = false;
+    result.innerHTML = '<p>Paste writing or attach a file/photo first (the photo will be auto-extracted to text).</p>';
+    sampleEl.focus();
+    return;
+  }
   btn.disabled = true;
   result.hidden = false;
-  result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>PLACING THE STUDENT</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10–25 seconds. Reading the sample, mapping the level.</p></div>';
+  result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>PLACING THE STUDENT</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10&ndash;25 seconds. Reading the sample, mapping the level.</p></div>';
   try {
     const r = await fetch('/api/cefr-assess', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         target_language: lang,
-        sample: $('sample').value
+        sample: sampleEl.value
       })
     });
     if (!r.ok) {
-      const e = await r.json().catch(() => ({}));
-      const msg = e.error || 'Could not assess. Try again in a moment.';
-      result.innerHTML = `<div class="error-block"><p>${escapeHtml(msg).replace(/\n/g, '<br>')}</p></div>`;
+      const errBody = await r.json().catch(() => ({}));
+      const msg = errBody.error || 'Could not assess. Try again in a moment.';
+      result.innerHTML = '<div class="error-block"><p>' + escapeHtml(msg).replace(/\n/g, '<br>') + '</p></div>';
       return;
     }
     const data = await r.json();
-    result.innerHTML = `
-      <div class="row"><span>Placement</span><strong>${escapeHtml(data.level || '—')}</strong></div>
-      <div class="row"><span>Confidence</span><strong>${escapeHtml(data.confidence || '—')}</strong></div>
-      <h3 class="mt-06">Reasoning</h3>
-      <p>${escapeHtml(data.reasoning || '').replace(/\n/g, '<br>')}</p>
-    `;
+    result.innerHTML =
+      '<div class="row"><span>Placement</span><strong>' + escapeHtml(data.level || '—') + '</strong></div>' +
+      '<div class="row"><span>Confidence</span><strong>' + escapeHtml(data.confidence || '—') + '</strong></div>' +
+      '<h3 class="mt-06">Reasoning</h3>' +
+      '<p>' + escapeHtml(data.reasoning || '').replace(/\n/g, '<br>') + '</p>';
   } catch {
     result.innerHTML = '<p>Network error. Try again in a moment.</p>';
   } finally {
     btn.disabled = false;
   }
 });
-
-function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }

@@ -2,6 +2,8 @@
 // Loaded via <script src="/src/lib/page-lesson-plan.js" defer> from lesson-plan.html.
 const $ = (id) => document.getElementById(id);
 const SW = window.Slatework;
+const renderMarkdown = SW.renderMarkdown;
+const escapeHtml = SW.escapeHtml;
 
 // Build target dropdown from Slatework.targetLanguageList() — curated, deduped.
 // Build source dropdown from a hard-coded short list of likely instruction languages.
@@ -44,7 +46,7 @@ const SW = window.Slatework;
   }
   const sourceOther = document.createElement('option');
   sourceOther.value = 'Other';
-  sourceOther.textContent = 'Other (type below)';
+  sourceOther.textContent = "Other — I'll type it";
   sourceSel.appendChild(sourceOther);
   sourceSel.value = 'English';
 
@@ -71,13 +73,17 @@ function resolveLang(selectId, otherId) {
   return sel.value;
 }
 
-$('form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+$('form').addEventListener('submit', async (event) => {
+  event.preventDefault();
   const btn = $('go');
   const result = $('result');
+  // Clear any previous aria-invalid state.
+  ['target_other', 'source_other', 'goal'].forEach((id) => {
+    const el = $(id); if (el) el.removeAttribute('aria-invalid');
+  });
   btn.disabled = true;
   result.hidden = false;
-  result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>COMPOSING ON THE SLATE</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10–40 seconds. Don\'t refresh — the model is writing, not stuck.</p></div>';
+  result.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>COMPOSING ON THE SLATE</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 10&ndash;40 seconds. Don\'t refresh &mdash; the model is writing, not stuck.</p></div>';
 
   try {
     const r = await fetch('/api/lesson-plan', {
@@ -93,8 +99,10 @@ $('form').addEventListener('submit', async (e) => {
       })
     });
     if (!r.ok) {
-      const e = await r.json().catch(() => ({}));
-      result.innerHTML = '<p>' + escapeHtml(e.error || 'Could not generate plan. Try again.') + '</p>';
+      const errBody = await r.json().catch(() => ({}));
+      const goalEl = $('goal');
+      if (goalEl && r.status === 400) goalEl.setAttribute('aria-invalid', 'true');
+      result.innerHTML = '<p>' + escapeHtml(errBody.error || 'Could not generate plan. Try again.') + '</p>';
       return;
     }
     const data = await r.json();
@@ -105,26 +113,3 @@ $('form').addEventListener('submit', async (e) => {
     btn.disabled = false;
   }
 });
-
-function renderMarkdown(md) {
-  // Tiny markdown subset: headers (## ###), lists (- ), paragraphs.
-  const lines = md.split('\n');
-  let html = '';
-  let inList = false;
-  for (const raw of lines) {
-    const line = raw.trim();
-    if (!line) {
-      if (inList) { html += '</ul>'; inList = false; }
-      html += '\n';
-      continue;
-    }
-    if (line.startsWith('### ')) { if (inList) { html += '</ul>'; inList = false; } html += '<h3>' + escapeHtml(line.slice(4)) + '</h3>'; }
-    else if (line.startsWith('## ')) { if (inList) { html += '</ul>'; inList = false; } html += '<h2>' + escapeHtml(line.slice(3)) + '</h2>'; }
-    else if (line.startsWith('- ')) { if (!inList) { html += '<ul>'; inList = true; } html += '<li>' + escapeHtml(line.slice(2)) + '</li>'; }
-    else { if (inList) { html += '</ul>'; inList = false; } html += '<p>' + escapeHtml(line) + '</p>'; }
-  }
-  if (inList) html += '</ul>';
-  return html;
-}
-
-function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }

@@ -17,12 +17,29 @@ export async function onRequestPost({ request, env }) {
 
   const email = String(body.email || '').trim().toLowerCase();
   const first_name = String(body.first_name || '').trim().slice(0, 60);
+  const honeypot = String(body.website || body.url || '').trim();
+
+  // Bot honeypot — if a hidden field gets filled, return 200 like a normal
+  // success but skip the actual subscribe. Bots think they won; we don't
+  // burn Buttondown rate or KV writes.
+  if (honeypot) {
+    return jsonResponse({ ok: true }, 200);
+  }
 
   if (!isPlausibleEmail(email)) return jsonResponse({ error: 'Please enter a valid email.' }, 400);
 
+  // Refuse if KV is unconfigured AND Buttondown is configured — otherwise
+  // dedupe silently no-ops and we burn Buttondown rate-limits on dupes.
+  if (!env.RATE_LIMITS && env.BUTTONDOWN_API_KEY) {
+    return jsonResponse({ error: 'Newsletter is temporarily unavailable. Try again later.' }, 503);
+  }
+
   const fp = await ipHash(request);
   const rate = await rateCheck(env, fp, 'newsletter', PER_IP_DAILY, GLOBAL_DAILY);
-  if (!rate.ok) return jsonResponse({ error: rate.reason }, rate.status || 429);
+  if (!rate.ok) {
+    const headers = rate.retryAfterSec ? { 'Retry-After': String(rate.retryAfterSec) } : {};
+    return jsonResponse({ error: rate.reason }, rate.status || 429, headers);
+  }
 
   // Dedupe via SHA-256 hash kept in KV (RATE_LIMITS namespace).
   const emailHash = await sha256Hex(email);

@@ -3,14 +3,26 @@
 // Useful to debug 403 errors. Cache headers prevent caching so refreshes
 // always hit Anthropic. Returns 503 if the key isn't set.
 //
-// Not linked anywhere; only exists for ad-hoc curl / browser visit.
+// GATED: requires ?token=<DIAG_TOKEN env var>. Returns 404 (not 401) on
+// bad/missing token to avoid signaling that the endpoint exists. If
+// DIAG_TOKEN isn't configured at all, the endpoint is fully disabled
+// (returns 404). Closes Section E #9 from 2026-05-08 audit.
 
 import { jsonResponse, corsPreflight, methodNotAllowed } from "../_lib.js";
 
 export const onRequestOptions = () => corsPreflight('GET');
 export const onRequest = () => methodNotAllowed('GET');
 
-export async function onRequestGet({ env }) {
+export async function onRequestGet({ request, env }) {
+  // Token gate. Returns plain 404 to look like the endpoint doesn't exist.
+  const url = new URL(request.url);
+  const provided = url.searchParams.get('token') || '';
+  if (!env.DIAG_TOKEN || provided !== env.DIAG_TOKEN) {
+    return new Response('Not Found', {
+      status: 404,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' }
+    });
+  }
   if (!env.ANTHROPIC_API_KEY) {
     return jsonResponse({ error: 'ANTHROPIC_API_KEY not set on the server.' }, 503);
   }
