@@ -136,33 +136,44 @@ async function callClaudeOnce(env, { model, system, user, max_tokens = 1500, tim
   return (data.content || []).map(c => c.text || '').join('');
 }
 
-// Fallback model to retry on permission/auth errors. If the primary model is
-// gated (account tier, sunset, region), auto-retry with the more broadly
-// accessible Haiku 4.5 so users still get a result. Configurable via env.
-const FALLBACK_MODEL = 'claude-haiku-4-5';
+// Multi-step model fallback. If the primary model returns 403 (gating /
+// alias / tier issue, NOT a 401 invalid-key issue), retry through the chain.
+// The chain prioritizes Sonnet quality, then degrades to Haiku as a last
+// resort. Configurable via ANTHROPIC_FALLBACK_MODELS env (comma-separated).
+const DEFAULT_FALLBACK_CHAIN = [
+  'claude-sonnet-4-5',           // common alias if 4-6 isn't recognized
+  'claude-sonnet-4-5-20250929',  // dated alias as a third try
+  'claude-haiku-4-5'             // final fallback — broadly available
+];
 
 export async function callClaude(env, opts) {
   const primary = opts.model;
-  const fallback = env.ANTHROPIC_FALLBACK_MODEL || FALLBACK_MODEL;
-  try {
-    return await callClaudeOnce(env, opts);
-  } catch (err) {
-    // Auto-retry once with the fallback model on auth/permission errors —
-    // covers the case where the key is fine but the primary model is gated.
-    // Don't fall back on rate limits, timeouts, or invalid input — those are
-    // not solved by changing models.
-    if (err instanceof ClaudeError && err.code === 'auth' && err.status === 403 && primary !== fallback) {
-      console.error(`[claude_fallback] primary=${primary} 403, retrying with ${fallback}`);
-      try {
-        return await callClaudeOnce(env, { ...opts, model: fallback });
-      } catch (err2) {
-        // If fallback also fails, surface the ORIGINAL error (more useful
-        // diagnostically since it points at the primary model's gating).
+  const envChain = env.ANTHROPIC_FALLBACK_MODELS
+    ? env.ANTHROPIC_FALLBACK_MODELS.split(',').map(s => s.trim()).filter(Boolean)
+    : DEFAULT_FALLBACK_CHAIN;
+  // Build the full chain: primary first, then any fallback we haven't tried
+  const chain = [primary, ...envChain.filter(m => m !== primary)];
+
+  let firstErr = null;
+  for (let i = 0; i < chain.length; i++) {
+    const model = chain[i];
+    try {
+      const result = await callClaudeOnce(env, { ...opts, model });
+      if (i > 0) console.error(`[claude_fallback] primary=${primary} failed, succeeded with ${model}`);
+      return result;
+    } catch (err) {
+      if (!firstErr) firstErr = err;
+      // Only retry on 403 (model gating) — other errors won't be fixed by
+      // changing models, surface them immediately.
+      if (!(err instanceof ClaudeError && err.code === 'auth' && err.status === 403)) {
         throw err;
       }
+      console.error(`[claude_fallback] ${model} returned 403, trying next in chain`);
     }
-    throw err;
   }
+  // All models in chain returned 403 — surface the original error since
+  // it points at the primary's gating (most diagnostically useful).
+  throw firstErr;
 }
 
 // Pull human-readable detail out of an Anthropic error body. Tries (in
