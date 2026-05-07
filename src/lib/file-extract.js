@@ -149,6 +149,19 @@
       handleFile(dt.files[0]);
     });
 
+    function applyTextToTextarea(text, fileName) {
+      // Respect textarea.maxLength (set by each tool to match its API cap).
+      // Fallback to 8000 chars if no maxlength on the element.
+      const cap = (textarea.maxLength && textarea.maxLength > 0) ? textarea.maxLength : 8000;
+      if (text.length > cap) {
+        textarea.value = text.slice(0, cap);
+        onStatus(`Loaded ${fileName} — extracted text was ${text.length.toLocaleString()} characters; trimmed to the ${cap.toLocaleString()}-char limit. Edit if needed.`);
+      } else {
+        textarea.value = text;
+        onStatus('Loaded ' + fileName);
+      }
+    }
+
     async function handleFile(file) {
       if (file.size > maxBytes) {
         onStatus('File too big — max 10 MB');
@@ -179,22 +192,19 @@
         if (ext === 'txt' || ext === 'md' || file.type === 'text/plain' || file.type === 'text/markdown') {
           onStatus('Reading text…');
           const text = await readAsText(file);
-          textarea.value = text;
-          onStatus('Loaded ' + file.name);
+          applyTextToTextarea(text, file.name);
           return;
         }
         if (ext === 'docx' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
           onStatus('Extracting from .docx…');
           const text = await extractDocx(file);
-          textarea.value = text;
-          onStatus('Loaded ' + file.name);
+          applyTextToTextarea(text, file.name);
           return;
         }
         if (ext === 'pdf' || file.type === 'application/pdf') {
           onStatus('Extracting from PDF…');
           const text = await extractPdf(file);
-          textarea.value = text;
-          onStatus('Loaded ' + file.name);
+          applyTextToTextarea(text, file.name);
           return;
         }
         onStatus('Unsupported file type. Use .txt, .md, .docx, .pdf, or an image.');
