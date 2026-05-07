@@ -1,7 +1,10 @@
 // POST /api/cefr-assess
 // Assesses a writing sample against the CEFR scale and returns level + reasoning.
 
-import { jsonResponse, ipHash, rateCheck, callClaude } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+
+export const onRequestOptions = () => corsPreflight('POST');
+export const onRequest = () => methodNotAllowed('POST');
 
 const SYSTEM_PROMPT = [
   "You are an experienced language assessor familiar with the CEFR (Common European Framework of Reference for Languages). Given a writing sample in a specified target language, place the writer at one of A1, A2, B1, B2, C1, or C2.",

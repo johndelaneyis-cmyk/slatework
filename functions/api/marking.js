@@ -2,7 +2,10 @@
 // Highlights error categories in a student's writing and returns
 // level-matched feedback variants the teacher can paste back.
 
-import { jsonResponse, ipHash, rateCheck, callClaude } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+
+export const onRequestOptions = () => corsPreflight('POST');
+export const onRequest = () => methodNotAllowed('POST');
 
 const SYSTEM_PROMPT = [
   "You are an experienced language teacher marking student writing. Given a target language, CEFR level, and a student writing sample (or speaking transcript), you produce: (a) categorised error highlights with examples drawn from the sample, and (b) three feedback paragraphs at different levels of warmth and formality, ready to paste into an email or report.",

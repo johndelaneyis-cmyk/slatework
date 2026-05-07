@@ -13,6 +13,24 @@ export function jsonResponse(body, status = 200, extraHeaders = {}) {
   });
 }
 
+export function corsPreflight(allowedMethods = 'POST') {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': `${allowedMethods}, OPTIONS`,
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400'
+    }
+  });
+}
+
+export function methodNotAllowed(allowedMethods = 'POST') {
+  return jsonResponse({ error: 'Method not allowed.' }, 405, {
+    'Allow': `${allowedMethods}, OPTIONS`
+  });
+}
+
 export async function ipHash(request) {
   const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For') || 'unknown';
   // Day-bucketed hash so the fingerprint rotates daily and we don't hold a

@@ -3,7 +3,10 @@
 // We hold the SHA-256 hash of each subscribed email — never the plaintext — so we can
 // dedupe future signups without keeping the email ourselves.
 
-import { jsonResponse, ipHash, rateCheck } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, corsPreflight, methodNotAllowed } from "../_lib.js";
+
+export const onRequestOptions = () => corsPreflight('POST');
+export const onRequest = () => methodNotAllowed('POST');
 
 const PER_IP_DAILY = 5;     // a single visitor can submit at most 5 / day
 const GLOBAL_DAILY = 5000;  // site-wide cap to stop spam floods

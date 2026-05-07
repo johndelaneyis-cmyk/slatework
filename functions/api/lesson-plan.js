@@ -1,7 +1,10 @@
 // POST /api/lesson-plan
 // Generates a structured language lesson plan (1:1, small group, or classroom).
 
-import { jsonResponse, ipHash, rateCheck, callClaude } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+
+export const onRequestOptions = () => corsPreflight('POST');
+export const onRequest = () => methodNotAllowed('POST');
 
 const SYSTEM_PROMPT = [
   "You are an experienced language teacher. Given a target language, source language, CEFR level, mode (1:1 / small group / classroom), and lesson goal, produce a focused, time-blocked lesson plan that another teacher could pick up and run.",

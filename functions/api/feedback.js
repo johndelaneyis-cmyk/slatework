@@ -2,7 +2,10 @@
 // Records a per-tool yes/no + optional note. Stored in KV namespace FEEDBACK
 // (one key per submission). Read by the maintainer manually - no dashboard.
 
-import { jsonResponse, ipHash, rateCheck } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, corsPreflight, methodNotAllowed } from "../_lib.js";
+
+export const onRequestOptions = () => corsPreflight('POST');
+export const onRequest = () => methodNotAllowed('POST');
 
 const PER_IP_DAILY = 30;
 const GLOBAL_DAILY = 10000;

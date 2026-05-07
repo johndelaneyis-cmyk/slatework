@@ -1,7 +1,10 @@
 // POST /api/worksheet
 // Generates a printable language worksheet plus a matching answer key.
 
-import { jsonResponse, ipHash, rateCheck, callClaude } from "../_lib.js";
+import { jsonResponse, ipHash, rateCheck, callClaude, corsPreflight, methodNotAllowed } from "../_lib.js";
+
+export const onRequestOptions = () => corsPreflight('POST');
+export const onRequest = () => methodNotAllowed('POST');
 
 const SYSTEM_PROMPT = [
   "You are a language teacher who designs print-ready worksheets and matched answer keys. Given a target language, level, topic, question count, and format, produce a worksheet a teacher could photocopy and a separate answer key the teacher keeps.",
