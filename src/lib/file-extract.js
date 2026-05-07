@@ -13,6 +13,8 @@
         if (window.mammoth) return resolve(window.mammoth);
         const s = document.createElement('script');
         s.src = 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.7.2/mammoth.browser.min.js';
+        s.integrity = 'sha384-0H61yoxfMKjbSjFlpDEsx93BrLviZfSpurY4HWlCB4/moYeBGlCUqx2OBP8PqXog';
+        s.crossOrigin = 'anonymous';
         s.onload = () => resolve(window.mammoth);
         s.onerror = () => reject(new Error('Could not load .docx parser'));
         document.head.appendChild(s);
