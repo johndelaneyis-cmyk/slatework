@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Marking accelerator", "item": "https://slatework.tools/marking" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How accurate is the marking?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Suggestion-quality, not authoritative. The model is good at categorising visible errors (subject-verb agreement, articles, register slips) and proposing feedback in three voices. It is not a moderated rubric and not exam-board accurate. The output is meant to do the mechanical sorting for you so the call — what to flag, what to ignore, how to phrase it — stays yours."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does my student's writing leave my browser?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Pasted text and uploaded files are sent to Google Cloud Vision (for OCR on photos) and Anthropic (for the marking) — for processing only. We don't store the text, log the body, share it, or sell it. Photos go through Vision OCR client-side first; the marking model only ever sees text, never the image. Remove names and identifying details before pasting."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if OCR misreads cursive?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Likely on long handwritten samples. The extracted text drops into the textarea below the upload zone — review it, fix misreads, then click Mark. The marking model only ever sees the text you've reviewed, so a clean OCR pass means clean feedback."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use it for marking schemes I already use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Add a rubric tag (e.g., 'GCSE Spanish writing 90-word essay') in the optional field and the model maps feedback to that scheme. Leave blank if you mark freely. The three feedback variants (warm / direct / rubric-mapped) give you something to copy-paste into your normal feedback channel without rewriting from scratch."
+        }
+      }
     ]
   }
   </script>
@@ -119,6 +159,48 @@
 
   <section id="result" class="result" role="region" aria-live="polite" hidden></section>
 
+  <section class="tool-explainer">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>Marking is the part of tutoring that scales worst. A 200-word essay takes three minutes to read and twenty minutes to write feedback for, especially if you're switching between three students at three levels. Most of the twenty minutes is mechanical work: spotting which errors are systemic vs. one-off, sorting them into categories, picking which to flag and which to ignore, then writing the same kind of feedback in the same kind of voice you wrote last week.</p>
+    <p>Paste a sample (or upload a file or photo &mdash; we extract the text via OCR, you review it, the marking model only ever sees text). The output is categorised error highlights plus three drop-in feedback variants: <strong>warm</strong> (encouraging, suitable for a teen), <strong>direct</strong> (faster, suitable for an adult who's paying for honesty), and <strong>rubric-mapped</strong> (band descriptors if you've named an exam scheme). Pick one, edit a sentence, send.</p>
+    <p><strong>What it isn't.</strong> Authoritative grading. The model categorises and proposes; you make the call. It's also not a moderated rubric &mdash; if you mark for a real exam board, treat its feedback as draft language, not as grade-bearing. Reading a long sample takes the model 5-15 seconds; cursive handwriting OCR isn't perfect; long C1-C2 samples sometimes get an obscure-but-valid alternative the model under-credits.</p>
+    <p class="scenario"><strong>Use it when:</strong> you have five essays to mark before tomorrow morning and want to spend the time on the one student who needs the actual conversation, not on writing the same paragraph about subject-verb agreement four times.</p>
+  </section>
+
+  <section class="tool-faq">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>How accurate is the marking?</summary>
+      <div class="answer">
+        <p>Suggestion-quality, not authoritative. The model is good at categorising visible errors (subject-verb agreement, articles, register slips) and proposing feedback in three voices. It is not a moderated rubric and not exam-board accurate.</p>
+        <p>The output does the mechanical sorting for you so the call &mdash; what to flag, what to ignore, how to phrase it &mdash; stays yours.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Does my student's writing leave my browser?</summary>
+      <div class="answer">
+        <p>Yes. Pasted text and uploaded files are sent to Google Cloud Vision (for OCR on photos) and Anthropic (for the marking) for processing only. We don't store the text, log the body, share it, or sell it.</p>
+        <p>Photos go through Vision OCR client-side first &mdash; the marking model only ever sees text, never the image. Remove names and identifying details before pasting.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What if OCR misreads cursive?</summary>
+      <div class="answer">
+        <p>Likely on long handwritten samples. The extracted text drops into the textarea below the upload zone &mdash; review it, fix misreads, then click Mark.</p>
+        <p>The marking model only ever sees the text you've reviewed, so a clean OCR pass means clean feedback.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Can I use it for marking schemes I already use?</summary>
+      <div class="answer">
+        <p>Add a rubric tag (e.g., "GCSE Spanish writing 90-word essay") in the optional field and the model maps feedback to that scheme. Leave blank if you mark freely.</p>
+        <p>The three feedback variants (warm / direct / rubric-mapped) give you something to copy-paste into your normal feedback channel without rewriting from scratch.</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -136,10 +218,10 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/src/lib/markdown.js?v=13"></script>
-<script src="/src/lib/file-extract.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-marking.js?v=13" defer></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/src/lib/markdown.js?v=14"></script>
+<script src="/src/lib/file-extract.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-marking.js?v=14" defer></script>
 </body>
 </html>

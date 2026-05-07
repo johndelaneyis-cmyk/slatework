@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "CEFR proficiency mapper", "item": "https://slatework.tools/cefr" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Will this replace a real placement test?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It replaces the moment in lesson one where you're guessing whether to start at A2 or B1 because the parent enquiry email said 'intermediate'. For institutional placement (school, language centre, exam-prep cohort), use a moderated test with reading, listening, speaking, and writing components. This is for the private-tutor decision before the first lesson."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why two modes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rule-based runs entirely in your browser — pick Yes/Partial/No against CEFR Can-Do statements, get a level, no data leaves your device. AI mode reads a writing sample (up to 500 words) and places the student based on what they actually produced — better for new students who give vague self-reports."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the writing sample private?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "AI mode sends the sample to Anthropic's API for placement. We don't store it, log it, or share it. Rule-based mode never leaves your browser at all. Whichever you pick, anonymise the sample first — there's no reason for the student's name to be in it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does the placement actually return?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A level (A1–C2), a confidence note, and the strongest signals the model used to place there. Use it to set the level for the first lesson plan and the first worksheet — and adjust after one or two real sessions."
+        }
+      }
     ]
   }
   </script>
@@ -112,6 +152,48 @@
     <section id="ai-result" class="result" role="region" aria-live="polite" hidden></section>
   </section>
 
+  <section class="tool-explainer">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>The CEFR mapper places a language student at A1, A2, B1, B2, C1, or C2 using the standard Council of Europe Can-Do framework. Two modes, depending on what you have to work with.</p>
+    <p><strong>Rule-based mode</strong> runs entirely in your browser. Click through Can-Do statements (<em>"can introduce themselves and answer simple personal questions", "can write a short connected text on familiar topics"</em>) and answer Yes / Partial / No. The level falls out the bottom. No data leaves your device. Use it when you're with the student and want to walk through the rubric together.</p>
+    <p><strong>AI mode</strong> reads a writing sample (50&ndash;500 words) and places the student based on what they actually produced. Better for new enquiries where the self-report is vague (<em>"I think she's intermediate"</em>) and you want a sanity check before lesson one.</p>
+    <p><strong>What it isn't.</strong> A placement test for institutional reporting. If a school, language centre, or exam-prep cohort needs a moderated placement, use a four-skills test that includes reading, listening, and speaking. This is for the private-tutor decision: <em>do I start at A2 or B1?</em> The output is a level + a short confidence note. Use it to set the first lesson, then adjust after one or two real sessions.</p>
+    <p class="scenario"><strong>Use it when:</strong> a parent enquiry arrives describing a student as "intermediate" and you have a 10-minute writing sample to look at, or when you're walking a returning student through where they sit on the framework so they can see their own progress.</p>
+  </section>
+
+  <section class="tool-faq">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Will this replace a real placement test?</summary>
+      <div class="answer">
+        <p>No. It replaces the moment in lesson one where you're guessing whether to start at A2 or B1 because the parent enquiry email said "intermediate".</p>
+        <p>For institutional placement (school, language centre, exam-prep cohort), use a moderated test with reading, listening, speaking, and writing components. This is for the private-tutor decision before the first lesson.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Why two modes?</summary>
+      <div class="answer">
+        <p><strong>Rule-based</strong> runs entirely in your browser &mdash; pick Yes / Partial / No against CEFR Can-Do statements, get a level, no data leaves your device.</p>
+        <p><strong>AI mode</strong> reads a writing sample (up to 500 words) and places the student based on what they actually produced &mdash; better for new students who give vague self-reports.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Is the writing sample private?</summary>
+      <div class="answer">
+        <p>AI mode sends the sample to Anthropic's API for placement. We don't store it, log it, or share it. Rule-based mode never leaves your browser at all.</p>
+        <p>Whichever you pick, anonymise the sample first &mdash; there's no reason for the student's name to be in it.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What does the placement actually return?</summary>
+      <div class="answer">
+        <p>A level (A1&ndash;C2), a confidence note, and the strongest signals the model used to place there. Use it to set the level for the first lesson plan and the first worksheet &mdash; and adjust after one or two real sessions.</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -129,11 +211,11 @@
   </div>
 </footer>
 
-<script src="/src/lib/cefr-rules.js?v=13"></script>
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/src/lib/markdown.js?v=13"></script>
-<script src="/src/lib/file-extract.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-cefr.js?v=13" defer></script>
+<script src="/src/lib/cefr-rules.js?v=14"></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/src/lib/markdown.js?v=14"></script>
+<script src="/src/lib/file-extract.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-cefr.js?v=14" defer></script>
 </body>
 </html>

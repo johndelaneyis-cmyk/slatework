@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Parent-tutor contract", "item": "https://slatework.tools/contract" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this a legally enforceable contract?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It's a plain-language lesson agreement, not a notarised contract. In most jurisdictions a signed plain-language agreement between two adults documenting payment terms, cancellation policy, and lesson logistics is enforceable for small-claims purposes — but it isn't a substitute for legal advice on bigger questions (subcontracting, multi-tutor agencies, parent-corporate billing). For an indie tutor with a parent-paying client, this is the document you actually need."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where does my data go?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nowhere. The whole contract builder runs in your browser. Your name, business name, rate, parent-welcome paragraph — none of it leaves your device. You can verify by viewing source or watching the Network tab. Print, save as PDF, email it yourself; the file is yours."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I edit the wording?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The four welcome-paragraph tones (warm, formal, brief, custom) cover the obvious cases; pick custom and write your own if none of them sound like you. After printing, the PDF is fully editable in any word processor — Google Docs, Word, Pages — if you want to adjust a clause that doesn't fit your situation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why no e-signature?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Adding e-signature would mean either pulling in a third-party service (DocuSign, HelloSign — which would see the contract) or running our own signing flow (which would mean the contract leaves your browser). Both break the privacy posture. The current flow: print or save PDF, parent signs on paper or in their own PDF tool, return signed scan. Slower, but the contract never touches our servers."
+        }
+      }
     ]
   }
   </script>
@@ -126,6 +166,58 @@
   <section class="preview" id="preview">
     <!-- Filled by JS -->
   </section>
+
+  <section class="tool-explainer no-print">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>The first private student arrives, the parent says "what do I sign?", and you realise nothing in your tutor training prepared you to write a contract. Most indie tutors either skip it entirely (and learn the hard way after a no-show) or copy a template they don't fully understand off a forum.</p>
+    <p>Fill out the form on the left. Your name, the rate, the lesson length, the cancellation notice and fee, the payment terms, and a welcome paragraph in one of four tones (warm, formal, brief, or custom). The contract previews on the right as you type. Click "Print or save as PDF" and the parent signs the printed copy or returns a signed scan.</p>
+    <p>Behind the scenes: the form runs entirely in your browser. Your name, the rate, the parent-welcome paragraph, every other field &mdash; none of it leaves your device. View the page source if you want to verify; there are no API calls and nothing is stored.</p>
+    <p><strong>What it isn't.</strong> A notarised contract or legal advice. It's a plain-language lesson agreement &mdash; the document an indie tutor with a parent-paying client actually needs. For bigger questions (subcontracting, multi-tutor agencies, parent-corporate billing), consult a lawyer in your jurisdiction. For small-claims-tier disputes (no-show, late cancellation, unpaid lesson), a signed plain-language agreement is what you'll reach for.</p>
+    <p class="scenario"><strong>Use it when:</strong> you're onboarding a first private student and want a contract that takes five minutes to fill out instead of an evening to draft, or when a parent asks for documentation and you'd rather have something professional-looking than scribble terms in an email.</p>
+  </section>
+
+  <section class="tool-faq no-print">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Is this a legally enforceable contract?</summary>
+      <div class="answer">
+        <p>It's a plain-language lesson agreement, not a notarised contract. In most jurisdictions a signed plain-language agreement between two adults documenting payment terms, cancellation policy, and lesson logistics is enforceable for small-claims purposes &mdash; but it isn't a substitute for legal advice on bigger questions (subcontracting, multi-tutor agencies, parent-corporate billing).</p>
+        <p>For an indie tutor with a parent-paying client, this is the document you actually need.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Where does my data go?</summary>
+      <div class="answer">
+        <p>Nowhere. The whole contract builder runs in your browser. Your name, business name, rate, parent-welcome paragraph &mdash; none of it leaves your device.</p>
+        <p>You can verify by viewing source or watching the Network tab. Print, save as PDF, email it yourself; the file is yours.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Can I edit the wording?</summary>
+      <div class="answer">
+        <p>Yes. The four welcome-paragraph tones (warm, formal, brief, custom) cover the obvious cases; pick custom and write your own if none of them sound like you.</p>
+        <p>After printing, the PDF is fully editable in any word processor &mdash; Google Docs, Word, Pages &mdash; if you want to adjust a clause that doesn't fit your situation.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Why no e-signature?</summary>
+      <div class="answer">
+        <p>Adding e-signature would mean either pulling in a third-party service (DocuSign, HelloSign &mdash; which would see the contract) or running our own signing flow (which would mean the contract leaves your browser). Both break the privacy posture.</p>
+        <p>Current flow: print or save PDF, parent signs on paper or in their own PDF tool, return signed scan. Slower, but the contract never touches our servers.</p>
+      </div>
+    </details>
+  </section>
+
+  <aside class="related-tools no-print">
+    <p class="mono-caption">// RELATED TOOLS</p>
+    <ul>
+      <li><a href="/rates.html">Hourly rate calculator &rarr;</a> &mdash; lock the rate before locking the contract.</li>
+      <li><a href="/payments.html">Payment methods &rarr;</a> &mdash; pick how the fee gets paid before naming the terms.</li>
+      <li><a href="/insurance.html">Insurance &amp; safeguarding &rarr;</a> &mdash; safeguarding clause already in this contract; check the matching insurance.</li>
+    </ul>
+  </aside>
 </main>
 
 <footer class="site-footer no-print">
@@ -135,7 +227,7 @@
   </div>
 </footer>
 
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-contract.js?v=13" defer></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-contract.js?v=14" defer></script>
 </body>
 </html>

@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Lesson plan generator", "item": "https://slatework.tools/lesson-plan" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Will it write a plan I can actually teach from?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Close. The output is a structured 60-minute plan with timed sections, target language, board work, exit ticket, and differentiation notes — meant to give you 80% of the scaffolding and let you swap in the texture only you know (your student's last excuse for not doing homework, the joke that lands in their L1). Treat it as a strong first draft, not a script."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the lesson goal sent anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Your inputs are sent to Anthropic's API for the model to produce the plan. We don't store the request body, log it, or share it. The plan comes back, you copy it, that's the trail. Don't paste your student's name into the goal — there's no reason for it to be there."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is it free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Slatework runs the AI calls under our own per-IP daily limit, which is plenty for an active tutor. Other tools on the site use affiliate links to platforms you'd already pick (Wise, Stripe Link). The 10 free tools stay free."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work for languages other than English?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Pick the target language and the source language separately; the model writes the plan in the source language and uses the target as instructed-content. The two English options (native/advanced vs. ESL/EFL) cover the case where your student already speaks English and wants to refine it."
+        }
+      }
     ]
   }
   </script>
@@ -120,6 +160,46 @@
 
   <section id="result" class="result" role="region" aria-live="polite" hidden></section>
 
+  <section class="tool-explainer">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>The blank-page problem at 9pm on a Sunday: you know what your student needs (past simple, weekend topic, gentle stretch into irregular verbs), but you still have to <em>structure</em> a 60-minute lesson around it. Warmup, presentation, controlled practice, freer practice, exit ticket. That part is mechanical work, and mechanical work is the kind a model is genuinely good at.</p>
+    <p>Tell it the language, the level, the mode (1:1, small group, classroom of 25), and a one-sentence goal. The plan comes back with timed blocks, target language to drill, board work, a closing exit ticket, and a short differentiation note for the student who finishes early or stalls out. If you teach to a specific exam (GCSE, IELTS, HKDSE), name it &mdash; the plan targets it instead of generic practice.</p>
+    <p><strong>What it isn't.</strong> A finished script. The output gets you 80% of the scaffolding; the texture &mdash; the joke that lands in your student's L1, the running thread from last week, the reason they actually need the past simple this month &mdash; is yours to add in. Read it once, edit two or three lines, teach.</p>
+    <p class="scenario"><strong>Use it when:</strong> you're prepping back-to-back students at different levels and don't have time to start from a blank doc, or when you're covering a topic outside your usual rotation and want a sane structure to push back on rather than invent from scratch.</p>
+  </section>
+
+  <section class="tool-faq">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Will it write a plan I can actually teach from?</summary>
+      <div class="answer">
+        <p>Close. The output is a structured 60-minute plan with timed sections, target language, board work, exit ticket, and differentiation notes &mdash; meant to give you 80% of the scaffolding and let you swap in the texture only you know (your student's last excuse for not doing homework, the joke that lands in their L1).</p>
+        <p>Treat it as a strong first draft, not a script.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Is the lesson goal sent anywhere?</summary>
+      <div class="answer">
+        <p>Your inputs are sent to Anthropic's API so the model can produce the plan. We don't store the request body, log it, or share it. The plan comes back, you copy it, that's the trail.</p>
+        <p>Don't paste your student's name into the goal &mdash; there's no reason for it to be there.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Why is it free?</summary>
+      <div class="answer">
+        <p>Slatework runs the AI calls under its own per-IP daily limit, which is plenty for an active tutor. Other tools on the site use affiliate links to platforms you'd already pick (Wise, Stripe Link). The 10 free tools stay free.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Does it work for languages other than English?</summary>
+      <div class="answer">
+        <p>Yes. Pick the target language and source language separately. The plan is written in the source language and uses the target as instructed-content. The two English options (native/advanced vs. ESL/EFL) cover the case where your student already speaks English and wants to refine it.</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -137,9 +217,9 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/src/lib/markdown.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-lesson-plan.js?v=13" defer></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/src/lib/markdown.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-lesson-plan.js?v=14" defer></script>
 </body>
 </html>

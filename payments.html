@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Payment methods", "item": "https://slatework.tools/payments" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why split domestic and international?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Because they're different problems. Domestic is fee-free and instant in most countries via local rails (UK Faster Payments, AU PayID, HK FPS, US Zelle). International needs FX, takes days on a card, and skims 3-7% if you use the wrong rail. Showing them in the same list makes the trade-off easy to see."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you take a cut of the affiliate links?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Some of them, yes — Wise pays a referral when a tutor signs up via our link. We never recommend a payment method we wouldn't use ourselves, and the rails listed without affiliate links (Zelle, FPS, PayID, Faster Payments) are there because they're objectively the right answer for that country."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is anything sent to your servers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The whole page renders in your browser from a country-pack data file. Your country selection, the rails you click, the affiliate clicks themselves — none of it reaches us. Verify with view-source or the Network tab."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What about Stripe Link?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Listed under international when it makes sense. Stripe Link is a one-tap card-on-file flow that's good for repeat parents who don't want to dig out their wallet every week. Fees are higher than local rails, but the friction is the lowest of the international options."
+        }
+      }
     ]
   }
   </script>
@@ -79,6 +119,47 @@
     <div id="international" class="result"></div>
   </section>
 
+  <section class="tool-explainer">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>The wrong payment rail is a hidden tax. PayPal Friends &amp; Family inside your country &mdash; fine; PayPal cross-border &mdash; you're losing 3&ndash;5% to FX every transaction. A card processor for a $50 weekly lesson skims a dollar a week without you noticing. Local instant payments are mostly free and most tutors don't know they're available.</p>
+    <p>Pick your country and the page splits into two halves. <strong>Domestic</strong> shows the right rail for collecting from local students &mdash; UK Faster Payments, AU PayID, HK FPS, US Zelle, IE Revolut, NZ POLi, CA Interac. Most are fee-free and clear in seconds. <strong>International</strong> shows the right rail for cross-border students &mdash; Wise (multi-currency, near-mid-market FX), Stripe Link (one-tap card for repeat parents), PayPal where there's no better option.</p>
+    <p><strong>What it isn't.</strong> A merchant-account setup guide. The tools listed here are tutor-scale &mdash; for the indie running 10-30 hours a week. If you're scaling to a small school with multiple staff, you'll outgrow some of these (Wise tops out somewhere; Stripe wants a registered business above a certain volume). The page tells you what works on day one.</p>
+    <p class="scenario"><strong>Use it when:</strong> a parent asks "how should I pay you?" and you want a one-line answer that doesn't cost either of you anything; or when a student abroad signs up and you want to avoid the 7% PayPal hit on every weekly invoice.</p>
+  </section>
+
+  <section class="tool-faq">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Why split domestic and international?</summary>
+      <div class="answer">
+        <p>Because they're different problems. Domestic is fee-free and instant in most countries via local rails (UK Faster Payments, AU PayID, HK FPS, US Zelle). International needs FX, takes days on a card, and skims 3&ndash;7% if you use the wrong rail.</p>
+        <p>Showing them in the same list makes the trade-off easy to see.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Do you take a cut of the affiliate links?</summary>
+      <div class="answer">
+        <p>Some of them, yes &mdash; Wise pays a referral when a tutor signs up via our link. We never recommend a payment method we wouldn't use ourselves.</p>
+        <p>The rails listed without affiliate links (Zelle, FPS, PayID, Faster Payments) are there because they're objectively the right answer for that country.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Is anything sent to your servers?</summary>
+      <div class="answer">
+        <p>No. The whole page renders in your browser from a country-pack data file. Your country selection, the rails you click, the affiliate clicks themselves &mdash; none of it reaches us. Verify with view-source or the Network tab.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What about Stripe Link?</summary>
+      <div class="answer">
+        <p>Listed under international when it makes sense. Stripe Link is a one-tap card-on-file flow that's good for repeat parents who don't want to dig out their wallet every week.</p>
+        <p>Fees are higher than local rails, but the friction is the lowest of the international options.</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -96,8 +177,8 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-payments.js?v=13" defer></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-payments.js?v=14" defer></script>
 </body>
 </html>

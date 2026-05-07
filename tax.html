@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Tax & self-employment", "item": "https://slatework.tools/tax" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this tax advice?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Information only. Confirm everything with a local accountant before filing — the rules change, and personal circumstances (other income, residency status, partner's earnings, double-tax treaties) shift the answer. The thresholds, form names, and links here are accurate to the date stamped at the bottom of each country page."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to register if I'm under the threshold?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most countries let you earn a small amount before triggering self-employment registration — UK trading allowance £1,000, Ireland €5,000, Australia under the registration threshold for ABN, etc. The exact figure is in your country pack. Crossing it once doesn't usually mean back-registration retroactively, but it does mean registering for the year you crossed it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What about VAT/GST?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Separate from income tax. Most tutors stay below the VAT/GST registration threshold for years (UK £90,000, AU GST $75,000, NZ GST $60,000) — those numbers are gross turnover, not profit. Cross them and you have to add VAT/GST to your invoices. The country pack lists both thresholds side-by-side."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Slatework see anything I enter?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The page renders entirely in your browser from a country-pack data file. Your country selection never reaches our servers. Anything you write down based on what you read here stays on your device unless you put it somewhere else yourself."
+        }
+      }
     ]
   }
   </script>
@@ -97,6 +137,48 @@
     <p class="small" id="last-verified"></p>
   </section>
 
+  <section class="tool-explainer">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>The tax question most independent tutors ask in year one is the same: <em>"do I have to register, and if so, when?"</em> Most countries let you earn a small amount each tax year before you have to register as self-employed. Below that line, you don't file. Above it, you file the right form by the right deadline. This page tells you where the line sits in your country, what the form is called, where to file it, and what the steps look like.</p>
+    <p>Pick your country. The output is the trading allowance / registration threshold (the income figure that triggers the obligation), the VAT or GST registration threshold (the bigger figure that triggers a second obligation), the form name, a link to the official government portal, and a numbered registration walkthrough. Plus a short notes section for the country-specific edge cases (UK Class 2/4 NICs, Australian PAYG instalments, US 1099-K reporting threshold, Hong Kong profits tax exemption window).</p>
+    <p><strong>What it isn't.</strong> Tax advice. The data is information that's accurate as of the date stamped at the bottom of each country page, but rules change, and personal circumstances (other employment, partner's income, residency status, double-tax treaties) shift the answer. Confirm with a local accountant before filing. The page is meant to get you to the right form and the right deadline, not to file for you.</p>
+    <p class="scenario"><strong>Use it when:</strong> you've crossed the trading allowance for the first time and need to know what happens next; or when you're starting out and want to know how much you can earn before the paperwork begins.</p>
+  </section>
+
+  <section class="tool-faq">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Is this tax advice?</summary>
+      <div class="answer">
+        <p>No. Information only. Confirm everything with a local accountant before filing &mdash; the rules change, and personal circumstances (other income, residency status, partner's earnings, double-tax treaties) shift the answer.</p>
+        <p>The thresholds, form names, and links here are accurate to the date stamped at the bottom of each country page.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Do I need to register if I'm under the threshold?</summary>
+      <div class="answer">
+        <p>Most countries let you earn a small amount before triggering self-employment registration &mdash; UK trading allowance &pound;1,000, Ireland &euro;5,000, Australia under the registration threshold for ABN, etc. The exact figure is in your country pack.</p>
+        <p>Crossing it once doesn't usually mean back-registration retroactively, but it does mean registering for the year you crossed it.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What about VAT/GST?</summary>
+      <div class="answer">
+        <p>Separate from income tax. Most tutors stay below the VAT/GST registration threshold for years (UK &pound;90,000, AU GST $75,000, NZ GST $60,000) &mdash; those numbers are gross turnover, not profit.</p>
+        <p>Cross them and you have to add VAT/GST to your invoices. The country pack lists both thresholds side-by-side.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Does Slatework see anything I enter?</summary>
+      <div class="answer">
+        <p>No. The page renders entirely in your browser from a country-pack data file. Your country selection never reaches our servers.</p>
+        <p>Anything you write down based on what you read here stays on your device unless you put it somewhere else yourself.</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -114,8 +196,8 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-tax.js?v=13" defer></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-tax.js?v=14" defer></script>
 </body>
 </html>

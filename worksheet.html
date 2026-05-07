@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Worksheet & answer-key generator", "item": "https://slatework.tools/worksheet" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does it print on one page?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Usually yes for 8 questions or fewer. The worksheet and the answer key print as separate pages — use the browser's print dialog and pick 'Save as PDF' if you want to email it. Margins are set for A4 and US Letter; both work."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How accurate is the answer key?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Reliable for gap-fill, multiple choice, and short answer at A1–B2. At C1–C2 the model sometimes accepts an obscure-but-valid alternative answer the key doesn't list — read it once before handing it to the student. Reading-comprehension keys are interpretation-quality, not authoritative."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I match a specific exam?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Type the exam name in the optional field (GCSE English Language Paper 1, HKDSE Paper 3, IELTS speaking band 7, SAT writing) and the worksheet shapes itself to that format. Leave it blank for general-purpose practice."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the topic field private?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It's sent to Anthropic's API to generate the worksheet. We don't store the topic, log it, or associate it with you. Treat it as you would a single message to ChatGPT — fine for 'past tense with irregular verbs', not for 'lesson 4 in [student's name]'s plan'."
+        }
+      }
     ]
   }
   </script>
@@ -124,6 +164,45 @@
     <article id="answer-key" class="result" hidden></article>
   </section>
 
+  <section class="tool-explainer no-print">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>The worksheet generator turns a one-line topic into a printable practice sheet, with a matching answer key on a separate page so you can hand the worksheet to the student and keep the key for yourself. Pick the language, the CEFR level, the format (gap fill, multiple choice, short answer, reading comprehension), the question count (3-20), and one short topic line. The output is two ready-to-print pages.</p>
+    <p>Use the browser's print dialog to save as PDF if you want to email it instead of print it. Margins are set for both A4 and US Letter. The two pages render in Georgia for print &mdash; the kind of typeface that disappears on paper rather than fighting the page.</p>
+    <p><strong>What it isn't.</strong> A textbook. The worksheet is for tomorrow's lesson, not for the year's curriculum. Reading-comprehension passages are model-generated, so they're competent but not literary; for high-stakes exam practice (B2 First, C1 Advanced, real IELTS reading), use the worksheet to bridge between past papers, not as a substitute for them.</p>
+    <p class="scenario"><strong>Use it when:</strong> a student needs five minutes of focused practice on a single grammar point and you don't want to scan a textbook for an exercise that's almost-right; or when you need a quick differentiated set for a small group that's split across two levels.</p>
+  </section>
+
+  <section class="tool-faq no-print">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Does it print on one page?</summary>
+      <div class="answer">
+        <p>Usually yes for 8 questions or fewer. The worksheet and the answer key print as separate pages &mdash; use the browser's print dialog and pick "Save as PDF" if you want to email it. Margins are set for A4 and US Letter; both work.</p>
+      </div>
+    </details>
+    <details>
+      <summary>How accurate is the answer key?</summary>
+      <div class="answer">
+        <p>Reliable for gap-fill, multiple choice, and short answer at A1&ndash;B2. At C1&ndash;C2 the model sometimes accepts an obscure-but-valid alternative answer the key doesn't list &mdash; read it once before handing it to the student.</p>
+        <p>Reading-comprehension keys are interpretation-quality, not authoritative.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Can I match a specific exam?</summary>
+      <div class="answer">
+        <p>Yes. Type the exam name in the optional field (GCSE English Language Paper 1, HKDSE Paper 3, IELTS speaking band 7, SAT writing) and the worksheet shapes itself to that format. Leave it blank for general-purpose practice.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Is the topic field private?</summary>
+      <div class="answer">
+        <p>It's sent to Anthropic's API to generate the worksheet. We don't store the topic, log it, or associate it with you. Treat it as you would a single message to ChatGPT &mdash; fine for "past tense with irregular verbs", not for "lesson 4 in [student's name]'s plan".</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools no-print">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -141,9 +220,9 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/src/lib/markdown.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-worksheet.js?v=13" defer></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/src/lib/markdown.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-worksheet.js?v=14" defer></script>
 </body>
 </html>

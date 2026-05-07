@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Insurance & safeguarding", "item": "https://slatework.tools/insurance" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do I really need insurance for online tutoring?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If you teach minors and a parent ever pushes back on a piece of feedback, professional indemnity insurance is what stands between a complaint and a payout. Public liability matters more in-person (a student trips on your stairs) than online. Many platforms require both above a certain volume; once you go private, you're carrying the policy yourself."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's a DBS / WWCC / Garda check and do I need one?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Country-specific background check for adults working with minors. UK Enhanced DBS, Australian state Working With Children Check, Ireland Garda Vetting, NZ Police Vet, US state-by-state — most cost £20–£100. Required for school-based tutoring, often expected for in-person private lessons with minors, less common for online but reassures parents. The country pack lists where to apply."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does public liability actually cover?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Third-party injury or property damage at the lesson. A student trips on your kitchen step, your laptop falls and hurts a child you're tutoring at their home, you spill coffee on a parent's rug — that's public liability. It does not cover your own equipment or income loss. Most policies are £5–10/month for £1m–£5m of cover."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Slatework recommend specific providers?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — the providers tutors actually use, by country (Westminster Indemnity in the UK, Hiscox internationally, BizCover in Australia, etc.). We don't earn an affiliate fee on most of them; the listings are there because they're the right answer for an indie tutor at this scale. Quote two providers and read the actual policy before buying — coverage detail varies."
+        }
+      }
     ]
   }
   </script>
@@ -100,6 +140,48 @@
     <p class="small" id="last-verified"></p>
   </section>
 
+  <section class="tool-explainer">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>Insurance is the part of going independent nobody warns you about until something happens. On a platform, the platform carries the policy that covers you for parent complaints, accidental data leaks, third-party injury at a lesson. The day you teach your first private student, that policy is gone &mdash; and most tutors assume their home contents insurance is enough. It isn't.</p>
+    <p>Pick your country and the page lays out three things. <strong>Public liability</strong> &mdash; what's typical (cover amount, monthly cost, what's actually covered when a student trips on your stairs or a laptop falls during a lesson). <strong>Providers tutors actually use</strong> &mdash; not a sponsored list, the names that come up repeatedly in indie-tutor communities for that country. <strong>Safeguarding for minors</strong> &mdash; the country-specific background check (UK Enhanced DBS, Australian state WWCC, Ireland Garda Vetting), what it costs, where to apply, and a four-line "what to do if" basics list (always teach minors with a parent on-record, keep written session notes, etc.).</p>
+    <p><strong>What it isn't.</strong> A policy quote. Coverage detail varies between providers within the same country &mdash; one might cover online-only, another might require in-person disclosure. Quote two before you buy and read the actual terms. The page tells you what's typical for an indie tutor; your specific situation (in-person at the student's home, mixed online + in-person, group classes) shifts the right policy.</p>
+    <p class="scenario"><strong>Use it when:</strong> you're switching from a platform to private and need to know what cover you've just lost; or when a parent asks if you carry insurance and you want to give them an answer that sounds like the answer of someone who's read their own policy.</p>
+  </section>
+
+  <section class="tool-faq">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Do I really need insurance for online tutoring?</summary>
+      <div class="answer">
+        <p>If you teach minors and a parent ever pushes back on a piece of feedback, professional indemnity insurance is what stands between a complaint and a payout. Public liability matters more in-person (a student trips on your stairs) than online.</p>
+        <p>Many platforms require both above a certain volume; once you go private, you're carrying the policy yourself.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What's a DBS / WWCC / Garda check and do I need one?</summary>
+      <div class="answer">
+        <p>Country-specific background check for adults working with minors. UK Enhanced DBS, Australian state Working With Children Check, Ireland Garda Vetting, NZ Police Vet, US state-by-state &mdash; most cost &pound;20&ndash;&pound;100.</p>
+        <p>Required for school-based tutoring, often expected for in-person private lessons with minors, less common for online but reassures parents. The country pack lists where to apply.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What does public liability actually cover?</summary>
+      <div class="answer">
+        <p>Third-party injury or property damage at the lesson. A student trips on your kitchen step, your laptop falls and hurts a child you're tutoring at their home, you spill coffee on a parent's rug &mdash; that's public liability.</p>
+        <p>It does not cover your own equipment or income loss. Most policies are &pound;5&ndash;10/month for &pound;1m&ndash;&pound;5m of cover.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Does Slatework recommend specific providers?</summary>
+      <div class="answer">
+        <p>Yes &mdash; the providers tutors actually use, by country (Westminster Indemnity in the UK, Hiscox internationally, BizCover in Australia, etc.). We don't earn an affiliate fee on most of them; the listings are there because they're the right answer for an indie tutor at this scale.</p>
+        <p>Quote two providers and read the actual policy before buying &mdash; coverage detail varies.</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -117,8 +199,8 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-insurance.js?v=13" defer></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-insurance.js?v=14" defer></script>
 </body>
 </html>

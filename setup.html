@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,6 +47,46 @@
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
       { "@type": "ListItem", "position": 2, "name": "Start tutoring privately", "item": "https://slatework.tools/setup" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Do I have to register a business?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most countries let you tutor as a sole trader / self-employed individual without registering a separate company. UK self-assessment, Australian ABN, Irish Form 11, US Schedule C — registration is paperwork, not incorporation. You can stay sole-trader indefinitely; most indie tutors do."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the platform vs. private trade-off?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Platform = lead generation, fixed payment rails, 15–30% commission. Private = your network, your invoicing, no commission but no pipeline. Most indie tutors use a platform for the first 6–12 months to build reviews, then move repeat students private. The rate calculator shows what each path nets."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the country-specific advice trustworthy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Accurate to the date stamped at the bottom of each country page. The 7 launch countries (US, UK, CA, AU, NZ, IE, HK) ship first because their tax forms, registration steps, and background-check rules are confirmed-correct. Confirm with a local accountant before filing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the first concrete step?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Register for self-assessed income tax (the form name and link are listed for your country). That single step opens up most of the rest — invoice numbering, expense deductions, eligibility for tutor-specific insurance policies. Background checks come second if you'll teach minors. Insurance comes third."
+        }
+      }
     ]
   }
   </script>
@@ -88,6 +128,48 @@
     <p class="small" id="last-verified"></p>
   </section>
 
+  <section class="tool-explainer">
+    <p class="mono-caption">// HOW IT WORKS</p>
+    <h2>What this tool does.</h2>
+    <p>Going independent is mostly four things in the right order: register for self-assessed income tax, get a background check if you'll teach minors, decide on insurance, work out how you'll get paid. Every other tutoring blog wraps that into thirty checklist items because they want the article to look comprehensive. It's four things. The order matters.</p>
+    <p>Pick your country and the page lays the four steps out as a single walkthrough. <strong>Step 1 (Register your business)</strong> &mdash; the form, deadline, and link for self-assessment / sole-trader registration in your country. <strong>Step 2 (Background check)</strong> &mdash; what's expected if you'll teach minors, what it costs, where to apply. <strong>Step 3 (Insurance signpost)</strong> &mdash; pointer to the dedicated insurance page for your country's typical cover. <strong>Step 4 (Tax setup)</strong> &mdash; pointer to the tax page for thresholds and forms. Each step links to the official government portal where there is one.</p>
+    <p><strong>What it isn't.</strong> An incorporation guide. Most indie tutors stay sole-trader / self-employed indefinitely &mdash; registering a limited company adds accounting overhead that doesn't pay back until you're earning well above the trading allowance. If you're scaling toward a small school with multiple staff, you'll outgrow this guide and want a proper accountant. Until then, this is the lean version of the steps you actually have to do.</p>
+    <p class="scenario"><strong>Use it when:</strong> you've decided to go private (or you've already taken your first paying student and realised you don't actually know what the legal next step is), and you want a country-specific walkthrough that fits on one screen.</p>
+  </section>
+
+  <section class="tool-faq">
+    <p class="mono-caption">// FAQ</p>
+    <h2>Honest answers.</h2>
+    <details>
+      <summary>Do I have to register a business?</summary>
+      <div class="answer">
+        <p>Most countries let you tutor as a sole trader / self-employed individual without registering a separate company. UK self-assessment, Australian ABN, Irish Form 11, US Schedule C &mdash; registration is paperwork, not incorporation.</p>
+        <p>You can stay sole-trader indefinitely; most indie tutors do.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What's the platform vs. private trade-off?</summary>
+      <div class="answer">
+        <p>Platform = lead generation, fixed payment rails, 15&ndash;30% commission. Private = your network, your invoicing, no commission but no pipeline.</p>
+        <p>Most indie tutors use a platform for the first 6&ndash;12 months to build reviews, then move repeat students private. The <a href="/rates.html">rate calculator</a> shows what each path nets.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Is the country-specific advice trustworthy?</summary>
+      <div class="answer">
+        <p>Accurate to the date stamped at the bottom of each country page. The 7 launch countries (US, UK, CA, AU, NZ, IE, HK) ship first because their tax forms, registration steps, and background-check rules are confirmed-correct.</p>
+        <p>Confirm with a local accountant before filing.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What's the first concrete step?</summary>
+      <div class="answer">
+        <p>Register for self-assessed income tax (the form name and link are listed for your country). That single step opens up most of the rest &mdash; invoice numbering, expense deductions, eligibility for tutor-specific insurance policies.</p>
+        <p>Background checks come second if you'll teach minors. Insurance comes third.</p>
+      </div>
+    </details>
+  </section>
+
   <aside class="related-tools">
     <p class="mono-caption">// RELATED TOOLS</p>
     <ul>
@@ -105,8 +187,8 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=13"></script>
-<script src="/feedback.js?v=13" defer></script>
-<script src="/src/lib/page-setup.js?v=13" defer></script>
+<script src="/src/lib/countries.js?v=14"></script>
+<script src="/feedback.js?v=14" defer></script>
+<script src="/src/lib/page-setup.js?v=14" defer></script>
 </body>
 </html>
