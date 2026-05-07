@@ -57,8 +57,14 @@ const PER_IP_DAILY = 20;
 const GLOBAL_DAILY = 2000;
 const MIN_SAMPLE_LEN = 50;
 const MAX_SAMPLE_LEN = 4000;
-const MAX_IMAGE_BASE64 = 14 * 1024 * 1024;
-const VALID_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']);
+// Match Anthropic's 5 MB-per-image limit (we send up to 4 MB base64 ~= 3 MB
+// binary thanks to client-side resize in file-extract.js). Server-side cap
+// is set above the client target to leave a small margin for variance.
+const MAX_IMAGE_BASE64 = 5 * 1024 * 1024;
+// Anthropic's vision API only supports these MIME types. HEIC/HEIF are NOT
+// supported and the client now rejects them with a specific error before
+// upload. Keep the server list strict.
+const VALID_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 const VALID_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 export async function onRequestPost({ request, env }) {
@@ -76,8 +82,8 @@ export async function onRequestPost({ request, env }) {
   if (!language) return jsonResponse({ error: 'Missing target language.' }, 400);
   if (!VALID_LEVELS.includes(level)) return jsonResponse({ error: 'Level must be A1–C2.' }, 400);
   if (hasImage) {
-    if (imageData.length > MAX_IMAGE_BASE64) return jsonResponse({ error: 'Image too big — max 10 MB.' }, 400);
-    if (!VALID_IMAGE_MIMES.has(imageMime)) return jsonResponse({ error: 'Unsupported image format.' }, 400);
+    if (imageData.length > MAX_IMAGE_BASE64) return jsonResponse({ error: `Image too large after upload (${(imageData.length/1024/1024).toFixed(1)} MB) — Anthropic's vision API caps at ~5 MB. Re-attach so the client can resize.` }, 400);
+    if (!VALID_IMAGE_MIMES.has(imageMime)) return jsonResponse({ error: `Image format "${imageMime}" not supported. Anthropic accepts JPEG, PNG, WebP, GIF only — HEIC/HEIF need to be converted first.` }, 400);
   } else {
     if (sample.length < MIN_SAMPLE_LEN) return jsonResponse({ error: 'Sample too short. Paste at least 50 characters or attach a photo.' }, 400);
   }

@@ -29,8 +29,8 @@ const PER_IP_DAILY = 15;
 const GLOBAL_DAILY = 1500;
 const MIN_SAMPLE_LEN = 100;
 const MAX_SAMPLE_LEN = 3000;
-const MAX_IMAGE_BASE64 = 14 * 1024 * 1024;
-const VALID_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']);
+const MAX_IMAGE_BASE64 = 5 * 1024 * 1024;
+const VALID_IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 
 export async function onRequestPost({ request, env }) {
   let body;
@@ -46,8 +46,8 @@ export async function onRequestPost({ request, env }) {
 
   if (!language) return jsonResponse({ error: 'Missing target language.' }, 400);
   if (hasImage) {
-    if (imageData.length > MAX_IMAGE_BASE64) return jsonResponse({ error: 'Image too big — max 10 MB.' }, 400);
-    if (!VALID_IMAGE_MIMES.has(imageMime)) return jsonResponse({ error: 'Unsupported image format.' }, 400);
+    if (imageData.length > MAX_IMAGE_BASE64) return jsonResponse({ error: `Image too large after upload (${(imageData.length/1024/1024).toFixed(1)} MB). Re-attach so the client can resize.` }, 400);
+    if (!VALID_IMAGE_MIMES.has(imageMime)) return jsonResponse({ error: `Image format "${imageMime}" not supported. Use JPEG, PNG, WebP, or GIF (HEIC needs to be converted first).` }, 400);
   } else {
     if (sample.length < MIN_SAMPLE_LEN) return jsonResponse({ error: 'Sample too short. Paste at least 100 characters or attach a photo.' }, 400);
   }

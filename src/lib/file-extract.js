@@ -31,8 +31,23 @@
     return pdfjsPromise;
   }
 
-  const IMAGE_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif', 'image/gif']);
+  // Anthropic's vision API only accepts these MIME types. HEIC/HEIF are
+  // explicitly NOT supported even though browsers can read them — uploading
+  // a HEIC straight from an iPhone would silently fail at the model.
+  const ANTHROPIC_VISION_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+  // Detection set: still includes HEIC so we can recognize the file and
+  // either convert it (when canvas decoding is available) or surface a clear
+  // user-facing error before sending. Never sent as-is.
   const IMAGE_EXTS = new Set(['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif', 'gif']);
+  const HEIC_EXTS = new Set(['heic', 'heif']);
+  const HEIC_MIMES = new Set(['image/heic', 'image/heif']);
+
+  // Resize cap to safely fit under Anthropic's 5 MB per-image limit and
+  // reduce upload time on slow connections. Long-edge target: 1600 px is
+  // plenty for handwriting OCR; modern phones shoot at 3000+ px which is
+  // overkill for vision-language models.
+  const MAX_LONG_EDGE_PX = 1600;
+  const TARGET_OUTPUT_BYTES = 3 * 1024 * 1024; // ~3 MB ceiling on what we POST
 
   function getExt(name) {
     const i = name.lastIndexOf('.');
@@ -68,6 +83,57 @@
       r.onerror = () => reject(new Error('Could not read file'));
       r.readAsDataURL(file);
     });
+  }
+
+  // Decode an image File via createImageBitmap (modern, fast) with a
+  // fallback to <img>+canvas for browsers that don't support it on
+  // every codec.
+  async function decodeImage(file) {
+    if (typeof createImageBitmap === 'function') {
+      try {
+        return await createImageBitmap(file);
+      } catch {}
+    }
+    // Fallback: load via Image element
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Browser cannot decode this image. Try saving it as JPEG or PNG and re-attaching.')); };
+      img.src = url;
+    });
+  }
+
+  // Resize + re-encode any image into a JPEG that fits Anthropic's limits.
+  // Returns { mime, base64, dataUrl, sizeBytes } or throws if decoding fails.
+  async function normalizeImage(file) {
+    const bmp = await decodeImage(file);
+    const w = bmp.width, h = bmp.height;
+    if (!w || !h) throw new Error('Could not read image dimensions.');
+    let scale = 1;
+    if (Math.max(w, h) > MAX_LONG_EDGE_PX) scale = MAX_LONG_EDGE_PX / Math.max(w, h);
+    const tw = Math.max(1, Math.round(w * scale));
+    const th = Math.max(1, Math.round(h * scale));
+    const canvas = document.createElement('canvas');
+    canvas.width = tw;
+    canvas.height = th;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bmp, 0, 0, tw, th);
+    if (typeof bmp.close === 'function') try { bmp.close(); } catch {}
+
+    // Try progressively lower JPEG qualities until under target bytes.
+    const qualities = [0.92, 0.85, 0.78, 0.7, 0.6, 0.5];
+    let bestDataUrl = '';
+    for (const q of qualities) {
+      const dataUrl = canvas.toDataURL('image/jpeg', q);
+      const approxBytes = Math.floor(dataUrl.length * 0.75) - 22; // rough base64 → bytes
+      bestDataUrl = dataUrl;
+      if (approxBytes <= TARGET_OUTPUT_BYTES) break;
+    }
+    const idx = bestDataUrl.indexOf(',');
+    const base64 = idx >= 0 ? bestDataUrl.slice(idx + 1) : bestDataUrl;
+    const sizeBytes = Math.floor(base64.length * 0.75);
+    return { mime: 'image/jpeg', base64, dataUrl: bestDataUrl, sizeBytes, originalW: w, originalH: h, finalW: tw, finalH: th };
   }
 
   async function extractDocx(file) {
@@ -243,25 +309,43 @@
             onStatus('Image upload not supported here.');
             return;
           }
-          onStatus('Reading image…');
-          const mime = (file.type && IMAGE_MIMES.has(file.type)) ? file.type : (
-            ext === 'png' ? 'image/png' :
-            ext === 'webp' ? 'image/webp' :
-            ext === 'heic' ? 'image/heic' :
-            ext === 'heif' ? 'image/heif' :
-            ext === 'gif' ? 'image/gif' :
-            'image/jpeg'
-          );
-          const b64 = await readAsBase64(file);
-          await imageHandler(b64, mime);
+
+          // Detect HEIC/HEIF first — Anthropic's vision API does NOT accept
+          // these. Most desktop browsers can't even decode them. Reject with
+          // a clear, actionable message instead of letting the model fail.
+          const isHeic = HEIC_EXTS.has(ext) || HEIC_MIMES.has(file.type);
+          if (isHeic) {
+            onStatus(`HEIC/HEIF photos aren't supported by our AI vision provider (Anthropic). On iPhone, change camera setting Settings → Camera → Formats → "Most Compatible" so new photos save as JPEG. Or convert this one to JPEG first.`);
+            return;
+          }
+
+          onStatus('Reading and resizing image…');
+          // Always normalize through canvas → JPEG. This:
+          // 1. Filters anything that's not actually decodable as an image
+          //    (decode errors caught with a clear message).
+          // 2. Caps the long edge at 1600 px and target ~3 MB so we always
+          //    fit Anthropic's 5 MB per-image cap regardless of source.
+          // 3. Standardizes MIME to image/jpeg — guaranteed accepted.
+          let normalized;
+          try {
+            normalized = await normalizeImage(file);
+          } catch (decodeErr) {
+            onStatus(decodeErr.message || `Could not read "${file.name}". Try saving as JPEG or PNG and re-attaching.`);
+            return;
+          }
+
+          await imageHandler(normalized.base64, normalized.mime);
+          const sizeNote = normalized.originalW !== normalized.finalW || normalized.finalH !== normalized.originalH
+            ? `${normalized.finalW}×${normalized.finalH} (resized from ${normalized.originalW}×${normalized.originalH})`
+            : `${normalized.finalW}×${normalized.finalH}`;
           showPreview({
             name: file.name,
-            size: file.size,
+            size: normalized.sizeBytes,
             isImage: true,
-            dataUrl: `data:${mime};base64,${b64}`,
-            summary: 'attached'
+            dataUrl: normalized.dataUrl,
+            summary: sizeNote
           });
-          onStatus(`Attached ${file.name}. Click Mark when ready.`);
+          onStatus(`Attached ${file.name} (${formatBytes(normalized.sizeBytes)} after resize). Click Mark when ready.`);
           return;
         }
         if (ext === 'txt' || ext === 'md' || file.type === 'text/plain' || file.type === 'text/markdown') {
