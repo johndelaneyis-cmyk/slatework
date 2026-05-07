@@ -2047,6 +2047,143 @@ button[disabled],
 }
 .tool-faq details .answer a:hover { color: var(--accent); }
 
+/* =========================================================
+   DARK MODE — prefers-color-scheme inversion of the light region.
+   The dark slate region (.hero-slate / .newsletter / .faq / .country-band /
+   .threshold-callout / .site-footer) already uses --slate-*/--chalk-*
+   tokens — those don't change here. We only flip the light region tokens
+   so the body, surfaces, ink, and lines invert.
+
+   Buttons stay readable: default button keeps very-dark slate background
+   with chalk text (no swap from --ink to chalk, because in dark mode --ink
+   itself is the dark slate that buttons need). The primary orange CTA is
+   already a strong contrast against either light or dark backgrounds.
+   ========================================================= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Light region tokens flipped — keep semantic role, swap pole. */
+    --bg: #0f172a;          /* page background — was #f8fafc */
+    --surface: #1e293b;     /* card / form-field background */
+    --surface-2: #334155;   /* secondary surface (hover bg, etc.) */
+    --ink: #e2e8f0;         /* primary text — was #020617 */
+    --ink-2: #f8fafc;       /* primary-strong text */
+    --ink-muted: #cbd5e1;   /* muted text */
+    --ink-faint: #94a3b8;   /* faintest text — still 4.5:1 on --bg */
+    --line: #334155;        /* card borders */
+    --line-strong: #475569; /* hover borders */
+
+    /* Accent stays orange; soften the alpha mixin against dark surface. */
+    --accent-soft: rgba(217, 119, 6, 0.15);
+
+    /* Shadows are barely visible on dark surfaces; reduce them so they
+       don't print as black blocks. */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Default button: --ink is now light in dark mode, which would make the
+     bg light + white text unreadable. Pin the button bg to the deep slate
+     and the text to chalk, regardless of token state. */
+  button, .btn {
+    background: var(--slate-board);
+    border-color: var(--slate-board);
+    color: var(--chalk);
+  }
+  button:hover, .btn:hover {
+    background: var(--slate-deep);
+    border-color: var(--slate-deep);
+    color: var(--chalk);
+  }
+  .btn.secondary, button.secondary {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+  .btn.secondary:hover, button.secondary:hover {
+    background: var(--surface-2);
+    border-color: var(--ink-muted);
+    color: var(--ink);
+  }
+  /* Primary CTA stays orange — same contrast story on dark as on light. */
+
+  /* Disabled button — explicit override so it doesn't disappear into bg. */
+  button:disabled,
+  .btn:disabled,
+  button[disabled],
+  .btn[disabled] {
+    background: var(--surface-2);
+    color: var(--ink-muted);
+    border-color: var(--line);
+  }
+
+  /* Brand SVG: inline fills are hard-coded to slate tones that stand out
+     on light bg but disappear on dark bg. Lift the rect fill toward chalk
+     so the slate icon remains visible against --bg #0f172a. */
+  .site-header .brand svg rect {
+    fill: var(--slate-rim);
+    stroke: var(--slate-green);
+  }
+  .site-header.dark .brand svg rect {
+    fill: var(--slate-rim);
+    stroke: var(--chalk-faint);
+  }
+
+  /* Body-text selection: invert. */
+  ::selection { background: var(--chalk); color: var(--slate-deep); }
+
+  /* Tile hover stays a subtle green on the dark theme. */
+  .tile {
+    background: var(--surface);
+  }
+
+  /* Result panels & dropzones — make sure backgrounds align with surface. */
+  .result {
+    background: var(--surface);
+    border-color: var(--line);
+  }
+
+  /* The .has-file ✓ check — chalk-green so it reads on both light and dark
+     drop-zones. */
+  .drop-zone.has-file {
+    background: rgba(134, 239, 172, 0.06);
+  }
+  .drop-zone.has-file::before {
+    color: var(--chalk-green);
+  }
+
+  /* Error block keeps red accent, but lift the bg alpha slightly so the
+     red doesn't disappear against the dark surface. */
+  .error-block {
+    background: rgba(185, 28, 28, 0.18);
+  }
+  .error-block p {
+    color: var(--ink);
+  }
+
+  /* Contract/worksheet preview — the Georgia-set print previews look weird
+     against dark slate. Pin these to the always-light "paper" tone so the
+     printable content remains visually paper-like even when reading on
+     dark theme. */
+  .preview, #worksheet, #answer-key {
+    background: #fafaf7;
+    color: #020617;
+    border-color: #d6d3c7;
+  }
+  .preview h2, .preview h3,
+  #worksheet h2, #worksheet h3,
+  #answer-key h2, #answer-key h3 {
+    color: #020617;
+  }
+
+  /* Threshold callout adjusts against new bg; keep it as a slate band. */
+
+  /* Skip-link — keep dark on dark theme, but adjust to chalk-on-slate-board. */
+  .skip-link {
+    background: var(--slate-deep);
+    color: var(--chalk);
+  }
+}
+
 /* Print rules (consolidated from contract.html + worksheet.html inline blocks) */
 @media print {
   .no-print { display: none !important; }
