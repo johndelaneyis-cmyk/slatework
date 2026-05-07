@@ -1,0 +1,246 @@
+{
+  "code": "SG",
+  "name": "Singapore",
+  "currency": "SGD",
+  "currency_symbol": "S$",
+  "locale_default": "en-SG",
+  "platforms": [
+    {
+      "key": "italki",
+      "name": "italki",
+      "fee_pct": 15,
+      "url": "https://www.italki.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "preply",
+      "name": "Preply",
+      "fee_pct": 33,
+      "fee_curve": [
+        { "after_hours": 0, "fee_pct": 33 },
+        { "after_hours": 20, "fee_pct": 28 },
+        { "after_hours": 50, "fee_pct": 25 },
+        { "after_hours": 200, "fee_pct": 18 },
+        { "after_hours": 400, "fee_pct": 15 }
+      ],
+      "url": "https://preply.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "cambly",
+      "name": "Cambly",
+      "fee_pct": 0,
+      "url": "https://www.cambly.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"],
+      "notes": "Per-minute rate model."
+    },
+    {
+      "key": "verbling",
+      "name": "Verbling",
+      "fee_pct": 15,
+      "url": "https://www.verbling.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "championtutor",
+      "name": "ChampionTutor",
+      "fee_pct": 50,
+      "url": "https://www.championtutor.com",
+      "available_in": ["SG"],
+      "notes": "First-month commission. Agency-style introduction model — half of the first month's fee, then 0% thereafter."
+    },
+    {
+      "key": "mindflex",
+      "name": "MindFlex",
+      "fee_pct": 50,
+      "url": "https://mindflex.com.sg",
+      "available_in": ["SG"],
+      "notes": "First-half-of-first-month commission. Agency model similar to ChampionTutor."
+    },
+    {
+      "key": "familytutor",
+      "name": "FamilyTutor",
+      "fee_pct": 50,
+      "url": "https://www.familytutor.sg",
+      "available_in": ["SG"],
+      "notes": "Half of first month. Agency model."
+    },
+    {
+      "key": "tueetor",
+      "name": "Tueetor",
+      "fee_pct": 0,
+      "url": "https://www.tueetor.com",
+      "available_in": ["SG", "MY"],
+      "notes": "Lead-based — tutors purchase credits to view student requests. No commission per lesson."
+    },
+    {
+      "key": "snapask",
+      "name": "Snapask",
+      "fee_pct": 30,
+      "url": "https://www.snapask.com/en-sg",
+      "available_in": ["HK", "SG", "TW"]
+    }
+  ],
+  "tax": {
+    "self_employment_form": "Form B (for self-employed sole proprietors), filed via myTax Portal",
+    "self_employment_url": "https://www.iras.gov.sg/taxes/individual-income-tax/self-employed-and-partnerships/basic-guide-for-self-employed-persons",
+    "vat_threshold_amount": 1000000,
+    "trading_allowance_amount": 0,
+    "income_tax_brackets": [
+      { "upper_bound_amount": 20000, "rate": 0.0 },
+      { "upper_bound_amount": 30000, "rate": 0.02 },
+      { "upper_bound_amount": 40000, "rate": 0.035 },
+      { "upper_bound_amount": 80000, "rate": 0.07 },
+      { "upper_bound_amount": 120000, "rate": 0.115 },
+      { "upper_bound_amount": 160000, "rate": 0.15 },
+      { "upper_bound_amount": 200000, "rate": 0.18 },
+      { "upper_bound_amount": 240000, "rate": 0.19 },
+      { "upper_bound_amount": 280000, "rate": 0.195 },
+      { "upper_bound_amount": 320000, "rate": 0.20 },
+      { "upper_bound_amount": 500000, "rate": 0.22 },
+      { "upper_bound_amount": 1000000, "rate": 0.23 },
+      { "upper_bound_amount": null, "rate": 0.24 }
+    ],
+    "registration_steps": [
+      "Register your business name (sole proprietorship) with ACRA via BizFile+ (https://www.bizfile.gov.sg) — annual fee S$60. Optional but recommended if trading under any name other than your own.",
+      "File income tax annually via myTax Portal (https://mytax.iras.gov.sg) using Form B — deadline 18 April for paper or 18 April online. Self-employed file under 'Trade, Business, Profession or Vocation'.",
+      "GST registration is required only if revenue exceeds S$1M/year. Voluntary registration is possible but adds compliance burden — most tutors should not register voluntarily.",
+      "CPF — Singapore Citizens and PRs must contribute to MediSave (the medical savings portion of CPF) on net trade income above S$6,000/year. Rate ~8-10.5% depending on age, capped at S$5,760-S$7,560/year.",
+      "Keep records of income and expenses for 5 years (IRAS requirement)."
+    ],
+    "notes": "Singapore's tax regime is among the simplest globally for tutors: GST threshold is S$1M (most tutors never hit it), brackets are progressive but income tax effective rates are low under S$80K. Tax year is the calendar year. CPF MediSave contribution is the main 'extra' for citizens and PRs."
+  },
+  "background_check": {
+    "name": "Tuition centre clearance via Singapore Police Force (Certificate of Clearance) — only required if registering with MOE-registered tuition centres",
+    "url": "https://www.police.gov.sg/e-services/apply/certificate-of-clearance",
+    "cost_amount": 80,
+    "notes": "Not legally required for private home tutoring. Parents and agencies sometimes request it. Apply via the SPF e-services portal; result valid 6 months. Fee S$80 (electronic copy)."
+  },
+  "rates_by_language_pair": {
+    "en-en": {
+      "low": 30,
+      "median": 60,
+      "high": 200,
+      "unit": "per_hour"
+    },
+    "en-zh": {
+      "low": 35,
+      "median": 60,
+      "high": 150,
+      "unit": "per_hour"
+    },
+    "zh-en": {
+      "low": 30,
+      "median": 55,
+      "high": 130,
+      "unit": "per_hour"
+    },
+    "en-ms": {
+      "low": 30,
+      "median": 50,
+      "high": 100,
+      "unit": "per_hour"
+    },
+    "en-ta": {
+      "low": 30,
+      "median": 50,
+      "high": 100,
+      "unit": "per_hour"
+    },
+    "en-ja": {
+      "low": 40,
+      "median": 70,
+      "high": 150,
+      "unit": "per_hour"
+    },
+    "en-ko": {
+      "low": 40,
+      "median": 70,
+      "high": 150,
+      "unit": "per_hour"
+    },
+    "en-fr": {
+      "low": 40,
+      "median": 70,
+      "high": 150,
+      "unit": "per_hour"
+    },
+    "en-de": {
+      "low": 40,
+      "median": 70,
+      "high": 150,
+      "unit": "per_hour"
+    },
+    "en-es": {
+      "low": 35,
+      "median": 60,
+      "high": 130,
+      "unit": "per_hour"
+    }
+  },
+  "payment_methods": [
+    {
+      "key": "paynow",
+      "name": "PayNow",
+      "domestic": true,
+      "international": false,
+      "url": "https://abs.org.sg/consumer-banking/pay-now",
+      "notes": "Free, instant, peer-to-peer via mobile / NRIC / UEN. Default for domestic tutoring transactions. Available across all major SG banks."
+    },
+    {
+      "key": "fast",
+      "name": "FAST (bank transfer)",
+      "domestic": true,
+      "international": false,
+      "url": "https://abs.org.sg/consumer-banking/fast",
+      "notes": "Fast And Secure Transfers — free instant interbank transfers."
+    },
+    {
+      "key": "wise",
+      "name": "Wise",
+      "domestic": true,
+      "international": true,
+      "url": "https://wise.com"
+    },
+    {
+      "key": "stripe_link",
+      "name": "Stripe Link",
+      "domestic": true,
+      "international": true,
+      "url": "https://stripe.com/sg",
+      "notes": "~3.4% + S$0.50 per local card transaction."
+    },
+    {
+      "key": "paypal",
+      "name": "PayPal",
+      "domestic": true,
+      "international": true,
+      "url": "https://www.paypal.com/sg"
+    },
+    {
+      "key": "cash",
+      "name": "Cash",
+      "domestic": true,
+      "international": false
+    }
+  ],
+  "insurance": {
+    "public_liability_typical_amount": 500000,
+    "providers": [
+      {
+        "name": "AIG Singapore",
+        "url": "https://www.aig.sg/business"
+      },
+      {
+        "name": "Income Insurance",
+        "url": "https://www.income.com.sg/insurance/business"
+      },
+      {
+        "name": "Tokio Marine",
+        "url": "https://www.tokiomarine.com/sg/en/personal/business-and-business-people.html"
+      }
+    ],
+    "notes": "Public liability is not legally required for home or online tuition but is recommended for tutors of minors or those operating from a fixed address. ~S$200-500/year for S$500K-1M cover. Professional indemnity (covering bad-advice claims) is optional and rarely purchased by individual tutors."
+  },
+  "data_source_last_verified": "2026-05-07"
+}

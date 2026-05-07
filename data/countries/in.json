@@ -1,0 +1,231 @@
+{
+  "code": "IN",
+  "name": "India",
+  "currency": "INR",
+  "currency_symbol": "₹",
+  "locale_default": "en-IN",
+  "platforms": [
+    {
+      "key": "italki",
+      "name": "italki",
+      "fee_pct": 15,
+      "url": "https://www.italki.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "preply",
+      "name": "Preply",
+      "fee_pct": 33,
+      "fee_curve": [
+        { "after_hours": 0, "fee_pct": 33 },
+        { "after_hours": 20, "fee_pct": 28 },
+        { "after_hours": 50, "fee_pct": 25 },
+        { "after_hours": 200, "fee_pct": 18 },
+        { "after_hours": 400, "fee_pct": 15 }
+      ],
+      "url": "https://preply.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "cambly",
+      "name": "Cambly",
+      "fee_pct": 0,
+      "url": "https://www.cambly.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"],
+      "notes": "Per-minute rate model. Cambly accepts tutors based in India (and is one of the more accessible platforms for Indian-based tutors)."
+    },
+    {
+      "key": "verbling",
+      "name": "Verbling",
+      "fee_pct": 15,
+      "url": "https://www.verbling.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "urbanpro",
+      "name": "UrbanPro",
+      "fee_pct": 0,
+      "url": "https://www.urbanpro.com",
+      "available_in": ["IN"],
+      "notes": "Lead-based marketplace. Tutors pay for student leads (~₹100–₹300 per qualified lead) rather than commission per lesson."
+    },
+    {
+      "key": "vedantu",
+      "name": "Vedantu",
+      "fee_pct": 30,
+      "url": "https://www.vedantu.com",
+      "available_in": ["IN"],
+      "notes": "Heavily K-12-focused. Tutor revenue share varies by tier; ~70% to tutor at standard tier."
+    },
+    {
+      "key": "chegg_india",
+      "name": "Chegg India (Q&A)",
+      "fee_pct": 0,
+      "url": "https://www.cheggindia.com",
+      "available_in": ["IN"],
+      "notes": "Per-question payment, not per-hour. Asynchronous Q&A model — pays ₹50–₹200 per accepted answer depending on subject."
+    },
+    {
+      "key": "filo",
+      "name": "Filo",
+      "fee_pct": 25,
+      "url": "https://filo.tutor",
+      "available_in": ["IN"],
+      "notes": "On-demand 1:1 tutoring app. Per-minute pricing; tutor takes ~70-75%."
+    }
+  ],
+  "tax": {
+    "self_employment_form": "ITR-3 (business income) or ITR-4 / Sugam (presumptive scheme under Section 44ADA)",
+    "self_employment_url": "https://www.incometax.gov.in/iec/foportal/help/individual/return-applicable-2",
+    "vat_threshold_amount": 2000000,
+    "trading_allowance_amount": 0,
+    "income_tax_brackets": [
+      { "upper_bound_amount": 300000, "rate": 0.0 },
+      { "upper_bound_amount": 700000, "rate": 0.05 },
+      { "upper_bound_amount": 1000000, "rate": 0.10 },
+      { "upper_bound_amount": 1200000, "rate": 0.15 },
+      { "upper_bound_amount": 1500000, "rate": 0.20 },
+      { "upper_bound_amount": null, "rate": 0.30 }
+    ],
+    "registration_steps": [
+      "Get a PAN (Permanent Account Number) if you don't already — required for any tax filing.",
+      "Decide on your tax regime: New regime (above brackets, default from FY 2023-24) or Old regime (with deductions). New regime is usually simpler for most tutors.",
+      "Section 44ADA presumptive scheme: if professional gross receipts ≤ ₹50 lakh/year, you can declare 50% of receipts as deemed income — file ITR-4 instead of ITR-3, no detailed books required.",
+      "GST registration is required only if turnover exceeds ₹20 lakh/year (services). Most private tutors are well below this.",
+      "If you DO cross the GST threshold: register on https://www.gst.gov.in/, file monthly GSTR-1 and GSTR-3B (or GSTR-4 quarterly under composition scheme).",
+      "Income tax return due 31 July (for non-audit cases) — assessment year is the year following financial year (April–March).",
+      "Advance tax: if total tax liability for the year exceeds ₹10,000, you must pay in 4 instalments (15 June, 15 Sept, 15 Dec, 15 March). Section 44ADA filers have a single 15 March deadline."
+    ],
+    "notes": "The presumptive scheme under Section 44ADA is the simplest option for private tutors with gross receipts under ₹50 lakh — 50% of receipts deemed expenses, no books. Most independent tutors qualify for this. New tax regime brackets above are FY 2024-25; verify current year on incometax.gov.in."
+  },
+  "background_check": {
+    "name": "Police Clearance Certificate (PCC) — local Police Commissioner's office",
+    "url": "https://portal2.passportindia.gov.in/AppOnlineProject/welcomeLink",
+    "cost_amount": 500,
+    "notes": "Not legally required for private tutoring, but parents (especially for in-person tutoring of minors) increasingly request a PCC. Apply via the Passport Seva portal or directly at the local police commissioner's office. Fee ~₹500. Validity typically 6 months."
+  },
+  "rates_by_language_pair": {
+    "en-en": {
+      "low": 500,
+      "median": 1000,
+      "high": 3500,
+      "unit": "per_hour"
+    },
+    "en-hi": {
+      "low": 300,
+      "median": 600,
+      "high": 1500,
+      "unit": "per_hour"
+    },
+    "en-fr": {
+      "low": 400,
+      "median": 800,
+      "high": 2000,
+      "unit": "per_hour"
+    },
+    "en-de": {
+      "low": 400,
+      "median": 800,
+      "high": 2000,
+      "unit": "per_hour"
+    },
+    "en-es": {
+      "low": 350,
+      "median": 700,
+      "high": 1800,
+      "unit": "per_hour"
+    },
+    "en-ja": {
+      "low": 500,
+      "median": 1000,
+      "high": 2500,
+      "unit": "per_hour"
+    },
+    "en-ko": {
+      "low": 500,
+      "median": 1000,
+      "high": 2500,
+      "unit": "per_hour"
+    },
+    "en-zh": {
+      "low": 500,
+      "median": 1000,
+      "high": 2500,
+      "unit": "per_hour"
+    }
+  },
+  "payment_methods": [
+    {
+      "key": "upi",
+      "name": "UPI (Unified Payments Interface)",
+      "domestic": true,
+      "international": false,
+      "url": "https://www.npci.org.in/what-we-do/upi/product-overview",
+      "notes": "Free, instant, India-only. Default payment method for nearly all domestic tutoring transactions. Works via PhonePe, GPay, Paytm, BHIM, etc."
+    },
+    {
+      "key": "neft_imps",
+      "name": "NEFT / IMPS / RTGS (bank transfer)",
+      "domestic": true,
+      "international": false,
+      "url": "https://www.rbi.org.in/Scripts/FAQView.aspx?Id=60",
+      "notes": "Free or near-free domestic bank transfer. IMPS is instant, NEFT is batch-processed."
+    },
+    {
+      "key": "paytm",
+      "name": "Paytm",
+      "domestic": true,
+      "international": false,
+      "url": "https://paytm.com"
+    },
+    {
+      "key": "razorpay",
+      "name": "Razorpay (for invoicing)",
+      "domestic": true,
+      "international": true,
+      "url": "https://razorpay.com",
+      "notes": "Useful if you want a payment-link to send parents. ~2% fee on UPI, ~2.5% on cards. Free tier available."
+    },
+    {
+      "key": "wise",
+      "name": "Wise",
+      "domestic": false,
+      "international": true,
+      "url": "https://wise.com",
+      "notes": "Useful for receiving payments from international students. Inward USD/EUR/GBP arrives as INR at near-mid-market rate."
+    },
+    {
+      "key": "stripe_link",
+      "name": "Stripe (international invoicing)",
+      "domestic": true,
+      "international": true,
+      "url": "https://stripe.com/in",
+      "notes": "Stripe is available in India in Beta — check eligibility. ~2% + ₹3 per domestic transaction."
+    },
+    {
+      "key": "cash",
+      "name": "Cash",
+      "domestic": true,
+      "international": false
+    }
+  ],
+  "insurance": {
+    "public_liability_typical_amount": 1000000,
+    "providers": [
+      {
+        "name": "ICICI Lombard",
+        "url": "https://www.icicilombard.com/business-insurance"
+      },
+      {
+        "name": "Bajaj Allianz",
+        "url": "https://www.bajajallianz.com/business-insurance.html"
+      },
+      {
+        "name": "HDFC ERGO",
+        "url": "https://www.hdfcergo.com/business-insurance"
+      }
+    ],
+    "notes": "Professional indemnity / public liability is uncommon for individual private tutors in India but recommended for tutors of minors and for those running coaching classes from a fixed location. Annual premiums are modest (~₹2,000–₹8,000) for ₹10–25 lakh cover."
+  },
+  "data_source_last_verified": "2026-05-07"
+}

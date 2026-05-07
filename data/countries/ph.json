@@ -1,0 +1,232 @@
+{
+  "code": "PH",
+  "name": "Philippines",
+  "currency": "PHP",
+  "currency_symbol": "₱",
+  "locale_default": "en-PH",
+  "platforms": [
+    {
+      "key": "italki",
+      "name": "italki",
+      "fee_pct": 15,
+      "url": "https://www.italki.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "preply",
+      "name": "Preply",
+      "fee_pct": 33,
+      "fee_curve": [
+        { "after_hours": 0, "fee_pct": 33 },
+        { "after_hours": 20, "fee_pct": 28 },
+        { "after_hours": 50, "fee_pct": 25 },
+        { "after_hours": 200, "fee_pct": 18 },
+        { "after_hours": 400, "fee_pct": 15 }
+      ],
+      "url": "https://preply.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "cambly",
+      "name": "Cambly",
+      "fee_pct": 0,
+      "url": "https://www.cambly.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"],
+      "notes": "Per-minute rate. Cambly's Philippines-based tutor pool is one of its largest — generally pays USD 0.17/min standard or USD 0.20/min Cambly Kids."
+    },
+    {
+      "key": "verbling",
+      "name": "Verbling",
+      "fee_pct": 15,
+      "url": "https://www.verbling.com",
+      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+    },
+    {
+      "key": "fiftyonetalk",
+      "name": "51Talk",
+      "fee_pct": 0,
+      "url": "https://www.51talk.com.ph",
+      "available_in": ["PH"],
+      "notes": "Pays per 25-minute class. Tier-based — base ₱120-180/class, peak ₱200+/class. Largest ESL platform employing PH-based tutors."
+    },
+    {
+      "key": "rarejob",
+      "name": "RareJob",
+      "fee_pct": 0,
+      "url": "https://www.rarejob.com.ph",
+      "available_in": ["PH"],
+      "notes": "Japanese-focused ESL. Per-25-min lesson rate; tier-based. Strong demand from Japanese learners."
+    },
+    {
+      "key": "nativecamp",
+      "name": "Native Camp",
+      "fee_pct": 0,
+      "url": "https://nativecamp.net/en/teach",
+      "available_in": ["PH"],
+      "notes": "On-demand ESL platform. Pays per 25-min lesson; flexible scheduling."
+    },
+    {
+      "key": "engoo",
+      "name": "Engoo (formerly Bibo English)",
+      "fee_pct": 0,
+      "url": "https://engoo.com/teach",
+      "available_in": ["PH"],
+      "notes": "ESL platform with primarily East Asian student base. Per-lesson pay."
+    }
+  ],
+  "tax": {
+    "self_employment_form": "BIR Form 1701 (Annual Income Tax Return) or 1701A (8% gross income option for self-employed under ₱3M)",
+    "self_employment_url": "https://www.bir.gov.ph",
+    "vat_threshold_amount": 3000000,
+    "trading_allowance_amount": 250000,
+    "income_tax_brackets": [
+      { "upper_bound_amount": 250000, "rate": 0.0 },
+      { "upper_bound_amount": 400000, "rate": 0.15 },
+      { "upper_bound_amount": 800000, "rate": 0.20 },
+      { "upper_bound_amount": 2000000, "rate": 0.25 },
+      { "upper_bound_amount": 8000000, "rate": 0.30 },
+      { "upper_bound_amount": null, "rate": 0.35 }
+    ],
+    "registration_steps": [
+      "Register with the BIR (Bureau of Internal Revenue) using Form 1901 — get a TIN (Taxpayer Identification Number) and Certificate of Registration (COR / Form 2303). One-time fee ₱500.",
+      "Get an Authority to Print (ATP) for receipts (Form 1906) — required to issue official receipts to clients.",
+      "Choose your tax option: (a) Graduated rates above plus 3% percentage tax (or 12% VAT if turnover > ₱3M), or (b) 8% flat rate on gross sales/receipts above ₱250,000 in lieu of percentage tax — simpler for most tutors. Indicate choice on first return of the year.",
+      "File quarterly: Form 1701Q (income tax) by 15 May / 15 Aug / 15 Nov, plus Form 2551Q (percentage tax) by 25th day of month following each quarter — unless on 8% option.",
+      "File annually: Form 1701 or 1701A by 15 April for the prior calendar year.",
+      "Keep books of accounts (registered with BIR) and copies of all official receipts for 10 years.",
+      "Local Business Permit (Mayor's Permit) from your city/municipality — annual renewal."
+    ],
+    "notes": "The 8% flat-rate option is the simplest path for most independent tutors. Below ₱250K gross income you owe nothing; above that, 8% of gross — no separate percentage tax, no detailed expense bookkeeping. Choose this on your first quarterly return (Form 1701Q) of the year. Tax year is calendar year (January–December)."
+  },
+  "background_check": {
+    "name": "NBI Clearance — National Bureau of Investigation",
+    "url": "https://nbi.gov.ph",
+    "cost_amount": 130,
+    "notes": "Standard background check requested by many parents and online ESL platforms. Apply at https://nbi-clearance.com (online) or any NBI satellite office. Fee ₱130 + ₱25 e-payment. Validity 1 year. Many ESL platforms (51Talk, RareJob etc.) require an active NBI clearance for tutor onboarding."
+  },
+  "rates_by_language_pair": {
+    "en-en": {
+      "low": 250,
+      "median": 500,
+      "high": 1500,
+      "unit": "per_hour"
+    },
+    "en-fil": {
+      "low": 400,
+      "median": 700,
+      "high": 1500,
+      "unit": "per_hour"
+    },
+    "fil-en": {
+      "low": 350,
+      "median": 600,
+      "high": 1300,
+      "unit": "per_hour"
+    },
+    "en-ja": {
+      "low": 300,
+      "median": 500,
+      "high": 1000,
+      "unit": "per_hour"
+    },
+    "en-ko": {
+      "low": 300,
+      "median": 500,
+      "high": 1000,
+      "unit": "per_hour"
+    },
+    "en-zh": {
+      "low": 300,
+      "median": 500,
+      "high": 1000,
+      "unit": "per_hour"
+    },
+    "en-es": {
+      "low": 300,
+      "median": 500,
+      "high": 1000,
+      "unit": "per_hour"
+    },
+    "en-fr": {
+      "low": 300,
+      "median": 500,
+      "high": 1000,
+      "unit": "per_hour"
+    }
+  },
+  "payment_methods": [
+    {
+      "key": "gcash",
+      "name": "GCash",
+      "domestic": true,
+      "international": false,
+      "url": "https://www.gcash.com",
+      "notes": "Default mobile wallet — most parents and adult students will pay via GCash. Free between users, instant."
+    },
+    {
+      "key": "maya",
+      "name": "Maya (formerly PayMaya)",
+      "domestic": true,
+      "international": false,
+      "url": "https://www.maya.ph",
+      "notes": "Second-most-common mobile wallet. Free P2P transfers."
+    },
+    {
+      "key": "instapay",
+      "name": "InstaPay (bank transfer)",
+      "domestic": true,
+      "international": false,
+      "url": "https://www.bsp.gov.ph/SitePages/PaymentSystem/InstaPay.aspx",
+      "notes": "Real-time bank-to-bank transfer. Most banks charge ₱15-25 per transaction."
+    },
+    {
+      "key": "paypal",
+      "name": "PayPal",
+      "domestic": true,
+      "international": true,
+      "url": "https://www.paypal.com/ph",
+      "notes": "Common for international students paying PH-based tutors. ~4.4% + fixed fee on cross-border transactions."
+    },
+    {
+      "key": "wise",
+      "name": "Wise",
+      "domestic": false,
+      "international": true,
+      "url": "https://wise.com",
+      "notes": "Strong for receiving USD/EUR/GBP from international students with low FX markup."
+    },
+    {
+      "key": "stripe_link",
+      "name": "Stripe Link",
+      "domestic": true,
+      "international": true,
+      "url": "https://stripe.com/ph",
+      "notes": "Stripe is in Beta in the Philippines — verify availability. ~3.9% + ₱15 per transaction."
+    },
+    {
+      "key": "cash",
+      "name": "Cash",
+      "domestic": true,
+      "international": false
+    }
+  ],
+  "insurance": {
+    "public_liability_typical_amount": 500000,
+    "providers": [
+      {
+        "name": "AXA Philippines",
+        "url": "https://www.axa.com.ph/business"
+      },
+      {
+        "name": "Pioneer Insurance",
+        "url": "https://pioneer.com.ph"
+      },
+      {
+        "name": "Malayan Insurance",
+        "url": "https://www.malayan.com"
+      }
+    ],
+    "notes": "Public liability and professional indemnity are uncommon for individual tutors in the Philippines. Recommended for tutors operating from fixed coaching centres or those with student volumes above 20/week. Annual premium ~₱3,000-8,000 for ₱500K-1M cover."
+  },
+  "data_source_last_verified": "2026-05-07"
+}
