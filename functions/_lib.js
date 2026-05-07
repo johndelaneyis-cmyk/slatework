@@ -82,7 +82,8 @@ export class ClaudeError extends Error {
   }
 }
 
-export async function callClaude(env, { model, system, user, max_tokens = 1500, timeoutMs = 55000 }) {
+// Single attempt. Used internally by callClaude. Throws ClaudeError on failure.
+async function callClaudeOnce(env, { model, system, user, max_tokens = 1500, timeoutMs = 55000 }) {
   if (!env.ANTHROPIC_API_KEY) {
     throw new ClaudeError('auth', 0, '', 'ANTHROPIC_API_KEY not set');
   }
@@ -133,6 +134,35 @@ export async function callClaude(env, { model, system, user, max_tokens = 1500, 
   }
   const data = await r.json();
   return (data.content || []).map(c => c.text || '').join('');
+}
+
+// Fallback model to retry on permission/auth errors. If the primary model is
+// gated (account tier, sunset, region), auto-retry with the more broadly
+// accessible Haiku 4.5 so users still get a result. Configurable via env.
+const FALLBACK_MODEL = 'claude-haiku-4-5';
+
+export async function callClaude(env, opts) {
+  const primary = opts.model;
+  const fallback = env.ANTHROPIC_FALLBACK_MODEL || FALLBACK_MODEL;
+  try {
+    return await callClaudeOnce(env, opts);
+  } catch (err) {
+    // Auto-retry once with the fallback model on auth/permission errors —
+    // covers the case where the key is fine but the primary model is gated.
+    // Don't fall back on rate limits, timeouts, or invalid input — those are
+    // not solved by changing models.
+    if (err instanceof ClaudeError && err.code === 'auth' && err.status === 403 && primary !== fallback) {
+      console.error(`[claude_fallback] primary=${primary} 403, retrying with ${fallback}`);
+      try {
+        return await callClaudeOnce(env, { ...opts, model: fallback });
+      } catch (err2) {
+        // If fallback also fails, surface the ORIGINAL error (more useful
+        // diagnostically since it points at the primary model's gating).
+        throw err;
+      }
+    }
+    throw err;
+  }
 }
 
 // Pull human-readable detail out of an Anthropic error body. Tries (in
