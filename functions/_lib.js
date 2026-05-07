@@ -135,41 +135,69 @@ export async function callClaude(env, { model, system, user, max_tokens = 1500, 
   return (data.content || []).map(c => c.text || '').join('');
 }
 
+// Pull Anthropic's human-readable "message" field out of an error body
+// snippet. Anthropic's error payloads look like:
+//   {"type":"error","error":{"type":"...","message":"<readable>"}}
+function extractUpstreamMessage(snippet) {
+  if (!snippet) return '';
+  // Try the nested error.message first — that's the spec shape.
+  const m1 = /"error"\s*:\s*\{[^}]*"message"\s*:\s*"((?:[^"\\]|\\.)*)"/m.exec(snippet);
+  if (m1) return m1[1].replace(/\\"/g, '"').replace(/\\n/g, ' ');
+  // Fallback to top-level "message" if the body is shaped differently.
+  const m2 = /"message"\s*:\s*"((?:[^"\\]|\\.)*)"/m.exec(snippet);
+  if (m2) return m2[1].replace(/\\"/g, '"').replace(/\\n/g, ' ');
+  return '';
+}
+
 // Translate a thrown error into a user-facing { error, status } pair so
 // each endpoint's catch block can speak the same language. The `action`
-// arg is the verb that failed ("mark", "generate the lesson plan", etc.)
-// — used in the user-visible message.
+// arg is the verb that failed ("mark the sample", "generate the lesson
+// plan", etc.) — used in the user-visible message.
+//
+// Always tries to surface the upstream provider's message first — that's
+// almost always more specific than anything we'd write ourselves.
 export function userFacingClaudeError(err, action = 'complete the request') {
   const ts = new Date().toISOString().replace(/[:.]/g, '').slice(0, 15); // ref code for support
+  // Log full server-side context so issues are debuggable from CF logs even
+  // when the user-facing message is intentionally trimmed. Visible in
+  // `wrangler pages tail` and Cloudflare dashboard's runtime logs.
   if (err instanceof ClaudeError) {
+    console.error(`[claude_error] action="${action}" ref=${ts} code=${err.code} status=${err.status} body=${(err.bodySnippet || '').slice(0, 400)}`);
+  } else {
+    console.error(`[claude_error] action="${action}" ref=${ts} non-ClaudeError name=${err && err.name} message=${err && err.message}`);
+  }
+  if (err instanceof ClaudeError) {
+    const upstream = extractUpstreamMessage(err.bodySnippet);
+    const upstreamSuffix = upstream ? ` Upstream said: "${upstream.slice(0, 200)}${upstream.length > 200 ? '…' : ''}"` : '';
     switch (err.code) {
       case 'auth':
-        return { error: `Our AI provider rejected the request (auth). This is on us, not you — please email hello@slatework.tools and mention ref ${ts}.`, status: 503 };
-      case 'rate_limit':
-        return { error: `The site has hit a short-term rate limit with our AI provider. Try again in 1-2 minutes. (ref ${ts})`, status: 429 };
-      case 'overloaded':
-        return { error: `Our AI provider is temporarily overloaded. Try again in a minute. (ref ${ts})`, status: 503 };
-      case 'invalid_request': {
-        // Try to surface the upstream message — Anthropic often says exactly
-        // what's wrong (e.g. image too large, content blocked, prompt too long).
-        let detail = '';
-        const m = /"message"\s*:\s*"([^"]+)"/.exec(err.bodySnippet);
-        if (m) detail = m[1];
         return {
-          error: detail
-            ? `Could not ${action}: ${detail.slice(0, 160)}${detail.length > 160 ? '…' : ''} (ref ${ts})`
-            : `Could not ${action} — the input was rejected by our AI provider. Try shorter text or a smaller / clearer image. (ref ${ts})`,
+          error: err.status === 0
+            ? `Slatework's AI key isn't configured on the server. This is on us, not you — please email hello@slatework.tools and mention ref ${ts}.`
+            : err.status === 401
+              ? `Our AI provider rejected the API key (HTTP 401). This is on us — please email hello@slatework.tools and mention ref ${ts}.${upstreamSuffix}`
+              : `Our AI provider denied permission for this request (HTTP ${err.status}).${upstreamSuffix} If this keeps happening, email hello@slatework.tools (ref ${ts}).`,
+          status: 503
+        };
+      case 'rate_limit':
+        return { error: `Hit a short-term rate limit with our AI provider. Try again in 1-2 minutes.${upstreamSuffix} (ref ${ts})`, status: 429 };
+      case 'overloaded':
+        return { error: `Our AI provider is temporarily overloaded.${upstreamSuffix} Try again in a minute. (ref ${ts})`, status: 503 };
+      case 'invalid_request':
+        return {
+          error: upstream
+            ? `Could not ${action}: ${upstream.slice(0, 200)}${upstream.length > 200 ? '…' : ''} (ref ${ts})`
+            : `Could not ${action} — the input was rejected. Try shorter text or a smaller / clearer image. (ref ${ts})`,
           status: 400
         };
-      }
       case 'timeout':
         return { error: `The model took too long to respond and the request timed out. Try again — sometimes shorter input or a clearer photo helps. (ref ${ts})`, status: 504 };
       case 'network':
-        return { error: `Network error reaching our AI provider. Try again in a moment. (ref ${ts})`, status: 502 };
+        return { error: `Network error reaching our AI provider.${err.bodySnippet ? ' (' + err.bodySnippet.slice(0, 120) + ')' : ''} Try again in a moment. (ref ${ts})`, status: 502 };
       case 'server_error':
-        return { error: `Our AI provider returned an error (${err.status}). Try again in a few minutes. (ref ${ts})`, status: 502 };
+        return { error: `Our AI provider returned an error (HTTP ${err.status}).${upstreamSuffix} Try again in a few minutes. (ref ${ts})`, status: 502 };
       default:
-        return { error: `Could not ${action} — unexpected error from our AI provider (HTTP ${err.status}). (ref ${ts})`, status: 502 };
+        return { error: `Could not ${action} — unexpected error from our AI provider (HTTP ${err.status}).${upstreamSuffix} (ref ${ts})`, status: 502 };
     }
   }
   // Non-ClaudeError catch — likely a bug in our own code.
