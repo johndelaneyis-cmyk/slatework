@@ -1690,6 +1690,31 @@ button[disabled],
   font-size: 0.95rem;
 }
 
+/* Noscript notice — shown only when JS is disabled. Tonal info callout,
+   not an alarm; sits at the top of <main> on JS-only tool pages. */
+.noscript-notice {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ink-muted);
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 0 0 1.5rem;
+  font-family: var(--sans);
+  color: var(--ink);
+  line-height: 1.55;
+}
+.noscript-notice p {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+.noscript-notice p:last-child { margin-bottom: 0; }
+.noscript-notice strong { color: var(--ink); }
+.noscript-notice a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* Drop-zone enhanced preview state. Shows when a file is attached:
    thumbnail (for images), filename + size, and a Remove button. */
 .drop-zone {
@@ -2158,6 +2183,12 @@ button[disabled],
   }
   .error-block p {
     color: var(--ink);
+  }
+
+  /* Noscript notice picks up dark surface tokens automatically; only the
+     border-left needs a slightly brighter accent so it reads against bg. */
+  .noscript-notice {
+    border-left-color: var(--ink-faint, var(--ink-muted));
   }
 
   /* Contract/worksheet preview — the Georgia-set print previews look weird
