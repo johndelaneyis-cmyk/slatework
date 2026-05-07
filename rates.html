@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Hourly rate calculator — Slatework</title>
   <meta name="description" content="Set a defensible hourly rate as an independent language tutor. See your private rate range and your platform-net side-by-side across italki, Preply, Wyzant, and Cambly — country-aware for 7 markets." />
+  <meta name="color-scheme" content="light" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="canonical" href="https://slatework.tools/rates" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Slatework" />
@@ -17,7 +20,10 @@
   <meta name="twitter:title" content="Hourly rate calculator — Slatework" />
   <meta name="twitter:description" content="Set a defensible hourly rate as an independent language tutor. See your private rate range and your platform-net side-by-side across italki, Preply, Wyzant, and Cambly — country-aware for 7 markets." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=12" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -27,20 +33,34 @@
     "description": "Set a defensible hourly rate as an independent language tutor. See your private rate range and your platform-net side-by-side across italki, Preply, Wyzant, and Cambly — country-aware for 7 markets.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
+    "softwareVersion": "0.1.0",
+    "dateModified": "2026-05-08",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "isAccessibleForFree": true,
     "browserRequirements": "Requires JavaScript"
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
+      { "@type": "ListItem", "position": 2, "name": "Hourly rate calculator", "item": "https://slatework.tools/rates" }
+    ]
+  }
+  </script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header">
   <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
   <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
 </header>
 
-<main class="container">
-  <h1>Hourly rate calculator</h1>
+<main id="main" class="container">
+  <p class="mono-caption">// RATES &middot; CLIENT-SIDE</p>
+  <h1>Hourly rate <span class="chalk-mark">calculator</span>.</h1>
   <p>Set a rate that reflects your language pair, experience, and country — and see what each platform actually pays you at that rate after their commission.</p>
 
   <div class="privacy-notice">
@@ -87,7 +107,7 @@
     </div>
   </form>
 
-  <section id="result" class="result" hidden>
+  <section id="result" class="result" role="region" aria-live="polite" hidden>
     <h2 class="mt-0">Your rate</h2>
     <div id="suggestion-block"></div>
 
@@ -100,20 +120,29 @@
 
     <p class="small mt-1" id="fx-note"></p>
   </section>
+
+  <aside class="related-tools">
+    <p class="mono-caption">// RELATED TOOLS</p>
+    <ul>
+      <li><a href="/payments.html">Payment methods &rarr;</a> &mdash; choose how to actually collect what you charge.</li>
+      <li><a href="/tax.html">Tax &amp; self-employment &rarr;</a> &mdash; understand thresholds before pricing.</li>
+      <li><a href="/contract.html">Parent-tutor contract builder &rarr;</a> &mdash; lock in your rate in a signable agreement.</li>
+    </ul>
+  </aside>
 </main>
 
 <footer class="site-footer">
   <div class="row">
-    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
-    <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
+    <div><strong>Slatework</strong> &middot; Free tools for independent language tutors.<br/>Built by Darren &middot; 2026</div>
+    <div><a href="/about.html">About</a> &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></div>
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=12"></script>
-<script src="/src/lib/currency.js?v=12"></script>
-<script src="/feedback.js?v=12" defer></script>
+<script src="/src/lib/countries.js?v=13"></script>
+<script src="/src/lib/currency.js?v=13"></script>
+<script src="/feedback.js?v=13" defer></script>
 
-<script src="/src/lib/page-rates.js?v=12" defer></script>
+<script src="/src/lib/page-rates.js?v=13" defer></script>
 
 </body>
 </html>

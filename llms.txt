@@ -1,0 +1,27 @@
+# Slatework
+
+> Free, privacy-first toolkit for independent language tutors and the teachers who tutor on the side. Country-aware tools for setup, rates, contracts, lesson planning, and grading across 7 markets (US, UK, CA, AU, NZ, IE, HK).
+
+## Tools
+
+- [Start tutoring privately](https://slatework.tools/setup): Country-aware checklist for registration, background checks, and working-with-minors basics.
+- [Tax & self-employment](https://slatework.tools/tax): The form to file, when to file it, and trading allowance / VAT thresholds for self-employed language tutors.
+- [Insurance & safeguarding](https://slatework.tools/insurance): Public liability, professional indemnity, and DBS / WWCC / Garda equivalents — what tutors actually carry.
+- [Hourly rate calculator](https://slatework.tools/rates): Defensible private rate range plus platform-net comparison across italki, Preply, Wyzant, Cambly.
+- [Payment methods for tutors](https://slatework.tools/payments): Wise, Stripe Link, PayPal, plus local rails (HK FPS, AU PayID, UK Faster Payments, US Zelle, etc.).
+- [Parent-tutor contract builder](https://slatework.tools/contract): Printable lesson agreement with name, rate, cancellation policy, and parent-welcome paragraph — fully client-side.
+- [Lesson plan generator](https://slatework.tools/lesson-plan): Structured 60-minute language lesson plan for 1:1, small group, or classroom mode.
+- [CEFR proficiency mapper](https://slatework.tools/cefr): Place a student at A1–C2 using Can-Do statements (rule-based) or AI assessment of a writing sample.
+- [Worksheet & answer-key generator](https://slatework.tools/worksheet): Printable language worksheet plus matching answer key for any topic, level, and format.
+- [Marking accelerator](https://slatework.tools/marking): Categorised error highlights plus three feedback variants (warm, direct, rubric-mapped) on a student writing sample.
+
+## About
+
+- [About Slatework](https://slatework.tools/about): Why this exists, who it's for, and how it stays free.
+- [Privacy](https://slatework.tools/privacy): No accounts, no tracking, daily-rotated SHA-256 IP hash for rate limits.
+- [Terms](https://slatework.tools/terms): Free toolkit; not legal, tax, or financial advice; estimates only.
+
+## Optional
+
+- Newsletter: One short letter a week — what's working this week, what just shipped, useful templates.
+- Contact: hello@slatework.tools

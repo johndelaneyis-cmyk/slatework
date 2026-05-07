@@ -1,0 +1,26 @@
+{
+  "name": "Slatework",
+  "short_name": "Slatework",
+  "description": "Free privacy-first toolkit for independent language tutors. Country-aware setup, rates, contracts, lesson planning, and grading across 7 markets.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#020617",
+  "background_color": "#f8fafc",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

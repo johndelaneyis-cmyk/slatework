@@ -9,21 +9,41 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Slatework &mdash; Free tools for independent language tutors</title>
-  <meta name="description" content="A free, privacy-first toolkit for independent language tutors and teachers. Country-aware tools for setup, rates, contracts, lesson planning, and grading &mdash; across the US, UK, Canada, Australia, New Zealand, Ireland, and Hong Kong." />
+  <meta name="description" content="Free privacy-first toolkit for independent language tutors. Country-aware setup, rates, contracts, lesson planning, and grading across 7 markets." />
   <meta name="theme-color" content="#020617" />
+  <meta name="color-scheme" content="light" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="canonical" href="https://slatework.tools/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Slatework" />
   <meta property="og:title" content="Slatework &mdash; Free tools for independent language tutors" />
-  <meta property="og:description" content="A free, privacy-first toolkit for independent language tutors and teachers. Country-aware tools for setup, rates, contracts, lesson planning, and grading &mdash; across the US, UK, Canada, Australia, New Zealand, Ireland, and Hong Kong." />
+  <meta property="og:description" content="Free privacy-first toolkit for independent language tutors. Country-aware setup, rates, contracts, lesson planning, and grading across 7 markets." />
   <meta property="og:image" content="https://slatework.tools/og.png" />
   <meta property="og:url" content="https://slatework.tools/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Slatework &mdash; Free tools for independent language tutors" />
-  <meta name="twitter:description" content="A free, privacy-first toolkit for independent language tutors and teachers. Country-aware tools for setup, rates, contracts, lesson planning, and grading &mdash; across the US, UK, Canada, Australia, New Zealand, Ireland, and Hong Kong." />
+  <meta name="twitter:description" content="Free privacy-first toolkit for independent language tutors. Country-aware setup, rates, contracts, lesson planning, and grading across 7 markets." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=12" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Slatework",
+    "url": "https://slatework.tools/",
+    "logo": "https://slatework.tools/og.png",
+    "email": "hello@slatework.tools",
+    "description": "Free privacy-first toolkit for independent language tutors and the teachers who tutor on the side.",
+    "sameAs": [
+      "https://authorly.tools"
+    ]
+  }
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -33,7 +53,13 @@
     "description": "Free privacy-first toolkit for independent language tutors and the teachers who tutor on the side.",
     "publisher": {
       "@type": "Organization",
-      "name": "Slatework"
+      "name": "Slatework",
+      "url": "https://slatework.tools/"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://slatework.tools/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
     }
   }
   </script>
@@ -46,6 +72,8 @@
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
     "softwareVersion": "0.1.0",
+    "datePublished": "2026-05-12",
+    "dateModified": "2026-05-08",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "publisher": { "@type": "Organization", "name": "Slatework" }
   }
@@ -101,11 +129,13 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to main content</a>
+
 <section class="hero-slate">
   <header class="site-header dark">
     <a class="brand" href="/">
       <svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true">
-        <rect x="6" y="10" width="52" height="44" rx="4" fill="#1e293b" stroke="#cbd5e1" stroke-width="1.4"/>
+        <rect x="6" y="10" width="52" height="44" rx="6" fill="#1e293b" stroke="#475569" stroke-width="2"/>
         <line x1="16" y1="22" x2="48" y2="22" stroke="#f8fafc" stroke-width="1.6" stroke-linecap="round"/>
         <line x1="16" y1="32" x2="42" y2="32" stroke="#f8fafc" stroke-width="1.6" stroke-linecap="round"/>
         <line x1="16" y1="42" x2="38" y2="42" stroke="#f8fafc" stroke-width="1.6" stroke-linecap="round"/>
@@ -126,7 +156,7 @@
         <h1 class="hero-display" id="hero-display">Tutor tools that don't waste your <span class="chalk-mark">evening</span>.</h1>
 
         <p class="hero-sub">
-          Set up your business, set defensible rates, plan lessons, mark student work &mdash; without paying a platform 30% or stitching seven free templates together. Ten free tools, country-aware for seven markets, built for independent language tutors and the teachers who tutor on the side.
+          Set defensible rates, plan lessons, and mark student work &mdash; without paying a platform 30%. Ten free tools, no signup, country-aware for 7 markets.
         </p>
 
         <p class="mono-caption hero-status">// v0.1.0 &middot; 10 tools &middot; 7 countries &middot; <span class="dot" aria-hidden="true"></span>live now</p>
@@ -177,7 +207,7 @@
   </div>
 </div>
 
-<main>
+<main id="main">
   <section id="tools" class="tools-region">
     <div class="tools-inner">
 
@@ -406,10 +436,10 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=12"></script>
-<script src="/src/lib/currency.js?v=12"></script>
+<script src="/src/lib/countries.js?v=13"></script>
+<script src="/src/lib/currency.js?v=13"></script>
 
-<script src="/src/lib/page-index.js?v=12" defer></script>
+<script src="/src/lib/page-index.js?v=13" defer></script>
 
 </body>
 </html>

@@ -3,4 +3,25 @@ Allow: /
 Disallow: /tests/
 Disallow: /api/
 
+# AI crawlers — explicit allow signals AI-friendly posture
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+
 Sitemap: https://slatework.tools/sitemap.xml

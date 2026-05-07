@@ -1,10 +1,14 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Not found — Slatework</title>
+  <meta name="robots" content="noindex" />
+  <meta name="color-scheme" content="light" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Slatework" />
   <meta property="og:title" content="Not found — Slatework" />
@@ -15,23 +19,28 @@
   <meta name="twitter:title" content="Not found — Slatework" />
   <meta name="twitter:description" content="Page not found." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=12" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header">
   <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
   <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
 </header>
 
-<main class="container notfound-main">
-  <h1>Page not found</h1>
-  <p>That URL doesn't match any tool we ship. The slate is clean.</p>
-  <p class="mt-2"><a class="btn" href="/">Back to the toolkit</a></p>
+<main id="main" class="container notfound-main">
+  <p class="mono-caption">// 404 &middot; OFF THE BOARD</p>
+  <h1>Page <span class="chalk-mark">not found</span>.</h1>
+  <p class="lead">That URL doesn't match any tool we ship. The slate is clean.</p>
+  <p class="mt-2"><a class="btn btn-primary" href="/">Back to the toolkit</a></p>
 </main>
 
 <footer class="site-footer">
   <div class="row">
-    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><strong>Slatework</strong> · Free tools for independent language tutors.<br/>Built by Darren · 2026</div>
     <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
   </div>
 </footer>

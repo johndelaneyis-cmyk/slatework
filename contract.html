@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Parent-tutor contract builder — Slatework</title>
   <meta name="description" content="Generate a printable parent-tutor lesson agreement with your name, rate, cancellation policy, and a parent-welcome paragraph — entirely in your browser." />
+  <meta name="color-scheme" content="light" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="canonical" href="https://slatework.tools/contract" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Slatework" />
@@ -17,7 +20,10 @@
   <meta name="twitter:title" content="Parent-tutor contract builder — Slatework" />
   <meta name="twitter:description" content="Generate a printable parent-tutor lesson agreement with your name, rate, cancellation policy, and a parent-welcome paragraph — entirely in your browser." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=12" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -27,37 +33,51 @@
     "description": "Generate a printable parent-tutor lesson agreement with your name, rate, cancellation policy, and a parent-welcome paragraph — entirely in your browser.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
+    "softwareVersion": "0.1.0",
+    "dateModified": "2026-05-08",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "isAccessibleForFree": true,
     "browserRequirements": "Requires JavaScript"
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
+      { "@type": "ListItem", "position": 2, "name": "Parent-tutor contract", "item": "https://slatework.tools/contract" }
+    ]
+  }
+  </script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header no-print">
   <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
   <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
 </header>
 
-<main class="container">
+<main id="main" class="container">
   <div class="no-print">
-    <h1>Parent-tutor contract builder</h1>
-    <p>Fill out the form on the left and your contract previews on the right. When it looks good, print to PDF (or actual paper) — nothing is sent to our servers.</p>
+    <p class="mono-caption">// CONTRACT &middot; CLIENT-SIDE</p>
+    <h1>Parent-tutor <span class="chalk-mark">contract</span> builder.</h1>
+    <p class="lead">Fill out the form on the left and your contract previews on the right. When it looks good, print or save as PDF &mdash; nothing is sent to our servers.</p>
 
-    <div class="privacy-notice">Generated entirely in your browser. Your name, rate, and details never reach our servers — view source to verify.</div>
+    <div class="privacy-notice">Generated entirely in your browser. Your name, rate, and details never reach our servers &mdash; view source to verify.</div>
   </div>
 
   <div class="section-row no-print">
     <form id="form">
       <h2>Your details</h2>
-      <div class="field"><label for="tutor_name">Tutor name</label><input id="tutor_name" type="text" placeholder="e.g., Sarah Chen" /></div>
-      <div class="field"><label for="business_name">Business name (optional)</label><input id="business_name" type="text" placeholder="leave blank to use your name" /></div>
+      <div class="field"><label for="tutor_name">Tutor name</label><input id="tutor_name" type="text" placeholder="e.g., Sarah Chen" autocomplete="name" /></div>
+      <div class="field"><label for="business_name">Business name (optional)</label><input id="business_name" type="text" placeholder="leave blank to use your name" autocomplete="organization" /></div>
       <div class="field">
         <label for="years_teaching">Years teaching (optional)</label>
         <input id="years_teaching" type="number" min="0" max="60" step="1" placeholder="e.g. 5" />
         <span class="help">Used in the warm/formal welcome paragraphs. Leave blank to skip.</span>
       </div>
-      <div class="field"><label for="contact_email">Contact email</label><input id="contact_email" type="email" placeholder="hello@yourdomain.com" /></div>
+      <div class="field"><label for="contact_email">Contact email</label><input id="contact_email" type="email" placeholder="hello@yourdomain.com" autocomplete="email" /></div>
 
       <h2>Lesson details</h2>
       <div class="field"><label for="subject">Subject / language</label><input id="subject" type="text" placeholder="e.g., GCSE Spanish, Mandarin conversation, IB English" /></div>
@@ -94,7 +114,7 @@
       </div>
 
       <div class="field mt-15">
-        <button type="button" id="print-btn">Print / save as PDF</button>
+        <button type="button" id="print-btn" class="btn btn-primary">Print or save as PDF</button>
       </div>
     </form>
 
@@ -110,12 +130,12 @@
 
 <footer class="site-footer no-print">
   <div class="row">
-    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><strong>Slatework</strong> · Free tools for independent language tutors.<br/>Built by Darren · 2026</div>
     <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
   </div>
 </footer>
 
-<script src="/feedback.js?v=12" defer></script>
-<script src="/src/lib/page-contract.js?v=12" defer></script>
+<script src="/feedback.js?v=13" defer></script>
+<script src="/src/lib/page-contract.js?v=13" defer></script>
 </body>
 </html>

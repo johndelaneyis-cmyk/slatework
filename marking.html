@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Marking accelerator — Slatework</title>
   <meta name="description" content="Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants (warm, direct, rubric-mapped). Built for language tutors and teachers." />
+  <meta name="color-scheme" content="light" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="canonical" href="https://slatework.tools/marking" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Slatework" />
@@ -17,7 +20,10 @@
   <meta name="twitter:title" content="Marking accelerator — Slatework" />
   <meta name="twitter:description" content="Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants (warm, direct, rubric-mapped). Built for language tutors and teachers." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=12" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=13" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -27,23 +33,37 @@
     "description": "Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants (warm, direct, rubric-mapped). Built for language tutors and teachers.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Any",
+    "softwareVersion": "0.1.0",
+    "dateModified": "2026-05-08",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "isAccessibleForFree": true,
     "browserRequirements": "Requires JavaScript"
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://slatework.tools/" },
+      { "@type": "ListItem", "position": 2, "name": "Marking accelerator", "item": "https://slatework.tools/marking" }
+    ]
+  }
+  </script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header">
   <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="10" width="52" height="44" rx="6" fill="#475569" stroke="#334155" stroke-width="2"/><line x1="16" y1="22" x2="48" y2="22" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="32" x2="42" y2="32" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/><line x1="16" y1="42" x2="38" y2="42" stroke="#cbd5e1" stroke-width="1.6" stroke-linecap="round"/></svg>Slatework</a>
   <nav><a href="/about.html">About</a><a href="/">Tools</a></nav>
 </header>
 
-<main class="container">
-  <h1>Marking accelerator <span class="tag">AI</span></h1>
-  <p>Paste a student's writing — get categorised error highlights plus three ready-to-paste feedback variants. The model speeds the work; you stay in charge of the call.</p>
+<main id="main" class="container">
+  <p class="mono-caption">// MARKING &middot; AI</p>
+  <h1>Marking <span class="chalk-mark">accelerator</span>.</h1>
+  <p class="lead">Paste a student's writing &mdash; get categorised error highlights plus three ready-to-paste feedback variants. The model speeds the work; you stay in charge of the call.</p>
 
-  <div class="privacy-notice"><strong>Don't include the student's name or identifying info — paste the writing only.</strong> The sample is sent to Anthropic for processing and not stored by us.</div>
+  <div class="privacy-notice"><strong>Don't include the student's name or identifying info &mdash; paste the writing only.</strong> The sample is sent to Anthropic for processing and not stored by us.</div>
 
   <form id="form">
     <div class="section-row">
@@ -51,7 +71,7 @@
         <label for="target">Target language</label>
         <select id="target" required></select>
         <input id="target_other" type="text" placeholder="Type the target language" class="field-other-input" hidden />
-        <span class="help">Pick the language the student is learning. The two English options distinguish "native/advanced" (test prep, writing improvement) from "ESL/EFL" (English as a second language).</span>
+        <span class="help">Pick the language being taught. Two English options: native/advanced vs. ESL/EFL.</span>
       </div>
       <div class="field">
         <label for="level">Student CEFR level</label>
@@ -74,7 +94,7 @@
 
     <div class="field">
       <label>Upload student work (optional)</label>
-      <div id="drop-zone" class="drop-zone" tabindex="0" role="button" aria-label="Drag a file or click to upload">
+      <button type="button" id="drop-zone" class="drop-zone" aria-label="Upload student writing — drag a file or click to choose">
         <p class="drop-zone-text">
           <span class="mono-caption">// DROP A FILE OR CLICK TO UPLOAD</span><br/>
           Accepts <code>.txt</code>, <code>.md</code>, <code>.docx</code>, <code>.pdf</code>, or a photo of handwritten work (jpg / png / heic). Max 10 MB.
@@ -82,10 +102,10 @@
         <p class="drop-privacy small">
           <strong>Student names visible in the document?</strong> They're never stored by us. The file (or extracted text) is sent to Anthropic's API for processing and the result is returned — we never keep a copy on our servers, never log the body, never share or sell. <a href="/privacy.html#student-data">Read the full privacy posture →</a>
         </p>
-        <p id="drop-status" class="drop-status small"></p>
-      </div>
+        <p id="drop-status" class="drop-status small" role="status" aria-live="polite"></p>
+      </button>
       <p class="ai-disclaimer small">
-        <strong>How photo upload works:</strong> when you attach an image, we extract the text via Google Cloud Vision OCR (handwriting-trained) and drop it into the box below. Review and edit the extracted text — OCR isn't perfect, especially cursive — then click Mark. The marking model only ever sees text, not your photo.
+        <strong>How photo upload works:</strong> we extract text via Google Cloud Vision OCR, drop it in the box below, then send only text to the marking model. Review and edit before clicking Mark &mdash; OCR isn't perfect with cursive.
       </p>
     </div>
 
@@ -94,22 +114,31 @@
       <textarea id="sample" minlength="50" maxlength="4000" placeholder="Paste the writing only — or attach a file/photo above. Remove names and identifying details first."></textarea>
     </div>
 
-    <button type="submit" id="go">Mark and suggest feedback</button>
+    <button type="submit" id="go" class="btn btn-primary">Mark and suggest feedback</button>
   </form>
 
-  <section id="result" class="result" hidden></section>
+  <section id="result" class="result" role="region" aria-live="polite" hidden></section>
+
+  <aside class="related-tools">
+    <p class="mono-caption">// RELATED TOOLS</p>
+    <ul>
+      <li><a href="/cefr.html">CEFR proficiency mapper &rarr;</a> &mdash; place the student before marking, so feedback hits at level.</li>
+      <li><a href="/lesson-plan.html">Lesson plan generator &rarr;</a> &mdash; turn marked errors into a follow-up lesson focus.</li>
+      <li><a href="/worksheet.html">Worksheet &amp; answer-key generator &rarr;</a> &mdash; build targeted practice on the same gap.</li>
+    </ul>
+  </aside>
 </main>
 
 <footer class="site-footer">
   <div class="row">
-    <div><strong>Slatework</strong> · Built by Darren · 2026</div>
+    <div><strong>Slatework</strong> · Free tools for independent language tutors.<br/>Built by Darren · 2026</div>
     <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=12"></script>
-<script src="/src/lib/file-extract.js?v=12"></script>
-<script src="/feedback.js?v=12" defer></script>
-<script src="/src/lib/page-marking.js?v=12" defer></script>
+<script src="/src/lib/countries.js?v=13"></script>
+<script src="/src/lib/file-extract.js?v=13"></script>
+<script src="/feedback.js?v=13" defer></script>
+<script src="/src/lib/page-marking.js?v=13" defer></script>
 </body>
 </html>
