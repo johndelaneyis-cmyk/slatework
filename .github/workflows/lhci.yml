@@ -1,0 +1,40 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Run Lighthouse on production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for Cloudflare Pages deploy to settle
+        run: |
+          echo "Waiting 90s for CF Pages deploy after push..."
+          sleep 90
+          # Optional: probe until the site is up
+          for i in 1 2 3 4 5; do
+            if curl -sSf https://slatework.tools/ > /dev/null; then
+              echo "Production is up."
+              break
+            fi
+            echo "Probe $i/5 failed, retrying in 30s..."
+            sleep 30
+          done
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            https://slatework.tools/
+            https://slatework.tools/lesson-plan
+            https://slatework.tools/worksheet
+            https://slatework.tools/marking
+            https://slatework.tools/cefr
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true

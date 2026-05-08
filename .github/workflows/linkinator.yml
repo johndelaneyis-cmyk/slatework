@@ -1,0 +1,28 @@
+name: Linkinator
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Run weekly on Sunday at 03:00 UTC to catch link rot
+    - cron: '0 3 * * 0'
+
+jobs:
+  linkinator:
+    name: Crawl production for broken links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for CF Pages deploy
+        run: sleep 90
+
+      - name: Crawl with linkinator
+        uses: JustinBeckwith/linkinator-action@v1
+        with:
+          paths: https://slatework.tools/
+          recurse: true
+          retry: true
+          skip: 'linkedin\.com|twitter\.com|x\.com|facebook\.com|reddit\.com|instagram\.com|t\.co|news\.ycombinator\.com|.*localhost.*|.*\.dev/.*|.*pages\.dev.*'
+          verbosity: error
