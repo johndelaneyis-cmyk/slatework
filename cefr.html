@@ -103,6 +103,11 @@
   <h1>CEFR proficiency <span class="chalk-mark">mapper</span>.</h1>
   <p class="lead">Place a student at A1, A2, B1, B2, C1, or C2 using the standard CEFR Can-Do statements. Pick the mode that matches the moment.</p>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+    <div id="profile-save-link"></div>
+  </div>
+
   <noscript>
     <aside class="noscript-notice" role="note">
       <p><strong>This tool needs JavaScript to run.</strong> Placement runs entirely client-side from your answers &mdash; no AI call, no network round-trip. The tool itself is JavaScript-only.</p>
@@ -158,6 +163,8 @@
     </form>
     <section id="ai-result" class="result" role="region" aria-live="polite" hidden></section>
   </section>
+
+  <div id="cefr-save-to-profile" class="cefr-save-block" hidden></div>
 
   <section class="tool-explainer">
     <p class="mono-caption">// HOW IT WORKS</p>

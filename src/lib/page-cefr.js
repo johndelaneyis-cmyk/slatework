@@ -4,6 +4,54 @@ const SW = window.Slatework;
 const $ = (id) => document.getElementById(id);
 const escapeHtml = SW.escapeHtml;
 
+// Phase C: mount tutor strip + save-prompt link (this tool CREATES students, no student strip).
+(function mountTutor() {
+  if (!SW.ProfileUI) return;
+  SW.ProfileUI.mountTutorStrip({container: document.getElementById('profile-tutor-strip')});
+  SW.ProfileUI.mountSavePrompt({
+    container: document.getElementById('profile-save-link'),
+    prefill: () => ({}),
+    onClick: () => location.reload()
+  });
+})();
+
+// Phase C: Save-this-level-to-profile widget. Called from both Can-Do and AI paths
+// after a level is determined. Idempotent — safe to call multiple times.
+function showSaveBlock(determinedLevel) {
+  if (!SW.ProfileUI) return;
+  const block = document.getElementById('cefr-save-to-profile');
+  if (!block) return;
+  block.hidden = false;
+  block.innerHTML = '';
+  const heading = document.createElement('p');
+  heading.className = 'mono-caption';
+  heading.textContent = '// SAVE THIS LEVEL TO A PROFILE';
+  block.appendChild(heading);
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn secondary';
+  btn.textContent = 'Save to a student profile';
+  btn.addEventListener('click', () => {
+    SW.ProfileUI.openStudentEditor({
+      existing: {
+        level: determinedLevel,
+        target: (document.getElementById('target') || {}).value || '',
+        source: (document.getElementById('source') || {}).value || 'English'
+      },
+      onSaved: (s) => {
+        if (!s) return;
+        SW.Profile.updateStudent(s.id, {level_set_via: 'cefr_tool'});
+        block.innerHTML = '';
+        const ok = document.createElement('p');
+        ok.className = 'small';
+        ok.textContent = 'Saved as "' + s.nickname + '". You\'ll see this student on every AI tool.';
+        block.appendChild(ok);
+      }
+    });
+  });
+  block.appendChild(btn);
+}
+
 // Build language dropdown from Slatework.targetLanguageList() — curated, deduped.
 (function buildLangDropdown() {
   const sel = $('lang');
@@ -155,6 +203,8 @@ $('rules-go').addEventListener('click', () => {
     <p class="small mt-06">${escapeHtml(out.notes)}</p>
   `;
   r.hidden = false;
+  window.__cefrLastLevel = out.level;
+  showSaveBlock(out.level);
 });
 
 // --- AI mode
@@ -206,6 +256,10 @@ $('ai-form').addEventListener('submit', async (event) => {
       '<div class="row"><span>Confidence</span><strong>' + escapeHtml(data.confidence || '—') + '</strong></div>' +
       '<h3 class="mt-06">Reasoning</h3>' +
       '<p>' + escapeHtml(data.reasoning || '').replace(/\n/g, '<br>') + '</p>';
+    if (data.level) {
+      window.__cefrLastLevel = data.level;
+      showSaveBlock(data.level);
+    }
   } catch {
     result.innerHTML = '<p>Network error. Try again in a moment.</p>';
   } finally {
