@@ -1,11 +1,11 @@
 // Extracted from worksheet.html during CSP-nonce refactor (2026-05-07).
-// Loaded via <script src="/src/lib/page-worksheet.js" defer> from worksheet.html.
+// Phase C (2026-05-09): profile-aware. Loaded via <script src="/src/lib/page-worksheet.js" defer> from worksheet.html.
 const $ = (id) => document.getElementById(id);
 const SW = window.Slatework;
 const renderMarkdown = SW.renderMarkdown;
 const escapeHtml = SW.escapeHtml;
 
-// Build target language dropdown from Slatework.targetLanguageList() â€” curated, deduped.
+// ---- 1. Build target language dropdown ----
 (function buildTargetDropdown() {
   const sel = $('target');
   const targets = SW.targetLanguageList();
@@ -34,6 +34,96 @@ function resolveTargetLang() {
   return sel.value;
 }
 
+// ---- 2. URL params (backwards compat + lesson-plan cross-tool flow) ----
+(function applyUrlParams() {
+  const params = new URLSearchParams(location.search);
+  const map = {
+    target: 'target',
+    level: 'level',
+    topic: 'topic',
+    exam: 'exam',
+    format: 'format',
+    count: 'count'
+  };
+  for (const [param, id] of Object.entries(map)) {
+    const v = params.get(param);
+    if (v && $(id)) {
+      const el = $(id);
+      el.value = v;
+      el.dispatchEvent(new Event('change'));
+    }
+  }
+})();
+
+// ---- 3. Profile pre-fill ----
+let quickLessonModeActive = false;
+
+function applyProfilePrefill(student) {
+  if (!student || quickLessonModeActive) return;
+  if ($('target') && student.target) $('target').value = student.target;
+  if ($('level') && student.level) $('level').value = student.level;
+  // URL params still take precedence — re-apply
+  const params = new URLSearchParams(location.search);
+  for (const k of ['target','level','topic','exam','format','count']) {
+    const v = params.get(k);
+    if (v && $(k)) $(k).value = v;
+  }
+}
+
+// ---- 4. Mount profile UI atoms ----
+(function mountProfileUi() {
+  if (!SW.ProfileUI) return;
+  const tutorContainer = $('profile-tutor-strip');
+  const studentContainer = $('profile-student-strip');
+  const saveContainer = $('profile-save-link');
+
+  const tutorMount = SW.ProfileUI.mountTutorStrip({container: tutorContainer});
+  let saveMount;
+  const studentMount = SW.ProfileUI.mountStudentStrip({
+    container: studentContainer,
+    onChange: (action) => {
+      if (action === 'quick') {
+        quickLessonModeActive = true;
+      } else {
+        quickLessonModeActive = false;
+        applyProfilePrefill(SW.Profile.getCurrentStudent());
+      }
+      if (saveMount && saveMount.refresh) saveMount.refresh();
+    }
+  });
+  saveMount = SW.ProfileUI.mountSavePrompt({
+    container: saveContainer,
+    prefill: () => ({
+      target: $('target') ? $('target').value : '',
+      level: $('level') ? $('level').value : 'A2'
+    }),
+    onClick: (created) => {
+      if (tutorMount && tutorMount.refresh) tutorMount.refresh();
+      if (studentMount && studentMount.refresh) studentMount.refresh();
+      applyProfilePrefill(created);
+    }
+  });
+
+  applyProfilePrefill(SW.Profile.getCurrentStudent());
+})();
+
+// ---- 5. Don't-know quick-check next to level dropdown ----
+(function mountQuickCheck() {
+  if (!SW.ProfileUI) return;
+  SW.ProfileUI.mountQuickCheck({
+    container: $('level-quick-check'),
+    onLevel: (lvl) => { if ($('level')) $('level').value = lvl; }
+  });
+})();
+
+// ---- 6. Adjust-for-today expander ----
+let adjustHandle = null;
+(function mountAdjust() {
+  if (!SW.ProfileUI) return;
+  adjustHandle = SW.ProfileUI.mountAdjustForToday({container: $('adjust-for-today')});
+})();
+
+// ---- 7. Form submit ----
 $('form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const btn = $('go');
@@ -41,17 +131,21 @@ $('form').addEventListener('submit', async (event) => {
   topicEl.removeAttribute('aria-invalid');
   btn.disabled = true;
   $('result').hidden = false;
-  $('worksheet').innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>DRAFTING THE WORKSHEET</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15&ndash;40 seconds. Worksheet first, answer key after.</p></div>';
+  $('worksheet').innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>DRAFTING THE WORKSHEET</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15–40 seconds. Worksheet first, answer key after.</p></div>';
   $('answer-key').hidden = true;
+
+  // Apply Adjust-for-today overrides if set
+  const overrides = adjustHandle ? adjustHandle.readOverrides() : {level: null, mode: null, exam: null};
+
   try {
     const r = await fetch('/api/worksheet', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         target_language: resolveTargetLang(),
-        level: $('level').value,
+        level: overrides.level || $('level').value,
         topic: $('topic').value,
-        exam: $('exam').value,
+        exam: overrides.exam || $('exam').value,
         format: $('format').value,
         count: parseInt($('count').value, 10)
       })
@@ -76,8 +170,7 @@ $('form').addEventListener('submit', async (event) => {
   }
 });
 
-// Print handlers â€” use afterprint to reliably restore visibility instead of
-// a fixed-delay setTimeout (audit Section E #17).
+// ---- 8. Print handlers — use afterprint to reliably restore visibility ----
 $('print-ws').addEventListener('click', () => {
   $('answer-key').hidden = true;
   $('worksheet').hidden = false;
