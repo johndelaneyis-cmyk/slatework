@@ -47,10 +47,10 @@
     // 4. addStudent
     const lily = P().addStudent({
       nickname: 'Lily', target: 'English', source: 'Cantonese',
-      level: 'A1', mode: 'one_to_one', exam: ''
+      level: 'A1', mode: 'small_group', exam: ''
     });
     assert(lily && /lily-/.test(lily.id), 'addStudent() returns student with id slug');
-    assertEq(lily.audience_profile, 'young_learner', 'A1 derives young_learner');
+    assertEq(lily.audience_profile, 'young_learner', 'A1 small_group derives young_learner');
     assertEq(P().getStudents().length, 1, 'students list grows');
     assertEq(P().getCurrentStudent().id, lily.id, 'first student becomes current');
 
@@ -66,9 +66,11 @@
     assertEq(examUpdate.audience_profile, 'exam_prep', 'non-empty exam -> exam_prep');
 
     // 8. deriveAudience pure function
-    assertEq(P().deriveAudience({level: 'A1', mode: 'classroom', exam: ''}), 'young_learner', 'derive A1');
-    assertEq(P().deriveAudience({level: 'B1', mode: 'one_to_one', exam: ''}), 'teen', 'derive B1');
-    assertEq(P().deriveAudience({level: 'C1', mode: 'one_to_one', exam: ''}), 'adult', 'derive C1');
+    assertEq(P().deriveAudience({level: 'A1', mode: 'classroom', exam: ''}), 'young_learner', 'derive A1 classroom -> young_learner');
+    assertEq(P().deriveAudience({level: 'A1', mode: 'one_to_one', exam: ''}), 'adult', 'derive A1 1:1 -> adult (was young_learner — fixed for adult absolute beginners)');
+    assertEq(P().deriveAudience({level: 'B1', mode: 'one_to_one', exam: ''}), 'adult', 'derive B1 1:1 -> adult (was teen — fixed for adult conversation)');
+    assertEq(P().deriveAudience({level: 'B1', mode: 'classroom', exam: ''}), 'adult', 'derive B1 classroom -> adult (was teen — fixed for adult ESL classroom)');
+    assertEq(P().deriveAudience({level: 'C1', mode: 'one_to_one', exam: ''}), 'adult', 'derive C1 -> adult');
     assertEq(P().deriveAudience({level: 'A2', mode: 'one_to_one', exam: 'IELTS'}), 'exam_prep', 'derive exam beats level');
 
     // 9. add second student, switch current

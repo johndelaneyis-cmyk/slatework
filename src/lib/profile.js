@@ -273,13 +273,24 @@
   // Spec §3.5. Pure function; no storage access.
 
   function deriveAudience({level, mode, exam} = {}) {
+    // Exam target wins — IELTS / GCSE / Leaving Cert / TOEFL / etc. → exam_prep regardless of level/mode
     const trimmedExam = typeof exam === 'string' ? exam.trim() : '';
     if (trimmedExam.length >= 2) return 'exam_prep';
     const lvl = String(level || '').toUpperCase();
-    if (lvl === 'A1' || lvl === 'A2') return 'young_learner';
-    if (lvl === 'B1') return 'teen';
-    if (lvl === 'B2' || lvl === 'C1' || lvl === 'C2') return 'adult';
-    return 'adult'; // safe default for unrecognised levels
+    const md = String(mode || 'one_to_one');
+    // Mode is a stronger child-vs-adult signal than level alone:
+    //   classroom + small_group with A1/A2 → young_learner (kid classes)
+    //   classroom + small_group with B1+ → adult (adult ESL classroom, school groups)
+    //   1:1 → adult by default (covers Sophie/Marie-Claire/Megan/Beatriz B1+1:1 cases)
+    // The 'teen' audience is intentionally never auto-routed; it requires manual
+    // override in the profile editor. Real teen tutoring almost always sets
+    // exam=GCSE/JuniorCert/etc which captures it via exam_prep.
+    if (md === 'classroom' || md === 'small_group') {
+      if (lvl === 'A1' || lvl === 'A2') return 'young_learner';
+      return 'adult';
+    }
+    // 1:1 mode (default) — adult unless overridden manually
+    return 'adult';
   }
 
   // ---- public: preferences ----
