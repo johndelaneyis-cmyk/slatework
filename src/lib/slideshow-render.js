@@ -112,7 +112,7 @@
         </header>
         <div class="slideshow-stage" aria-live="polite"></div>
         <footer class="slideshow-attribution">
-          <small>${escHtml(attributionText || 'Illustrations by Storyset.')}</small>
+          <small class="slideshow-credit">${escHtml(attributionText || 'Illustrations by Twemoji · CC-BY 4.0')}</small>
         </footer>
       </div>`;
   }
@@ -205,7 +205,7 @@
             response, audience,
             mode: explicitMode || meta.mode || 'one_to_one',
             tutorName: opts.tutorName || '',
-            attributionText: opts.attributionText || 'Illustrations by Storyset.'
+            attributionText: opts.attributionText || 'Illustrations by Twemoji (https://github.com/jdecked/twemoji) — CC-BY 4.0'
           });
         } catch (e) {
           alert('Could not generate the .pptx file. ' + (e && e.message ? e.message : ''));
@@ -312,7 +312,7 @@
     return Slideshow.render(host, response, {
       tutorName,
       mode: payload.mode,
-      attributionText: 'Illustrations by Storyset · Photos by Pexels'
+      attributionText: 'Illustrations by Twemoji · CC-BY 4.0 · Photos by Pexels'
     });
   };
 })();
