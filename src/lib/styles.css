@@ -2226,7 +2226,7 @@ button[disabled],
 }
 
 /* =========================================================
-   PROFILE UI ATOMS – Phase B (2026-05-09)
+   PROFILE UI ATOMS ï¿½ Phase B (2026-05-09)
    Spec: docs/superpowers/specs/2026-05-09-profile-architecture-and-ux-cleanup-design.md
    ========================================================= */
 
@@ -2236,7 +2236,7 @@ button[disabled],
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 
-/* Tutor strip – small bar at the top of country-aware pages */
+/* Tutor strip ï¿½ small bar at the top of country-aware pages */
 .tutor-strip {
   background: var(--surface-2);
   border: 1px solid var(--line);
@@ -2251,7 +2251,7 @@ button[disabled],
 .tutor-strip strong { color: var(--ink); }
 .tutor-strip-edit { padding: 0; min-height: 0; }
 
-/* Student strip – picker + edit + Quick lesson exit */
+/* Student strip ï¿½ picker + edit + Quick lesson exit */
 .student-strip {
   display: flex;
   flex-wrap: wrap;
@@ -2430,3 +2430,11 @@ details.adjust-for-today[open] > summary {
   .student-strip { gap: 0.5rem; }
   .student-strip-picker { min-width: 100%; }
 }
+
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.profile-actions .btn { min-height: 40px; }

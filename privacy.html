@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=14" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=16" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -81,6 +81,25 @@
     <li><strong>Best practice we'd suggest:</strong> if you're nervous, redact the student name with a black square in the photo, or replace it with a placeholder ("Student A") in the pasted text. Slatework works the same either way.</li>
   </ul>
 
+  <section id="profile-data">
+    <h2>Profiles (optional)</h2>
+    <p><strong>Slatework lets you save tutor and student profiles in your browser's <code>localStorage</code> so you don't re-enter the same information every lesson. These profiles never leave your device — they're not sent to our server, not synced, not backed up by us.</strong></p>
+    <p><strong>Profiles are entirely optional.</strong> Slatework was designed to work without saved data and continues to work that way for users who never opt in.</p>
+    <p>Use nicknames or initials for student profiles if you'd rather avoid storing real names. You can:</p>
+    <ul>
+      <li>Export your profiles as a JSON file (move to another device manually)</li>
+      <li>Import a JSON file (restore from backup)</li>
+      <li>Wipe all profiles in one click</li>
+    </ul>
+    <div class="profile-actions">
+      <button type="button" id="profile-clear-btn" class="btn secondary">Clear all profiles</button>
+      <button type="button" id="profile-export-btn" class="btn secondary">Export profiles (JSON)</button>
+      <button type="button" id="profile-import-btn" class="btn secondary">Import profiles (JSON)</button>
+      <input type="file" id="profile-import-file" accept="application/json" hidden />
+    </div>
+    <p id="profile-action-status" class="small" aria-live="polite"></p>
+  </section>
+
   <h2>Cookies</h2>
   <p>None.</p>
 
@@ -97,5 +116,7 @@
     <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
   </div>
 </footer>
+<script src="/src/lib/profile.js?v=16"></script>
+<script src="/src/lib/page-privacy.js?v=16" defer></script>
 </body>
 </html>
