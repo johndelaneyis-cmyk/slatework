@@ -77,8 +77,8 @@ const SYSTEM_PROMPT = [
 // and max_tokens=2500, total round-trip is ~30-40s — under CF's 60s edge cap.
 // Override via ANTHROPIC_MODEL env var if Haiku speed becomes acceptable later.
 const DEFAULT_MODEL = "claude-sonnet-4-6";
-const PER_IP_DAILY = 20;
-const GLOBAL_DAILY = 1500;
+const PER_IP_DAILY = 30;
+const GLOBAL_DAILY = 2000;
 
 const VALID_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const VALID_MODES  = ['one_to_one', 'small_group', 'classroom'];
