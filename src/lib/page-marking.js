@@ -34,6 +34,73 @@ function resolveTargetLang() {
   return sel.value;
 }
 
+// ---- Phase C: profile-aware additions ----
+
+// URL params (?from=lesson-plan&target=...&level=...)
+(function applyUrlParams() {
+  const params = new URLSearchParams(location.search);
+  for (const id of ['target','level']) {
+    const v = params.get(id); if (v && document.getElementById(id)) document.getElementById(id).value = v;
+  }
+})();
+
+let __mkQuickLessonActive = false;
+function applyMarkingPrefill(student) {
+  if (!student || __mkQuickLessonActive) return;
+  if (document.getElementById('target') && student.target) document.getElementById('target').value = student.target;
+  if (document.getElementById('level') && student.level) document.getElementById('level').value = student.level;
+  // URL params take precedence
+  const params = new URLSearchParams(location.search);
+  for (const k of ['target','level']) {
+    const v = params.get(k); if (v && document.getElementById(k)) document.getElementById(k).value = v;
+  }
+}
+
+(function mountProfileUi() {
+  if (!SW.ProfileUI) return;
+  const tutorContainer = document.getElementById('profile-tutor-strip');
+  const studentContainer = document.getElementById('profile-student-strip');
+  const saveContainer = document.getElementById('profile-save-link');
+  const tutorMount = SW.ProfileUI.mountTutorStrip({container: tutorContainer});
+  const studentMount = SW.ProfileUI.mountStudentStrip({
+    container: studentContainer,
+    onChange: (action) => {
+      if (action === 'quick') { __mkQuickLessonActive = true; }
+      else { __mkQuickLessonActive = false; applyMarkingPrefill(SW.Profile.getCurrentStudent()); }
+    }
+  });
+  SW.ProfileUI.mountSavePrompt({
+    container: saveContainer,
+    prefill: () => ({
+      target: (document.getElementById('target') || {}).value || '',
+      source: 'English',
+      level: (document.getElementById('level') || {}).value || 'B1',
+      mode: 'one_to_one',
+      exam: ''
+    }),
+    onClick: (created) => {
+      if (tutorMount && tutorMount.refresh) tutorMount.refresh();
+      if (studentMount && studentMount.refresh) studentMount.refresh();
+      applyMarkingPrefill(created);
+    }
+  });
+  applyMarkingPrefill(SW.Profile.getCurrentStudent());
+})();
+
+(function mountQuickCheck() {
+  if (!SW.ProfileUI) return;
+  SW.ProfileUI.mountQuickCheck({
+    container: document.getElementById('level-quick-check'),
+    onLevel: (lvl) => { if (document.getElementById('level')) document.getElementById('level').value = lvl; }
+  });
+})();
+
+let __mkAdjustHandle = null;
+(function mountAdjust() {
+  if (!SW.ProfileUI) return;
+  __mkAdjustHandle = SW.ProfileUI.mountAdjustForToday({container: document.getElementById('adjust-for-today')});
+})();
+
 // Wire the file-drop zone
 (function wireDrop() {
   const dropZone = $('drop-zone');
@@ -121,7 +188,7 @@ $('form').addEventListener('submit', async (event) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         target_language: lang,
-        level: $('level').value,
+        level: (__mkAdjustHandle && __mkAdjustHandle.readOverrides().level) || $('level').value,
         rubric: $('rubric').value,
         sample: $('sample').value
       })

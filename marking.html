@@ -105,6 +105,12 @@
 
   <div class="privacy-notice"><strong>Don't include the student's name or identifying info &mdash; paste the writing only.</strong> The sample is sent to Anthropic for processing and not stored by us.</div>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+    <div id="profile-student-strip"></div>
+    <div id="profile-save-link"></div>
+  </div>
+
   <noscript>
     <aside class="noscript-notice" role="note">
       <p><strong>This tool needs JavaScript to run.</strong> Student writing is read in your browser, image OCR happens via Google Vision, and the AI marks once you click. Nothing leaves your device until you submit; the tool itself is JavaScript-only.</p>
@@ -123,13 +129,14 @@
       <div class="field">
         <label for="level">Student CEFR level</label>
         <select id="level" required>
-          <option value="A1">A1</option>
-          <option value="A2">A2</option>
-          <option value="B1" selected>B1</option>
-          <option value="B2">B2</option>
-          <option value="C1">C1</option>
-          <option value="C2">C2</option>
+          <option value="A1">A1 &mdash; Just starting (basic words and set phrases)</option>
+          <option value="A2">A2 &mdash; Can describe basic daily life</option>
+          <option value="B1" selected>B1 &mdash; Handles familiar everyday topics</option>
+          <option value="B2">B2 &mdash; Confident at work / study, idioms still hard</option>
+          <option value="C1">C1 &mdash; Fluent on any topic, with some nuance</option>
+          <option value="C2">C2 &mdash; Near-native</option>
         </select>
+        <div id="level-quick-check"></div>
       </div>
     </div>
 
@@ -160,6 +167,8 @@
       <label for="sample">Anonymised student writing</label>
       <textarea id="sample" minlength="50" maxlength="4000" placeholder="Paste the writing only — or attach a file/photo above. Remove names and identifying details first."></textarea>
     </div>
+
+    <div id="adjust-for-today"></div>
 
     <button type="submit" id="go" class="btn btn-primary">Mark and suggest feedback</button>
   </form>
