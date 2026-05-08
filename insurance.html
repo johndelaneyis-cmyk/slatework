@@ -103,6 +103,11 @@
   <h1>Insurance &amp; <span class="chalk-mark">safeguarding</span>.</h1>
   <p class="lead">What insurance independent tutors actually carry, and what safeguarding step is expected when teaching minors. Country-aware.</p>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+  </div>
+  <p id="profile-country-caption" class="small" hidden></p>
+
   <div class="privacy-notice">Information only. Quote a couple of providers and read the actual policy before buying &mdash; coverage detail varies.</div>
 
   <noscript>
@@ -115,7 +120,7 @@
   <form id="form">
     <div class="field">
       <label for="country">Country</label>
-      <select id="country" name="country" required></select>
+      <select id="country" name="country" data-profile-country-bound required></select>
     </div>
   </form>
 

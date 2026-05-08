@@ -3,6 +3,58 @@
 const SW = window.Slatework;
 const $ = (id) => document.getElementById(id);
 
+// Phase E: bind country select to tutor profile if set.
+function applyTutorCountryBinding() {
+  const sel = document.querySelector('select[data-profile-country-bound]');
+  if (!sel) return;
+  if (!SW || !SW.Profile) return;
+  const tutor = SW.Profile.getTutor();
+  const caption = document.getElementById('profile-country-caption');
+  if (tutor && tutor.country) {
+    sel.value = tutor.country;
+    sel.disabled = true;
+    if (sel.parentElement) sel.parentElement.hidden = true;
+    if (caption) {
+      caption.hidden = false;
+      caption.innerHTML = '';
+      const txt = document.createTextNode('Showing ' + (document.title.split('—')[0] || 'data ').trim() + ' for ');
+      const strong = document.createElement('strong');
+      strong.textContent = countryName(tutor.country);
+      const change = document.createElement('button');
+      change.type = 'button';
+      change.className = 'btn-link';
+      change.textContent = ' Change';
+      change.addEventListener('click', () => {
+        if (SW.ProfileUI && SW.ProfileUI.openTutorEditor) {
+          SW.ProfileUI.openTutorEditor({onSaved: () => location.reload()});
+        }
+      });
+      caption.appendChild(txt);
+      caption.appendChild(strong);
+      caption.appendChild(change);
+    }
+  } else {
+    sel.disabled = false;
+    if (sel.parentElement) sel.parentElement.hidden = false;
+    if (caption) caption.hidden = true;
+  }
+}
+
+function countryName(code) {
+  const list = SW.listCountries();
+  const m = list.find(c => c.code === code);
+  return m ? m.name : code;
+}
+
+// Mount tutor strip + bind on init
+(function mountTutorStrip() {
+  if (!SW.ProfileUI) return;
+  SW.ProfileUI.mountTutorStrip({
+    container: document.getElementById('profile-tutor-strip'),
+    onChange: () => { applyTutorCountryBinding(); if (typeof render === 'function') render(); }
+  });
+})();
+
 (async function init() {
   const sel = $('country');
   for (const c of SW.listCountries()) {
@@ -13,6 +65,7 @@ const $ = (id) => document.getElementById(id);
   }
   sel.value = 'GB';
   sel.addEventListener('change', render);
+  applyTutorCountryBinding();
   await render();
 })();
 

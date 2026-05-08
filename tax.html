@@ -103,6 +103,11 @@
   <h1>Tax &amp; <span class="chalk-mark">self-employment</span>.</h1>
   <p class="lead">Most countries let you earn a small amount before you have to register as self-employed. Find out where that line is for you, and what the form looks like for the day you cross it.</p>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+  </div>
+  <p id="profile-country-caption" class="small" hidden></p>
+
   <div class="privacy-notice">This is information, not advice. Confirm with a local accountant before filing &mdash; the data here is current as of the date stamped at the bottom.</div>
 
   <noscript>
@@ -115,7 +120,7 @@
   <form id="form">
     <div class="field">
       <label for="country">Country</label>
-      <select id="country" name="country" required></select>
+      <select id="country" name="country" data-profile-country-bound required></select>
     </div>
   </form>
 

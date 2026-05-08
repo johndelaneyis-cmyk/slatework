@@ -103,6 +103,11 @@
   <h1>Start tutoring <span class="chalk-mark">privately</span>.</h1>
   <p class="lead">A short, country-aware walkthrough &mdash; what you actually have to do, in order, to start taking private students legally.</p>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+  </div>
+  <p id="profile-country-caption" class="small" hidden></p>
+
   <noscript>
     <aside class="noscript-notice" role="note">
       <p><strong>This tool needs JavaScript to run.</strong> Setup checklist tracks progress in localStorage on your device; nothing is submitted. The tool itself is JavaScript-only.</p>
@@ -113,7 +118,7 @@
   <form id="form">
     <div class="field">
       <label for="country">Country</label>
-      <select id="country" name="country" required></select>
+      <select id="country" name="country" data-profile-country-bound required></select>
     </div>
   </form>
 

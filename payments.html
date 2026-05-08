@@ -103,6 +103,11 @@
   <h1>Payment methods for <span class="chalk-mark">tutors</span>.</h1>
   <p class="lead">The payment methods that work in your country &mdash; for collecting from local students and from international ones. Free, private, fast, or all three.</p>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+  </div>
+  <p id="profile-country-caption" class="small" hidden></p>
+
   <div class="privacy-notice">Renders entirely in your browser from a country-pack data file. We don't see your selections.</div>
 
   <noscript>
@@ -115,7 +120,7 @@
   <form id="form">
     <div class="field">
       <label for="country">Country</label>
-      <select id="country" name="country" required></select>
+      <select id="country" name="country" data-profile-country-bound required></select>
     </div>
   </form>
 
