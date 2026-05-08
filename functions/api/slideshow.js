@@ -69,7 +69,12 @@ const SYSTEM_PROMPT = [
   "Do NOT include student names, locations, or anything resembling PII anywhere in the deck."
 ].join("\n");
 
-const DEFAULT_MODEL = "claude-sonnet-4-6";
+// Haiku 4.5 picked over Sonnet for slideshow specifically: structured JSON
+// output with a clear schema, rigid 8-slide template, and tight latency
+// requirement (CF edge times out at 60s). Haiku generates ~3x faster than
+// Sonnet for this kind of constrained output. Override via ANTHROPIC_MODEL
+// env var if Sonnet quality is needed.
+const DEFAULT_MODEL = "claude-haiku-4-5";
 const PER_IP_DAILY = 20;
 const GLOBAL_DAILY = 1500;
 
