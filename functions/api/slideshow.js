@@ -156,6 +156,68 @@ function fallbackDeck(audience, target, level, lessonTitle, mode) {
 
 // Validate the model's JSON shape. Returns null on success, or a string
 // reason on failure (used to log + decide on fallback).
+// Salvage common model deviations (especially Haiku) before validation.
+// Returns the deck mutated in place — does not throw. Validator runs after.
+function normalizeDeck(deck, audience) {
+  if (!deck || typeof deck !== 'object') return deck;
+
+  // 1. Slides — reorder by id to match REQUIRED_SLIDE_IDS if all 8 present
+  //    (regardless of order). Auto-fix common id variants.
+  const idAliases = {
+    'wrap_up': 'wrapup', 'wrap-up': 'wrapup', 'wrapUp': 'wrapup',
+    'at-a-glance': 'at_a_glance', 'atAGlance': 'at_a_glance', 'glance': 'at_a_glance',
+    'exit-ticket': 'exit_ticket', 'exitTicket': 'exit_ticket', 'exit': 'exit_ticket',
+    'differentiate': 'differentiation', 'tutor_notes': 'differentiation', 'notes': 'differentiation'
+  };
+  if (Array.isArray(deck.slides)) {
+    for (const s of deck.slides) {
+      if (s && typeof s === 'object' && idAliases[s.id]) s.id = idAliases[s.id];
+      // Coerce image_keywords to array of strings; default empty.
+      if (s && typeof s === 'object') {
+        if (!Array.isArray(s.image_keywords)) s.image_keywords = [];
+        s.image_keywords = s.image_keywords
+          .filter(k => typeof k === 'string')
+          .map(k => k.slice(0, 40))
+          .slice(0, 5);
+        if (typeof s.title !== 'string') s.title = '';
+        if (typeof s.body !== 'string') s.body = '';
+      }
+    }
+    // Reorder if all 8 canonical ids present in any order
+    const ids = deck.slides.map(s => s && s.id).filter(Boolean);
+    const haveAll = REQUIRED_SLIDE_IDS.every(id => ids.includes(id));
+    if (haveAll && deck.slides.length === 8) {
+      const byId = {};
+      deck.slides.forEach(s => { if (s && s.id) byId[s.id] = s; });
+      deck.slides = REQUIRED_SLIDE_IDS.map(id => byId[id]);
+    }
+  }
+
+  // 2. Metadata — fill in missing inferred_audience from request audience.
+  if (!deck.metadata || typeof deck.metadata !== 'object') deck.metadata = {};
+  if (!VALID_AUDIENCES.includes(deck.metadata.inferred_audience)) {
+    deck.metadata.inferred_audience = audience;
+  }
+
+  // 3. alt_audiences — auto-fill any missing audience keys with empty defaults.
+  if (!deck.alt_audiences || typeof deck.alt_audiences !== 'object') deck.alt_audiences = {};
+  for (const a of VALID_AUDIENCES) {
+    if (!deck.alt_audiences[a] || typeof deck.alt_audiences[a] !== 'object') {
+      deck.alt_audiences[a] = {
+        tone_overrides: {},
+        image_density: a === 'young_learner' ? 'high'
+                     : a === 'teen' ? 'medium'
+                     : a === 'adult' ? 'low' : 'minimal'
+      };
+    } else {
+      if (!deck.alt_audiences[a].tone_overrides || typeof deck.alt_audiences[a].tone_overrides !== 'object') {
+        deck.alt_audiences[a].tone_overrides = {};
+      }
+    }
+  }
+  return deck;
+}
+
 function validateDeck(deck) {
   if (!deck || typeof deck !== 'object') return 'not an object';
   if (!Array.isArray(deck.slides) || deck.slides.length !== 8) return 'slides must be array of length 8';
@@ -244,9 +306,13 @@ export async function onRequestPost({ request, env }) {
       console.error('[slideshow] JSON.parse failed:', e.message, 'rawHead=', (raw || '').slice(0, 200));
       return jsonResponse(fallbackDeck(audience, target, level, lessonTitle, mode), 200);
     }
+    // Repair common model deviations (id casing, missing alt_audiences, etc.)
+    // before validating. Saves us from falling back to the static deck when the
+    // model output is salvageable.
+    deck = normalizeDeck(deck, audience);
     const reason = validateDeck(deck);
     if (reason) {
-      console.error('[slideshow] validation failed:', reason);
+      console.error('[slideshow] validation failed after normalize:', reason);
       return jsonResponse(fallbackDeck(audience, target, level, lessonTitle, mode), 200);
     }
     // Ensure metadata.mode is present (fall back to user-supplied mode).
