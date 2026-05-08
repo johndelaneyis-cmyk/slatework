@@ -248,7 +248,7 @@
       for (const t of SW.targetLanguageList()) targetSel.appendChild(buildOption(t.value, t.label, t.value === ex.target));
     } else {
       // Fallback minimal list
-      ['Spanish','French','German','English (ESL / EFL)','Mandarin','Japanese','Korean','Italian','Portuguese','Arabic','Other'].forEach(v => targetSel.appendChild(buildOption(v, v, v === ex.target)));
+      ['Spanish','French','German','English','Mandarin','Japanese','Korean','Italian','Portuguese','Arabic','Other'].forEach(v => targetSel.appendChild(buildOption(v, v, v === ex.target)));
     }
     form.appendChild(field('profile-target', 'Target language', targetSel));
 

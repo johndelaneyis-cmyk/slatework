@@ -69,8 +69,7 @@
       { value: 'Korean',                  label: 'Korean' },
       { value: 'Arabic',                  label: 'Arabic' },
       { value: 'Irish',                   label: 'Irish (Gaeilge)' },
-      { value: 'English (native / advanced / test prep)', label: 'English (native, advanced, or test prep)' },
-      { value: 'English (ESL / EFL)',     label: 'English (ESL / EFL — second-language learners)' },
+      { value: 'English',                 label: 'English' },
       { value: 'Other',                   label: "Other — I'll type it" }
     ];
   }
