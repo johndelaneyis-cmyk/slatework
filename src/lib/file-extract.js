@@ -186,6 +186,11 @@
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = '.txt,.md,.docx,.pdf,image/*';
+    // capture="environment" hints mobile browsers to launch the rear camera
+    // directly when the input is tapped. On iPhone this captures as JPEG,
+    // bypassing HEIC entirely on most devices. Desktop browsers ignore it
+    // and continue to show the standard file picker.
+    fileInput.setAttribute('capture', 'environment');
     fileInput.style.display = 'none';
     dropZone.appendChild(fileInput);
 
