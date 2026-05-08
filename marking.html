@@ -142,8 +142,30 @@
 
     <div class="field">
       <label for="rubric">Rubric tag (optional)</label>
-      <input id="rubric" type="text" placeholder="e.g., GCSE Spanish writing 90-word essay" maxlength="200" />
-      <span class="help">Helps the model match feedback to a known marking scheme. Skip if you grade freely.</span>
+      <input id="rubric" type="text" list="rubric-tags" placeholder="Type a custom tag or pick from the list — e.g., GCSE Spanish writing 90-word essay" maxlength="200" />
+      <datalist id="rubric-tags">
+        <option value="IELTS speaking band 7"></option>
+        <option value="IELTS writing task 2"></option>
+        <option value="HKDSE Paper 2 essay"></option>
+        <option value="HSC English EAL/D Module C"></option>
+        <option value="Leaving Cert HL English"></option>
+        <option value="Leaving Cert HL Irish"></option>
+        <option value="Junior Cert English"></option>
+        <option value="Junior Cert Irish"></option>
+        <option value="GCSE English Language Paper 1"></option>
+        <option value="GCSE English Language Paper 2"></option>
+        <option value="AQA Spanish writing 90-word"></option>
+        <option value="A-level French writing"></option>
+        <option value="TOEFL writing"></option>
+        <option value="SAT writing"></option>
+        <option value="Cambridge B2 First"></option>
+        <option value="Cambridge C1 Advanced"></option>
+        <option value="DELE B2"></option>
+        <option value="DELE C1"></option>
+        <option value="NCEA Level 2 English"></option>
+        <option value="NCEA Level 3 English"></option>
+      </datalist>
+      <span class="help">Quick-pick from common schemes or type your own. Helps the model match feedback to a known marking scheme. Skip if you grade freely.</span>
     </div>
 
     <div class="field">
