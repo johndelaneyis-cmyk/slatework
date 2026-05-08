@@ -105,8 +105,8 @@
           </label>
           <span class="slideshow-counter" aria-live="polite">1 / 8</span>
           <div class="slideshow-actions">
-            <button type="button" class="slideshow-prev btn btn-ghost" aria-label="Previous slide">&larr;</button>
-            <button type="button" class="slideshow-next btn btn-ghost" aria-label="Next slide">&rarr;</button>
+            <button type="button" class="slideshow-prev btn btn-link" aria-label="Previous slide">&larr;</button>
+            <button type="button" class="slideshow-next btn btn-link" aria-label="Next slide">&rarr;</button>
             <button type="button" class="slideshow-export btn btn-primary">Download .pptx</button>
           </div>
         </header>
