@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=20" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=21" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -84,7 +84,7 @@
         "name": "Does it work for languages other than English?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Pick the target language and the source language separately; the model writes the plan in the source language and uses the target as instructed-content. The two English options (native/advanced vs. ESL/EFL) cover the case where your student already speaks English and wants to refine it."
+          "text": "Yes. Pick the target language and the source language separately; the model writes the plan in the source language and uses the target as instructed-content. If your student already speaks English fluently and wants to refine it (e.g. native speaker prepping GCSE Lang or AP Lit), say so in the goal field — the model adapts."
         }
       }
     ]
@@ -124,7 +124,7 @@
         <label for="target">Target language</label>
         <select id="target" required></select>
         <input id="target_other" type="text" placeholder="Type the target language" class="field-other-input" hidden />
-        <span class="help">Pick the language being taught. Two English options: native/advanced vs. ESL/EFL.</span>
+        <span class="help">Pick the language being taught.</span>
       </div>
       <div class="field">
         <label for="source">Source language</label>
@@ -218,7 +218,7 @@
     <details>
       <summary>Does it work for languages other than English?</summary>
       <div class="answer">
-        <p>Yes. Pick the target language and source language separately. The plan is written in the source language and uses the target as instructed-content. The two English options (native/advanced vs. ESL/EFL) cover the case where your student already speaks English and wants to refine it.</p>
+        <p>Yes. Pick the target language and source language separately. The plan is written in the source language and uses the target as instructed-content. If your student already speaks English fluently and wants to refine it (e.g. native speaker prepping GCSE Lang or AP Lit), say so in the goal field — the model adapts.</p>
       </div>
     </details>
   </section>
@@ -240,14 +240,14 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=20"></script>
-<script src="/src/lib/markdown.js?v=20"></script>
-<script src="/feedback.js?v=20" defer></script>
-<script src="/src/lib/profile.js?v=20"></script>
-<script src="/src/lib/profile-ui.js?v=20"></script>
-<script src="/src/lib/slideshow-images.js?v=20" defer></script>
-<script src="/src/lib/slideshow-render.js?v=20" defer></script>
-<script src="/src/lib/slideshow-export.js?v=20" defer></script>
-<script src="/src/lib/page-lesson-plan.js?v=20" defer></script>
+<script src="/src/lib/countries.js?v=21"></script>
+<script src="/src/lib/markdown.js?v=21"></script>
+<script src="/feedback.js?v=21" defer></script>
+<script src="/src/lib/profile.js?v=21"></script>
+<script src="/src/lib/profile-ui.js?v=21"></script>
+<script src="/src/lib/slideshow-images.js?v=21" defer></script>
+<script src="/src/lib/slideshow-render.js?v=21" defer></script>
+<script src="/src/lib/slideshow-export.js?v=21" defer></script>
+<script src="/src/lib/page-lesson-plan.js?v=21" defer></script>
 </body>
 </html>
