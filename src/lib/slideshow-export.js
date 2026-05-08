@@ -118,23 +118,71 @@
                '\n' + ((opts && opts.attributionText) || ''));
   }
 
-  // Fetch a same-origin or HTTPS image and return a data: URL. PptxGenJS
-  // accepts data: URLs directly. Failures are silent — we ship the slide
-  // text-only.
+  // Fetch an image URL and return a PNG data: URL.
+  // PowerPoint's PPTX format does NOT render SVG natively, so SVGs must be
+  // rasterized to PNG via Canvas before embedding. Raster sources (PNG/JPG
+  // from Pexels) pass through as-is. Failures are silent — slide ships
+  // text-only rather than blocking the export.
   async function imgUrlToDataUrl(url) {
     try {
       const r = await fetch(url, { credentials: 'omit' });
       if (!r.ok) return null;
+      const ct = (r.headers.get('content-type') || '').toLowerCase();
+      const isSvg = ct.includes('svg') || /\.svg($|\?)/.test(url);
       const blob = await r.blob();
-      return await new Promise((resolve) => {
-        const fr = new FileReader();
-        fr.onload = () => resolve(fr.result);
-        fr.onerror = () => resolve(null);
-        fr.readAsDataURL(blob);
-      });
+      if (!isSvg) {
+        // Direct path: raster image, just convert to data URL.
+        return await blobToDataUrl(blob);
+      }
+      // SVG: render onto a 800x800 canvas, return PNG data URL.
+      const svgText = await blob.text();
+      return await rasterizeSvg(svgText, 800, 800);
     } catch {
       return null;
     }
+  }
+
+  function blobToDataUrl(blob) {
+    return new Promise((resolve) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result);
+      fr.onerror = () => resolve(null);
+      fr.readAsDataURL(blob);
+    });
+  }
+
+  function rasterizeSvg(svgText, width, height) {
+    return new Promise((resolve) => {
+      const svgBlob = new Blob([svgText], { type: 'image/svg+xml' });
+      const objUrl = URL.createObjectURL(svgBlob);
+      const img = new Image();
+      // Some SVGs declare viewBox without explicit width/height; setting
+      // the Image's natural dimensions forces canvas to render at our scale.
+      img.width = width;
+      img.height = height;
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          // Transparent background — PowerPoint renders this fine over the
+          // slide's white surface.
+          ctx.clearRect(0, 0, width, height);
+          ctx.drawImage(img, 0, 0, width, height);
+          URL.revokeObjectURL(objUrl);
+          resolve(canvas.toDataURL('image/png'));
+        } catch {
+          URL.revokeObjectURL(objUrl);
+          resolve(null);
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(objUrl);
+        resolve(null);
+      };
+      img.src = objUrl;
+    });
   }
 
   Export.exportPptx = async function exportPptx({ response, audience, mode, tutorName, attributionText, _testReturnBlob }) {

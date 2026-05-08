@@ -303,10 +303,14 @@ export async function onRequestPost({ request, env }) {
       max_tokens: 2500
     });
     let deck;
+    let parseErr = null;
     try { deck = JSON.parse(extractJson(raw)); }
     catch (e) {
+      parseErr = e.message;
       console.error('[slideshow] JSON.parse failed:', e.message, 'rawHead=', (raw || '').slice(0, 200));
-      return jsonResponse(fallbackDeck(audience, target, level, lessonTitle, mode), 200);
+      const fb = fallbackDeck(audience, target, level, lessonTitle, mode);
+      fb._debug = { fallback_reason: 'json_parse', detail: parseErr, raw_head: (raw || '').slice(0, 300) };
+      return jsonResponse(fb, 200);
     }
     // Repair common model deviations (id casing, missing alt_audiences, etc.)
     // before validating. Saves us from falling back to the static deck when the
@@ -315,7 +319,19 @@ export async function onRequestPost({ request, env }) {
     const reason = validateDeck(deck);
     if (reason) {
       console.error('[slideshow] validation failed after normalize:', reason);
-      return jsonResponse(fallbackDeck(audience, target, level, lessonTitle, mode), 200);
+      const fb = fallbackDeck(audience, target, level, lessonTitle, mode);
+      // _debug helps the client (or a test) surface why we fell back.
+      // Includes a redacted preview of the model output so we can reason
+      // about edge cases without exposing the full deck.
+      fb._debug = {
+        fallback_reason: 'validation_failed',
+        detail: reason,
+        slide_count: Array.isArray(deck && deck.slides) ? deck.slides.length : 0,
+        slide_ids: Array.isArray(deck && deck.slides) ? deck.slides.map(s => s && s.id).slice(0, 10) : [],
+        first_title: deck && deck.slides && deck.slides[0] && deck.slides[0].title
+          ? String(deck.slides[0].title).slice(0, 80) : ''
+      };
+      return jsonResponse(fb, 200);
     }
     // Ensure metadata.mode is present (fall back to user-supplied mode).
     if (!deck.metadata.mode) deck.metadata.mode = mode;
