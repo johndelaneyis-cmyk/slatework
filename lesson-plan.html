@@ -105,6 +105,12 @@
 
   <div class="privacy-notice">Your inputs are sent to Anthropic for generation but are not stored by us. Don't include student names.</div>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+    <div id="profile-student-strip"></div>
+    <div id="profile-save-link"></div>
+  </div>
+
   <noscript>
     <aside class="noscript-notice" role="note">
       <p><strong>This tool needs JavaScript to run.</strong> Lesson plans are built locally from your inputs and sent to the AI in one POST request when you click generate. Nothing leaves your device until you submit; the tool itself is JavaScript-only.</p>
@@ -132,13 +138,14 @@
       <div class="field">
         <label for="level">CEFR level</label>
         <select id="level" required>
-          <option value="A1">A1 — Beginner</option>
-          <option value="A2">A2 — Elementary</option>
-          <option value="B1" selected>B1 — Intermediate</option>
-          <option value="B2">B2 — Upper-intermediate</option>
-          <option value="C1">C1 — Advanced</option>
-          <option value="C2">C2 — Mastery</option>
+          <option value="A1">A1 — Just starting (basic words and set phrases)</option>
+          <option value="A2">A2 — Can describe basic daily life</option>
+          <option value="B1" selected>B1 — Handles familiar everyday topics</option>
+          <option value="B2">B2 — Confident at work / study, idioms still hard</option>
+          <option value="C1">C1 — Fluent on any topic, with some nuance</option>
+          <option value="C2">C2 — Near-native</option>
         </select>
+        <div id="level-quick-check"></div>
       </div>
       <div class="field">
         <label for="mode">Mode</label>
@@ -162,10 +169,19 @@
       <span class="help">Leave blank for general-purpose practice. If you teach to a specific exam, name it &mdash; the worksheet will target it.</span>
     </div>
 
+    <div id="adjust-for-today"></div>
+
     <button type="submit" id="go" class="btn btn-primary">Generate plan</button>
   </form>
 
-  <section id="result" class="result" role="region" aria-live="polite" hidden></section>
+  <section id="result" class="result" role="region" aria-live="polite" hidden>
+    <div id="result-body"></div>
+    <section id="extensions" class="extensions" hidden>
+      <button type="button" id="ext-slideshow" class="btn btn-primary" data-stub="phase-g">Generate slideshow from this plan</button>
+      <a id="ext-worksheet" href="/worksheet.html?from=lesson-plan" class="btn secondary">Generate worksheet for this plan</a>
+      <a id="ext-marking" href="/marking.html?from=lesson-plan" class="btn secondary">Mark a student response to this plan</a>
+    </section>
+  </section>
 
   <section class="tool-explainer">
     <p class="mono-caption">// HOW IT WORKS</p>
