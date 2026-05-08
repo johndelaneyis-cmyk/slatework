@@ -204,6 +204,10 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
   font-size: 0.9375rem;
   padding: 6px 0;
   transition: color var(--transition);
+  /* Tap-target compliance on phone — Apple HIG minimum 44px */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .site-header nav a:hover {
@@ -435,7 +439,7 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
   border: 1px solid var(--chalk-faint);
   border-radius: var(--radius-sm);
   width: 100%;
-  min-height: 40px;
+  min-height: 44px;
   transition: border-color var(--transition);
 }
 
@@ -1782,12 +1786,12 @@ button[disabled],
 }
 .drop-clear {
   flex-shrink: 0;
-  padding: 6px 12px;
+  padding: 10px 14px;
   font-size: 0.8125rem;
   background: transparent;
   color: var(--ink-muted);
   border: 1px solid var(--line);
-  min-height: 0;
+  min-height: 44px;
   cursor: pointer;
   border-radius: var(--radius-sm);
 }
@@ -2458,7 +2462,7 @@ details.adjust-for-today[open] > summary {
   gap: 0.5rem;
   margin: 1rem 0;
 }
-.profile-actions .btn { min-height: 40px; }
+.profile-actions .btn { min-height: 44px; }
 
 details.contract-more {
   margin: 1.5rem 0;
