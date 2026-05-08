@@ -35,13 +35,13 @@ function applyTutorCountryBinding() {
     if (caption) {
       caption.hidden = false;
       caption.innerHTML = '';
-      const txt = document.createTextNode('Showing ' + (document.title.split('—')[0] || 'data ').trim() + ' for ');
+      const txt = document.createTextNode('Showing rates for ');
       const strong = document.createElement('strong');
       strong.textContent = countryName(tutor.country);
       const change = document.createElement('button');
       change.type = 'button';
       change.className = 'btn-link';
-      change.textContent = ' Change';
+      change.textContent = ' · Change';
       change.addEventListener('click', () => {
         if (SW.ProfileUI && SW.ProfileUI.openTutorEditor) {
           SW.ProfileUI.openTutorEditor({onSaved: () => location.reload()});
