@@ -223,6 +223,12 @@
     });
 
     await renderForAudience(audience);
+    // Auto-focus the slide region so keyboard nav (arrow keys / space) works
+    // without an extra Tab. preventScroll keeps the page from jumping if the
+    // deck is below the fold (common — the deck appears under the lesson plan).
+    if (root && typeof root.focus === 'function') {
+      try { root.focus({ preventScroll: true }); } catch (_) { /* older Safari ignores opts */ }
+    }
     return { setAudience: renderForAudience };
   };
 
