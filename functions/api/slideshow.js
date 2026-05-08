@@ -55,9 +55,14 @@ const SYSTEM_PROMPT = [
   "- adult: tone is professional and concise; image_keywords lean abstract or workplace (meeting, coffee, travel, office).",
   "- exam_prep: image_keywords MUST be EMPTY for every slide except 'warmup' (which gets ONE keyword). Prioritise model answers, prompt cards, scoring rubric language.",
   "",
+  "Mode rules — these OVERRIDE anything the source lesson-plan markdown may say. If the markdown suggests pair / group activity but mode is one_to_one, rewrite for one_to_one regardless:",
+  "- one_to_one: warmup, core, and practice slides MUST describe activities the student does ALONE or WITH THE TUTOR. Do NOT use phrases like 'work in pairs', 'in groups', 'with a partner', 'pair up', 'group discussion', or 'turn to your neighbour'. Use: 'Take turns with your tutor', 'Tell your tutor', 'You and your tutor try together', 'Show your tutor'. The tutor IS the partner.",
+  "- small_group: pair and triad work is appropriate. Use 'In pairs', 'With your partner', 'In threes'.",
+  "- classroom: pair / group / class-wide activities all appropriate. Mention seating or grouping decisions where relevant; the differentiation slide may include grouping notes.",
+  "",
   "alt_audiences MUST contain tone_overrides keyed by slide id, only for slides whose body would change wording for that audience. Keep each override short — a substitute body string. Image density tells the client how many image_keywords to render per slide for that audience.",
   "",
-  "If a mode of 'classroom' is provided, increase font scale planning notes appear in differentiation slide; do not change other slides. Echo the mode value back in metadata.mode so the client can apply classroom font scaling.",
+  "Echo the mode value back in metadata.mode. The client uses metadata.mode to apply classroom font scaling on rendering.",
   "",
   "If an exam target is provided, calibrate vocabulary, rubric language, and warmup style to that exam.",
   "",
@@ -83,6 +88,26 @@ function fallbackDeck(audience, target, level, lessonTitle, mode) {
   const tone = audience === 'young_learner' ? 'high'
              : audience === 'teen' ? 'medium'
              : audience === 'adult' ? 'low' : 'minimal';
+
+  // Mode-aware practice copy — never hard-codes pair work for 1:1.
+  const practiceBody = mode === 'one_to_one'
+    ? 'Take turns with your tutor.\nMake one new sentence each.'
+    : mode === 'small_group'
+    ? 'In pairs, share an example.\nThen swap.'
+    : 'Pairs first, then share with the class.\nGrouping: A-B / C-D / E-F.';
+  const practiceKwForAudience = audience === 'young_learner'
+    ? (mode === 'one_to_one' ? ['student', 'smile'] : ['friends'])
+    : audience === 'exam_prep'
+    ? []
+    : (mode === 'one_to_one' ? ['conversation', 'notebook'] : ['pair work']);
+
+  // Warmup also benefits from mode awareness for young learners.
+  const warmupKw = audience === 'young_learner'
+    ? ['hello', 'smile']
+    : audience === 'exam_prep'
+    ? ['notebook']
+    : (mode === 'one_to_one' ? ['conversation'] : ['classroom']);
+
   return {
     slides: [
       mk('title','title', lessonTitle || `${target} lesson — ${level}`,
@@ -90,20 +115,20 @@ function fallbackDeck(audience, target, level, lessonTitle, mode) {
       mk('at_a_glance','objectives','Today we will',
          '• Warm up\n• Learn new words\n• Practise\n• Wrap up', [], 0),
       mk('warmup','vocab','Warm-up',
-         'Look. Say the word.', audience === 'young_learner' ? ['hello','smile'] :
-         audience === 'exam_prep' ? ['notebook'] : ['classroom'], 5),
+         'Look. Say the word.', warmupKw, 5),
       mk('core','teach','New words / new structure',
          'Listen. Repeat. Try.', audience === 'young_learner' ? ['teacher','student'] :
          audience === 'exam_prep' ? [] : ['discussion'], 20),
       mk('practice','practice','Your turn',
-         'Work in pairs. Share an example.', audience === 'young_learner' ? ['friends'] :
-         audience === 'exam_prep' ? [] : ['pair work'], 20),
+         practiceBody, practiceKwForAudience, 20),
       mk('wrapup','wrapup','Wrap-up',
          'What did we learn?\nHomework: write 3 sentences.', [], 10),
       mk('exit_ticket','exit','Exit ticket',
          'Write one sentence using today\'s structure.', [], 0),
       mk('differentiation','notes','Tutor notes',
-         'If too easy: add a tense.\nIf too hard: model two more examples.', [], 0),
+         mode === 'classroom'
+           ? 'If too easy: add a tense.\nIf too hard: model two more examples.\nGrouping: pairs first, then plenary.'
+           : 'If too easy: add a tense.\nIf too hard: model two more examples.', [], 0),
     ],
     metadata: {
       inferred_audience: audience,
