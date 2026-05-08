@@ -2590,3 +2590,29 @@ details.contract-more[open] > summary {
   .slideshow-slide,
   .slideshow-slide.is-active { transition: none !important; }
 }
+
+/* =========================================================
+   RTL FEEDBACK RENDERING (marking accelerator)
+   When the target language is Arabic / Urdu / Hebrew / Persian / Pashto,
+   the feedback container is set dir="rtl" and gets .is-rtl-target. Quoted
+   student writing flows right-to-left; English explanatory text inside
+   relies on the browser's BiDi handling. We override text-align where
+   default left-alignment would still leak through.
+   ========================================================= */
+.is-rtl-target {
+  text-align: right;
+}
+.is-rtl-target h2,
+.is-rtl-target h3,
+.is-rtl-target h4 {
+  text-align: right;
+}
+.is-rtl-target ul,
+.is-rtl-target ol {
+  padding-right: 1.25rem;
+  padding-left: 0;
+}
+/* Inline quoted student text inside list items — italics + RTL flow. */
+.is-rtl-target em {
+  unicode-bidi: embed;
+}

@@ -34,6 +34,21 @@ function resolveTargetLang() {
   return sel.value;
 }
 
+// RTL languages where feedback cards (especially quoted student writing) need
+// right-to-left rendering. Detected at render time off the resolved target.
+const RTL_TARGETS = new Set([
+  'Arabic', 'Urdu', 'Hebrew', 'Persian/Farsi', 'Persian', 'Farsi', 'Pashto'
+]);
+function isRtlTarget(lang) {
+  if (!lang) return false;
+  // Match exact value or case-insensitive substring (handles "Arabic (MSA)" etc.)
+  const lower = String(lang).toLowerCase();
+  for (const t of RTL_TARGETS) {
+    if (lower === t.toLowerCase() || lower.includes(t.toLowerCase())) return true;
+  }
+  return false;
+}
+
 // ---- Phase C: profile-aware additions ----
 
 // URL params (?from=lesson-plan&target=...&level=...)
@@ -219,6 +234,17 @@ $('form').addEventListener('submit', async (event) => {
       return;
     }
     const data = await r.json();
+    // Apply RTL rendering when the target language is RTL — Arabic/Urdu/
+    // Hebrew/Persian/Pashto. The quoted student writing inside the feedback
+    // cards needs right-to-left direction; English explanatory text inside
+    // these blocks stays naturally LTR via embedded BiDi handling.
+    if (isRtlTarget(lang)) {
+      result.classList.add('is-rtl-target');
+      result.setAttribute('dir', 'rtl');
+    } else {
+      result.classList.remove('is-rtl-target');
+      result.removeAttribute('dir');
+    }
     result.innerHTML = renderMarkdown(data.markdown || '');
   } catch {
     result.innerHTML = '<p>Network error. Try again.</p>';
