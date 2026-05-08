@@ -194,6 +194,9 @@ $('form').addEventListener('submit', async (event) => {
     body.innerHTML = '<div id="md">' + renderMarkdown(data.markdown || '') + '</div><p class="small mt-1">Tip: select all and paste into your notes; the formatting comes through.</p>';
     // Cache the plan markdown for Phase G slideshow generation
     window.__lastLessonPlanMarkdown = data.markdown || '';
+    // Wire the worksheet + marking extension links with the lesson context so
+    // the downstream forms open pre-filled instead of empty.
+    populateExtensionLinks();
     $('extensions').hidden = false;
   } catch {
     body.innerHTML = '<p>Network error. Try again in a moment.</p>';
@@ -201,6 +204,38 @@ $('form').addEventListener('submit', async (event) => {
     btn.disabled = false;
   }
 });
+
+// Populate the extension anchor hrefs with the current form context so the
+// worksheet + marking pages open pre-filled instead of empty when the tutor
+// clicks "Generate worksheet for this plan" / "Mark a student response to this plan".
+function populateExtensionLinks() {
+  const target = resolveLang('target', 'target_other');
+  const source = resolveLang('source', 'source_other');
+  const level = $('level').value;
+  const mode = $('mode').value;
+  const exam = $('exam').value;
+  const goal = ($('goal').value || '').trim();
+
+  // Worksheet pre-fill: target + level + mode + exam + topic seeded from goal.
+  // The worksheet's own AI call generates exercises that match the lesson topic.
+  const wsParams = new URLSearchParams();
+  wsParams.set('from', 'lesson-plan');
+  if (target) wsParams.set('target', target);
+  if (level) wsParams.set('level', level);
+  if (mode) wsParams.set('mode', mode);
+  if (exam) wsParams.set('exam', exam);
+  if (goal) wsParams.set('topic', goal.slice(0, 200));
+  const wsLink = $('ext-worksheet');
+  if (wsLink) wsLink.href = '/worksheet.html?' + wsParams.toString();
+
+  // Marking pre-fill: target + level only (marking has no mode/exam/topic fields).
+  const mkParams = new URLSearchParams();
+  mkParams.set('from', 'lesson-plan');
+  if (target) mkParams.set('target', target);
+  if (level) mkParams.set('level', level);
+  const mkLink = $('ext-marking');
+  if (mkLink) mkLink.href = '/marking.html?' + mkParams.toString();
+}
 
 // ---- 8. Extension button stubs (Phase G implements the slideshow handler) ----
 (function wireExtensionStubs() {
