@@ -2224,3 +2224,209 @@ button[disabled],
   .result { box-shadow: none; border: none; padding: 0; }
   .tool-explainer, .tool-faq { display: none !important; }
 }
+
+/* =========================================================
+   PROFILE UI ATOMS – Phase B (2026-05-09)
+   Spec: docs/superpowers/specs/2026-05-09-profile-architecture-and-ux-cleanup-design.md
+   ========================================================= */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* Tutor strip – small bar at the top of country-aware pages */
+.tutor-strip {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.625rem 1rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--ink-2);
+  box-shadow: var(--shadow-sm);
+}
+.tutor-strip p { margin: 0; line-height: 1.4; }
+.tutor-strip strong { color: var(--ink); }
+.tutor-strip-edit { padding: 0; min-height: 0; }
+
+/* Student strip – picker + edit + Quick lesson exit */
+.student-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.625rem 0.75rem;
+  margin: 0 0 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+.student-strip-picker {
+  flex: 1 1 auto;
+  min-width: 14rem;
+  margin: 0;
+  height: 38px;
+  padding: 0 12px;
+}
+.student-strip-edit, .student-strip-quick {
+  min-height: 38px;
+  padding: 0 12px;
+  font-size: 0.875rem;
+}
+.student-strip-quick {
+  background: transparent;
+  border: 1px dashed var(--line-strong);
+  color: var(--ink-muted);
+}
+.student-strip-quick:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* Save-my-setup link in no-profile state */
+.profile-empty-link {
+  background: transparent;
+  border: 1px dashed var(--line-strong);
+  color: var(--ink-muted);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+.profile-empty-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Profile editor dialog */
+dialog.profile-editor {
+  width: min(36rem, 90vw);
+  max-height: min(90vh, 800px);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px rgba(2, 6, 23, 0.18);
+}
+dialog.profile-editor::backdrop {
+  background: rgba(2, 6, 23, 0.55);
+}
+dialog.profile-editor h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+dialog.profile-editor .profile-editor-caption {
+  margin: 0 0 1.25rem;
+  color: var(--ink-faint);
+  font-size: 0.875rem;
+}
+dialog.profile-editor form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+dialog.profile-editor fieldset {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  margin: 0 0 0.75rem;
+}
+dialog.profile-editor fieldset legend {
+  font-size: 0.875rem;
+  color: var(--ink-2);
+  padding: 0 4px;
+}
+dialog.profile-editor fieldset label {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.875rem;
+  margin: 0.25rem 0;
+  cursor: pointer;
+}
+.profile-editor-privacy {
+  font-size: 0.8125rem;
+  color: var(--ink-faint);
+  margin: 0.5rem 0 1rem;
+}
+.profile-editor-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.profile-editor-actions .btn-link {
+  margin-right: auto;
+  color: var(--err);
+}
+
+/* CEFR Don't-know inline check */
+details.cefr-quick-check {
+  margin-top: 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  background: var(--surface-2);
+}
+details.cefr-quick-check[open] {
+  background: var(--surface);
+}
+details.cefr-quick-check > summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+  padding: 0.25rem 0;
+}
+details.cefr-quick-check[open] > summary {
+  color: var(--ink);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Adjust-for-today expander */
+details.adjust-for-today {
+  margin: 0.5rem 0 1rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+}
+details.adjust-for-today > summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+details.adjust-for-today[open] > summary {
+  color: var(--ink);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Result-panel extension buttons (lesson-plan.html, populated by Phase G) */
+.extensions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px dashed var(--line);
+}
+
+@media (prefers-color-scheme: dark) {
+  dialog.profile-editor {
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  }
+  dialog.profile-editor::backdrop { background: rgba(0,0,0,0.65); }
+}
+
+@media (max-width: 30rem) {
+  dialog.profile-editor { padding: 1rem; }
+  .student-strip { gap: 0.5rem; }
+  .student-strip-picker { min-width: 100%; }
+}
