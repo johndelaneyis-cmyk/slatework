@@ -1,8 +1,63 @@
 // Extracted from contract.html during CSP-nonce refactor (2026-05-07).
 // Loaded via <script src="/src/lib/page-contract.js" defer> from contract.html.
+
+// Phase D: hydrate tutor name + email from profile if set.
+(function hydrateFromTutorProfile() {
+  const SW = window.Slatework;
+  if (!SW || !SW.Profile) return;
+  const tutor = SW.Profile.getTutor();
+  const nameInput = document.getElementById('tutor_name');
+  const emailInput = document.getElementById('contact_email');
+  if (tutor && tutor.name && nameInput && !nameInput.value) {
+    nameInput.value = tutor.name;
+    const note = document.getElementById('tutor-name-from-profile');
+    if (note) {
+      note.hidden = false;
+      note.innerHTML = '';
+      note.appendChild(document.createTextNode('Pulled from your saved tutor profile. '));
+      const link = document.createElement('button');
+      link.type = 'button';
+      link.className = 'btn-link';
+      link.textContent = 'Change';
+      link.addEventListener('click', () => {
+        if (SW.ProfileUI && SW.ProfileUI.openTutorEditor) {
+          SW.ProfileUI.openTutorEditor({onSaved: () => location.reload()});
+        }
+      });
+      note.appendChild(link);
+    }
+  }
+  if (tutor && tutor.email && emailInput && !emailInput.value) {
+    emailInput.value = tutor.email;
+    const note = document.getElementById('contact-email-from-profile');
+    if (note) {
+      note.hidden = false;
+      note.textContent = 'Pulled from your saved tutor profile.';
+    }
+  }
+  // Pre-fill subject from current student target language
+  const subjectInput = document.getElementById('subject');
+  const cur = SW.Profile.getCurrentStudent();
+  if (cur && cur.target && subjectInput && !subjectInput.value) {
+    subjectInput.value = cur.target;
+  }
+})();
+
 const $ = (id) => document.getElementById(id);
 const form = $('form');
 form.addEventListener('input', render);
+const emailInput = document.getElementById('contact_email');
+if (emailInput) {
+  emailInput.addEventListener('blur', () => {
+    const SW = window.Slatework;
+    if (!SW || !SW.Profile) return;
+    const v = emailInput.value.trim();
+    if (!v) return;
+    const t = SW.Profile.getTutor();
+    if (!t) return;
+    if (t.email !== v) SW.Profile.setTutor({country: t.country, email: v, name: t.name, business_name: t.business_name});
+  });
+}
 $('print-btn').addEventListener('click', () => window.print());
 
 function render() {

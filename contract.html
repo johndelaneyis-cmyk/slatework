@@ -116,49 +116,63 @@
 
   <div class="section-row no-print">
     <form id="form">
-      <h2>Your details</h2>
-      <div class="field"><label for="tutor_name">Tutor name</label><input id="tutor_name" type="text" placeholder="e.g., Sarah Chen" autocomplete="name" /></div>
-      <div class="field"><label for="business_name">Business name (optional)</label><input id="business_name" type="text" placeholder="leave blank to use your name" autocomplete="organization" /></div>
-      <div class="field">
-        <label for="years_teaching">Years teaching (optional)</label>
-        <input id="years_teaching" type="number" min="0" max="60" step="1" placeholder="e.g. 5" />
-        <span class="help">Used in the warm/formal welcome paragraphs. Leave blank to skip.</span>
-      </div>
-      <div class="field"><label for="contact_email">Contact email</label><input id="contact_email" type="email" placeholder="hello@yourdomain.com" autocomplete="email" /></div>
+      <h2>Always visible</h2>
 
-      <h2>Lesson details</h2>
+      <div class="field" id="field-tutor-name">
+        <label for="tutor_name">Tutor name</label>
+        <input id="tutor_name" type="text" placeholder="e.g., Sarah Chen" autocomplete="name" />
+        <span class="help" id="tutor-name-from-profile" hidden></span>
+      </div>
+
+      <div class="field" id="field-contact-email">
+        <label for="contact_email">Contact email</label>
+        <input id="contact_email" type="email" placeholder="hello@yourdomain.com" autocomplete="email" />
+        <span class="help" id="contact-email-from-profile" hidden></span>
+      </div>
+
       <div class="field"><label for="subject">Subject / language</label><input id="subject" type="text" placeholder="e.g., GCSE Spanish, Mandarin conversation, IB English" /></div>
       <div class="field"><label for="rate">Rate per lesson</label><input id="rate" type="text" placeholder="e.g., $50 per 60-minute lesson, or whatever your local currency uses" /></div>
       <div class="field"><label for="duration">Lesson duration</label><input id="duration" type="text" placeholder="e.g., 60 minutes" value="60 minutes" /></div>
       <div class="field"><label for="location">Location</label><input id="location" type="text" placeholder="e.g., online via Zoom, or in-person at the student's home" value="online via Zoom" /></div>
-
-      <h2>Policy</h2>
       <div class="field"><label for="cancel_hours">Cancellation notice (hours)</label><input id="cancel_hours" type="number" min="0" max="168" step="1" value="24" /></div>
-      <div class="field">
-        <label for="cancel_fee">Late-cancel fee</label>
-        <select id="cancel_fee">
-          <option value="full">Full lesson fee</option>
-          <option value="half" selected>Half lesson fee</option>
-          <option value="none">No fee (rebook only)</option>
-        </select>
-      </div>
       <div class="field"><label for="payment_terms">Payment terms</label><input id="payment_terms" type="text" placeholder="e.g., paid weekly in advance via Faster Payments" value="paid weekly in advance" /></div>
 
-      <h2>Parent welcome paragraph</h2>
-      <div class="field">
-        <label for="welcome_tone">Tone</label>
-        <select id="welcome_tone">
-          <option value="warm">Warm</option>
-          <option value="formal">Formal</option>
-          <option value="brief" selected>Brief and practical</option>
-          <option value="custom">Custom (write your own)</option>
-        </select>
-      </div>
-      <div class="field" id="welcome_custom_field" hidden>
-        <label for="welcome_custom">Custom welcome paragraph</label>
-        <textarea id="welcome_custom" placeholder="Type your own welcome paragraph here."></textarea>
-        <span class="help">Tip: keep it under 80 words. The contract preview updates as you type.</span>
-      </div>
+      <details class="contract-more">
+        <summary>More options (4 fields)</summary>
+
+        <div class="field"><label for="business_name">Business name (optional)</label><input id="business_name" type="text" placeholder="leave blank to use your name" autocomplete="organization" /></div>
+
+        <div class="field">
+          <label for="years_teaching">Years teaching (optional)</label>
+          <input id="years_teaching" type="number" min="0" max="60" step="1" placeholder="e.g. 5" />
+          <span class="help">Used in the warm/formal welcome paragraphs. Leave blank to skip.</span>
+        </div>
+
+        <div class="field">
+          <label for="cancel_fee">Late-cancel fee</label>
+          <select id="cancel_fee">
+            <option value="full">Full lesson fee</option>
+            <option value="half" selected>Half lesson fee</option>
+            <option value="none">No fee (rebook only)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="welcome_tone">Welcome paragraph tone</label>
+          <select id="welcome_tone">
+            <option value="warm">Warm</option>
+            <option value="formal">Formal</option>
+            <option value="brief" selected>Brief and practical</option>
+            <option value="custom">Custom (write your own)</option>
+          </select>
+        </div>
+
+        <div class="field" id="welcome_custom_field" hidden>
+          <label for="welcome_custom">Custom welcome paragraph</label>
+          <textarea id="welcome_custom" placeholder="Type your own welcome paragraph here."></textarea>
+          <span class="help">Tip: keep it under 80 words. The contract preview updates as you type.</span>
+        </div>
+      </details>
 
       <div class="field mt-15">
         <button type="button" id="print-btn" class="btn btn-primary">Print or save as PDF</button>

@@ -2438,3 +2438,21 @@ details.adjust-for-today[open] > summary {
   margin: 1rem 0;
 }
 .profile-actions .btn { min-height: 40px; }
+
+details.contract-more {
+  margin: 1.5rem 0;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+}
+details.contract-more > summary {
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  padding: 0.25rem 0;
+}
+details.contract-more[open] > summary {
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
