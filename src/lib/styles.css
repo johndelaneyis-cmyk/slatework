@@ -2456,3 +2456,98 @@ details.contract-more[open] > summary {
   margin-bottom: 0.5rem;
   color: var(--ink);
 }
+
+/* ----- Slideshow preview (lesson-plan extension) ----------------------- */
+.slideshow-host { margin-top: 1rem; }
+.slideshow {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  margin: 1.25rem 0;
+  outline: none;
+}
+.slideshow:focus-visible { box-shadow: 0 0 0 3px var(--ring); }
+.slideshow-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line);
+  justify-content: space-between;
+}
+.slideshow-audience {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.slideshow-counter {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-muted);
+}
+.slideshow-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.slideshow-stage {
+  position: relative;
+  min-height: 320px;
+  padding: 1.5rem;
+  display: grid;
+}
+.slideshow-slide {
+  grid-area: 1 / 1;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+.slideshow-slide.is-active { display: grid; }
+@media (max-width: 640px) {
+  .slideshow-slide { grid-template-columns: 1fr; }
+}
+.slideshow-slide-title {
+  font-size: 1.5rem;
+  margin: 0 0 0.25rem 0;
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.slideshow-slide-duration {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-muted);
+}
+.slideshow-slide-sub {
+  color: var(--ink-muted);
+  margin: 0 0 0.75rem 0;
+}
+.slideshow-slide-body p { margin: 0 0 0.5rem 0; }
+.slideshow-slide-body ul { margin: 0; padding-left: 1.25rem; }
+.slideshow-slide-media { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.slideshow-slide-media img {
+  max-width: 100%;
+  height: auto;
+  max-height: 220px;
+  border-radius: var(--radius-sm);
+}
+.slideshow-attribution {
+  padding: 0.5rem 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+}
+
+/* Classroom mode — projector-legible font scaling. */
+.slideshow--classroom .slideshow-slide-title { font-size: 1.8rem; }
+.slideshow--classroom .slideshow-slide-body  { font-size: 1.2rem; }
+.slideshow--classroom .slideshow-slide-sub   { font-size: 1.05rem; }
+
+/* Reduced-motion: defense in depth — base CSS uses display:none/grid only. */
+@media (prefers-reduced-motion: reduce) {
+  .slideshow-slide,
+  .slideshow-slide.is-active { transition: none !important; }
+}

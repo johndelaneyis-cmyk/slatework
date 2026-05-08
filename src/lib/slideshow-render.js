@@ -2,11 +2,14 @@
 // lesson-plan.html (added in Task 8). Exposes:
 //   Slatework.Slideshow.render(container, response, opts)
 //   Slatework.Slideshow.generate(payload)  (calls /api/slideshow)
+//   Slatework.Slideshow.generateAndRender(input)  (used by the
+//     #ext-slideshow click handler — does generate + render in one call)
 //
-// `opts` accepted: { tutorName?: string, attributionText?: string, onAudienceChange?: fn }
+// `opts` accepted: { tutorName?, mode?, attributionText?, onAudienceChange? }
 //
 // Audience switching uses the cached `alt_audiences` overrides from the
-// response — no second API call.
+// response — no second API call. Classroom mode is recognised via opts.mode
+// or response.metadata.mode and applies a CSS hook for font scaling.
 //
 // Image source delegated to slideshow-images.js (Task 6).
 
@@ -134,11 +137,16 @@
       throw new Error('Slatework.Slideshow.render: bad arguments');
     }
     const audiences = ['young_learner','teen','adult','exam_prep'];
-    let audience = (response.metadata && response.metadata.inferred_audience) || 'adult';
+    const meta = response.metadata || {};
+    let audience = meta.inferred_audience || 'adult';
+    // Classroom-mode marker — opts.mode wins over server-echoed metadata.mode.
+    const explicitMode = (opts.mode && String(opts.mode)) || meta.mode || '';
+    const isClassroom = explicitMode === 'classroom' || meta.deck_style === 'classroom';
     container.innerHTML = buildShellHtml(audience, audiences, opts.attributionText);
     const stage = container.querySelector('.slideshow-stage');
     const counter = container.querySelector('.slideshow-counter');
     const root = container.querySelector('.slideshow');
+    if (isClassroom) root.classList.add('slideshow--classroom');
 
     function densityFor(a) {
       const m = response.metadata || {};
@@ -195,6 +203,7 @@
         try {
           await SW.SlideshowExport.exportPptx({
             response, audience,
+            mode: explicitMode || meta.mode || 'one_to_one',
             tutorName: opts.tutorName || '',
             attributionText: opts.attributionText || 'Illustrations by Storyset.'
           });
@@ -228,5 +237,82 @@
       throw new Error(err.error || `Slideshow API ${r.status}`);
     }
     return r.json();
+  };
+
+  // ---- generateAndRender (called by the lesson-plan.html stub) ----------
+  //
+  // page-lesson-plan.js's #ext-slideshow click handler calls:
+  //   Slatework.Slideshow.generateAndRender({
+  //     lesson_plan_markdown,
+  //     currentStudent,
+  //     formValues: { target_language, source_language, level, mode, exam }
+  //   })
+  //
+  // We resolve the audience from currentStudent (or via deriveAudience),
+  // append a render slot inside #extensions, show a loading state, call
+  // /api/slideshow, then hand off to Slideshow.render.
+
+  Slideshow.generateAndRender = async function generateAndRender(input) {
+    input = input || {};
+    const md = String(input.lesson_plan_markdown || '').trim();
+    if (md.length < 50) {
+      throw new Error('No lesson-plan markdown to convert. Generate a plan first.');
+    }
+    const formValues = input.formValues || {};
+    const student = input.currentStudent || null;
+
+    let audience = student && student.audience_profile ? student.audience_profile : null;
+    if (!audience && SW.Profile && typeof SW.Profile.deriveAudience === 'function') {
+      audience = SW.Profile.deriveAudience({
+        level: formValues.level || (student && student.level) || '',
+        mode: formValues.mode || (student && student.mode) || '',
+        exam: formValues.exam || (student && student.exam) || ''
+      });
+    }
+    const validAudiences = ['young_learner','teen','adult','exam_prep'];
+    if (!validAudiences.includes(audience)) audience = 'adult';
+
+    const tutorName = (SW.Profile && typeof SW.Profile.getTutor === 'function')
+      ? ((SW.Profile.getTutor() || {}).name || '')
+      : '';
+
+    // Locate or create the render host. The Plan-1 lesson-plan.html ships an
+    // #extensions <section> that contains the trigger button; the slideshow
+    // host is appended inside that section.
+    const extensions = document.getElementById('extensions');
+    if (!extensions) throw new Error('Extensions section missing from page.');
+    let host = document.getElementById('slideshow-host');
+    if (!host) {
+      host = document.createElement('section');
+      host.id = 'slideshow-host';
+      host.className = 'slideshow-host';
+      extensions.appendChild(host);
+    }
+    host.hidden = false;
+    host.innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>BUILDING DECK</p><p class="slate-loading-sub">10–30 seconds. Don’t refresh.</p></div>';
+
+    const payload = {
+      lesson_plan_markdown: md,
+      audience_profile: audience,
+      target_language: formValues.target_language || (student && student.target) || '',
+      source_language: formValues.source_language || (student && student.source) || 'English',
+      level: formValues.level || (student && student.level) || 'B1',
+      mode: formValues.mode || (student && student.mode) || 'one_to_one',
+      exam: formValues.exam || (student && student.exam) || ''
+    };
+
+    let response;
+    try {
+      response = await Slideshow.generate(payload);
+    } catch (err) {
+      host.innerHTML = '<p class="error">' + escHtml((err && err.message) || 'Slideshow failed.') + '</p>';
+      throw err;
+    }
+
+    return Slideshow.render(host, response, {
+      tutorName,
+      mode: payload.mode,
+      attributionText: 'Illustrations by Storyset · Photos by Pexels'
+    });
   };
 })();
