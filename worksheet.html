@@ -106,6 +106,12 @@
 
     <div class="privacy-notice">Your inputs are sent to Anthropic for generation. Don't include student names.</div>
 
+    <div id="profile-mount" class="profile-mount">
+      <div id="profile-tutor-strip"></div>
+      <div id="profile-student-strip"></div>
+      <div id="profile-save-link"></div>
+    </div>
+
     <noscript>
       <aside class="noscript-notice" role="note">
         <p><strong>This tool needs JavaScript to run.</strong> Worksheet sections are constructed in your browser; the AI fills the activity blocks once you submit. Nothing leaves your device until you submit; the tool itself is JavaScript-only.</p>
@@ -124,13 +130,14 @@
         <div class="field">
           <label for="level">CEFR level</label>
           <select id="level" required>
-            <option value="A1">A1</option>
-            <option value="A2" selected>A2</option>
-            <option value="B1">B1</option>
-            <option value="B2">B2</option>
-            <option value="C1">C1</option>
-            <option value="C2">C2</option>
+            <option value="A1">A1 &mdash; Just starting (basic words and set phrases)</option>
+            <option value="A2">A2 &mdash; Can describe basic daily life</option>
+            <option value="B1" selected>B1 &mdash; Handles familiar everyday topics</option>
+            <option value="B2">B2 &mdash; Confident at work / study, idioms still hard</option>
+            <option value="C1">C1 &mdash; Fluent on any topic, with some nuance</option>
+            <option value="C2">C2 &mdash; Near-native</option>
           </select>
+          <div id="level-quick-check"></div>
         </div>
       </div>
       <div class="field">
@@ -157,6 +164,8 @@
           <input id="count" type="number" min="3" max="20" step="1" value="8" required />
         </div>
       </div>
+      <div id="adjust-for-today"></div>
+
       <button type="submit" id="go" class="btn btn-primary">Generate worksheet</button>
     </form>
   </div>
