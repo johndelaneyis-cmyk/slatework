@@ -2585,6 +2585,15 @@ details.contract-more[open] > summary {
 .slideshow--classroom .slideshow-slide-body  { font-size: 1.2rem; }
 .slideshow--classroom .slideshow-slide-sub   { font-size: 1.05rem; }
 
+/* Classroom mode at projector viewports (≥1280px) — additional +15% on body
+   text and slight bump on title for 4-6m projector throw legibility. */
+@media (min-width: 1280px) {
+  .slideshow--classroom .slideshow-slide-title { font-size: 2.05rem; }
+  .slideshow--classroom .slideshow-slide-body  { font-size: 1.38rem; line-height: 1.6; }
+  .slideshow--classroom .slideshow-slide-sub   { font-size: 1.2rem; }
+  .slideshow--classroom .slideshow-slide-body ul { line-height: 1.6; }
+}
+
 /* Reduced-motion: defense in depth — base CSS uses display:none/grid only. */
 @media (prefers-reduced-motion: reduce) {
   .slideshow-slide,
