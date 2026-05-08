@@ -115,6 +115,15 @@ function fallbackDeck(audience, target, level, lessonTitle, mode) {
     ? ['notebook']
     : (mode === 'one_to_one' ? ['conversation'] : ['classroom']);
 
+  // Audience-aware slide bodies — fallback should NOT ship infantilizing
+  // young-learner copy ("Look. Say the word.") to adult / exam-prep students.
+  const warmupBody = audience === 'young_learner' ? 'Look. Say the word.'
+                  : audience === 'exam_prep'      ? 'Quick check: name three words from your last lesson.'
+                  : 'Warm-up question: what do you remember from last week?';
+  const coreBody   = audience === 'young_learner' ? 'Listen. Repeat. Try.'
+                  : audience === 'exam_prep'      ? 'Today\'s focus. Notice the structure. Practice the form.'
+                  : 'Today\'s structure. Notice it. Try a few examples with your tutor.';
+
   return {
     slides: [
       mk('title','title', lessonTitle || `${target} lesson — ${level}`,
@@ -122,9 +131,9 @@ function fallbackDeck(audience, target, level, lessonTitle, mode) {
       mk('at_a_glance','objectives','Today we will',
          '• Warm up\n• Learn new words\n• Practise\n• Wrap up', [], 0),
       mk('warmup','vocab','Warm-up',
-         'Look. Say the word.', warmupKw, 5),
+         warmupBody, warmupKw, 5),
       mk('core','teach','New words / new structure',
-         'Listen. Repeat. Try.', audience === 'young_learner' ? ['teacher','student'] :
+         coreBody, audience === 'young_learner' ? ['teacher','student'] :
          audience === 'exam_prep' ? [] : ['discussion'], 20),
       mk('practice','practice','Your turn',
          practiceBody, practiceKwForAudience, 20),
