@@ -68,6 +68,12 @@ export async function onRequestPost({ request, env }) {
   const level = String(body.level || '').trim().toUpperCase();
   const sample = String(body.sample || '').trim();
   const rubric = String(body.rubric || '').trim().slice(0, 200);
+  // feedback_language: 'english' (default) or 'target'. When 'target', the
+  // warm + direct paragraphs come back in the target language. The rubric-
+  // mapped variant stays in English because exam-board rubric language is
+  // typically English regardless of the language being learned.
+  const feedbackLanguageRaw = String(body.feedback_language || 'english').trim().toLowerCase();
+  const feedbackLanguage = feedbackLanguageRaw === 'target' ? 'target' : 'english';
 
   if (!language) return jsonResponse({ error: 'Missing target language.' }, 400);
   if (!VALID_LEVELS.includes(level)) return jsonResponse({ error: 'Level must be A1–C2.' }, 400);
@@ -83,10 +89,15 @@ export async function onRequestPost({ request, env }) {
     return jsonResponse({ error: rate.reason }, rate.status || 429, headers);
   }
 
+  const feedbackLanguageInstruction = feedbackLanguage === 'target'
+    ? `Feedback language: deliver the WARM and DIRECT variants in ${language} (the target language being learned). Error highlights and the STRUCTURED rubric-mapped variant remain in English.`
+    : `Feedback language: deliver all variants in English.`;
+
   const userMsg = [
     `Target language: ${language}`,
     `CEFR level: ${level}`,
     rubric ? `Rubric tag: ${rubric}` : '',
+    feedbackLanguageInstruction,
     '',
     'Student writing sample:',
     '"""',

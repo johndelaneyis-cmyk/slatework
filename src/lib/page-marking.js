@@ -190,6 +190,7 @@ $('form').addEventListener('submit', async (event) => {
         target_language: lang,
         level: (__mkAdjustHandle && __mkAdjustHandle.readOverrides().level) || $('level').value,
         rubric: $('rubric').value,
+        feedback_language: ($('feedback_lang') && $('feedback_lang').value) || 'english',
         sample: $('sample').value
       })
     });
