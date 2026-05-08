@@ -70,6 +70,8 @@
       { value: 'Korean',                  label: 'Korean' },
       { value: 'Arabic',                  label: 'Arabic' },
       { value: 'Irish',                   label: 'Irish (Gaeilge)' },
+      { value: 'Latin',                   label: 'Latin' },
+      { value: 'Te Reo Māori',            label: 'Te Reo Māori' },
       { value: 'Other',                   label: "Other — I'll type it" }
     ];
   }
