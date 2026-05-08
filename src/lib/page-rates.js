@@ -21,6 +21,72 @@ const EXPERIENCE_MULTIPLIER = {
 
 const $ = (id) => document.getElementById(id);
 
+// Phase E: bind country select to tutor profile if set.
+function applyTutorCountryBinding() {
+  const sel = document.querySelector('select[data-profile-country-bound]');
+  if (!sel) return;
+  if (!SW || !SW.Profile) return;
+  const tutor = SW.Profile.getTutor();
+  const caption = document.getElementById('profile-country-caption');
+  if (tutor && tutor.country) {
+    sel.value = tutor.country;
+    sel.disabled = true;
+    if (sel.parentElement) sel.parentElement.hidden = true;
+    if (caption) {
+      caption.hidden = false;
+      caption.innerHTML = '';
+      const txt = document.createTextNode('Showing ' + (document.title.split('—')[0] || 'data ').trim() + ' for ');
+      const strong = document.createElement('strong');
+      strong.textContent = countryName(tutor.country);
+      const change = document.createElement('button');
+      change.type = 'button';
+      change.className = 'btn-link';
+      change.textContent = ' Change';
+      change.addEventListener('click', () => {
+        if (SW.ProfileUI && SW.ProfileUI.openTutorEditor) {
+          SW.ProfileUI.openTutorEditor({onSaved: () => location.reload()});
+        }
+      });
+      caption.appendChild(txt);
+      caption.appendChild(strong);
+      caption.appendChild(change);
+    }
+  } else {
+    sel.disabled = false;
+    if (sel.parentElement) sel.parentElement.hidden = false;
+    if (caption) caption.hidden = true;
+  }
+}
+
+function countryName(code) {
+  const list = SW.listCountries();
+  const m = list.find(c => c.code === code);
+  return m ? m.name : code;
+}
+
+// Phase E: infer language-pair code from current student's source/target.
+function inferPairCode(source, target) {
+  // Simple two-letter pair codes used by data/countries/*.json:
+  //   en-es = English -> Spanish, etc.
+  const ABBR = {
+    English: 'en', Spanish: 'es', French: 'fr', German: 'de', Italian: 'it',
+    Portuguese: 'pt', Russian: 'ru', Mandarin: 'zh', Cantonese: 'yue',
+    Japanese: 'ja', Korean: 'ko', Arabic: 'ar', Irish: 'ga'
+  };
+  const s = ABBR[source]; const t = ABBR[target];
+  if (!s || !t) return null;
+  return `${s}-${t}`;
+}
+
+// Mount tutor strip + bind on init
+(function mountTutorStrip() {
+  if (!SW.ProfileUI) return;
+  SW.ProfileUI.mountTutorStrip({
+    container: document.getElementById('profile-tutor-strip'),
+    onChange: () => { applyTutorCountryBinding(); if (typeof recalc === 'function') recalc(); }
+  });
+})();
+
 (async function init() {
   // Populate countries
   const countrySel = $('country');
@@ -42,12 +108,24 @@ const $ = (id) => document.getElementById(id);
   }
   pairSel.value = 'en-es';
 
+  // Phase E: pre-fill language pair from current student if available.
+  if (SW.Profile) {
+    const cur = SW.Profile.getCurrentStudent();
+    if (cur && cur.target && cur.source) {
+      const candidate = inferPairCode(cur.source, cur.target);
+      if (candidate && pairSel.querySelector('option[value="' + candidate + '"]')) {
+        pairSel.value = candidate;
+      }
+    }
+  }
+
   // Recalc on any change. Debounced 120ms so number-input keystrokes don't
   // re-render six DOM nodes per keypress.
   const form = $('form');
   form.addEventListener('input', debounce(recalc, 120));
   // First paint is immediate (no debounce) so the result panel shows up
   // without a 120ms delay on page load.
+  applyTutorCountryBinding();
   await recalc();
 })();
 

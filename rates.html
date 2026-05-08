@@ -103,6 +103,11 @@
   <h1>Hourly rate <span class="chalk-mark">calculator</span>.</h1>
   <p>Set a rate that reflects your language pair, experience, and country — and see what each platform actually pays you at that rate after their commission.</p>
 
+  <div id="profile-mount" class="profile-mount">
+    <div id="profile-tutor-strip"></div>
+  </div>
+  <p id="profile-country-caption" class="small" hidden></p>
+
   <div class="privacy-notice">
     Everything happens in your browser. We don't see your rate, your country, or any other input.
   </div>
@@ -118,7 +123,7 @@
     <div class="section-row">
       <div class="field">
         <label for="country">Country</label>
-        <select id="country" name="country" required></select>
+        <select id="country" name="country" data-profile-country-bound required></select>
         <span class="help">Currency, rate ranges, and platforms adjust to match.</span>
       </div>
       <div class="field">
