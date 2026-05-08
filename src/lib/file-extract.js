@@ -322,7 +322,7 @@
           // a clear, actionable message instead of letting the model fail.
           const isHeic = HEIC_EXTS.has(ext) || HEIC_MIMES.has(file.type);
           if (isHeic) {
-            onStatus(`HEIC/HEIF photos aren't supported by our AI vision provider (Anthropic). On iPhone, change camera setting Settings → Camera → Formats → "Most Compatible" so new photos save as JPEG. Or convert this one to JPEG first.`);
+            onStatus(`HEIC/HEIF photos aren't supported by our AI vision provider (Anthropic). Easiest fix: tap the upload area again and use Take Photo — that captures as JPEG directly, bypassing HEIC. Otherwise change Settings → Camera → Formats → "Most Compatible" so future photos save as JPEG, or convert this one to JPEG first.`);
             return;
           }
 
