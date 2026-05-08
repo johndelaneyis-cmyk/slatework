@@ -66,6 +66,16 @@ const SYSTEM_PROMPT = [
   "",
   "If an exam target is provided, calibrate vocabulary, rubric language, and warmup style to that exam.",
   "",
+  "Cantonese-specific pedagogy (when target_language is \"Cantonese\"):",
+  "- Use JYUTPING romanization (the LSHK standard taught in HK education) with tone numbers 1-6, NOT Pinyin. Example: 你好 = \"nei5 hou2\", not \"nǐ hǎo\".",
+  "- Cantonese has 6 distinct tones (high-level, mid-rising, mid-level, low-falling, low-rising, low-level) — never describe it as having 4 tones.",
+  "- Use TRADITIONAL CHARACTERS (繁體字) — HK convention. Do NOT default to simplified characters unless the lesson goal explicitly says simplified.",
+  "- Use Cantonese vocabulary, not Mandarin. Examples: 嘅 (Cantonese possessive) NOT 的 (Mandarin); 喺 (to be at) NOT 在; 食 (to eat) NOT 吃; 飲 (to drink) NOT 喝; 唔 (negation) NOT 不.",
+  "- Use Cantonese-specific sentence-final particles: 啊, 嘅, 喎, 啩, 咩, 啦, 嘛 — these carry mood/aspect that Mandarin grammar does not.",
+  "- Cantonese grammar diverges from Mandarin: V-O order, classifier 個/隻/條 usage, 有 + V perfective, 緊 progressive aspect (NOT 在). Treat them as separate languages, not dialects.",
+  "- For exam contexts, default to HKDSE Chinese Lang where applicable; do NOT reference 普通話/Putonghua exams unless the rubric explicitly says so.",
+  "- Slide content (titles, body, vocab) must read naturally to a native Cantonese speaker — Mandarin-translated-to-Cantonese phrases (e.g. 你好嗎 sounds bookish; 你食咗飯未呀 is colloquial) are flagged as foreign.",
+  "",
   "Do NOT include student names, locations, or anything resembling PII anywhere in the deck."
 ].join("\n");
 

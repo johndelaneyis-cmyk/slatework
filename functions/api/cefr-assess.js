@@ -18,6 +18,13 @@ const SYSTEM_PROMPT = [
   "- Confidence is one of: high (≥3 strong evidence points), medium (1–2 evidence points), low (limited evidence).",
   "- Output is JSON only — no markdown, no commentary outside the object.",
   "",
+  "Cantonese-specific pedagogy (when target_language is \"Cantonese\"):",
+  "- Cantonese is a separate language from Mandarin, not a dialect. When citing evidence, use JYUTPING (1-6 tones), NOT Pinyin (4 tones).",
+  "- Expect TRADITIONAL CHARACTERS (繁體字); simplified usage in a Cantonese sample is itself worth flagging in reasoning.",
+  "- Cantonese vocabulary diverges from Mandarin: 嘅 NOT 的, 喺 NOT 在, 食 NOT 吃, 飲 NOT 喝, 唔 NOT 不. Sentence-final particles 啊/嘅/喎/啩/咩/啦/嘛 are Cantonese-specific.",
+  "- Do NOT downgrade level for using legitimate Cantonese forms (e.g. 我食咗飯, 你去邊度) as if they were Mandarin errors. Score Cantonese on Cantonese norms.",
+  "- HKDSE Chinese Lang or HK schoolwork rubrics apply where relevant; 普通話/Putonghua rubrics do not.",
+  "",
   "Output exactly this JSON shape:",
   '{"level": "B1", "confidence": "medium", "reasoning": "..."}'
 ].join("\n");
