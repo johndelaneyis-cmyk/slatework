@@ -17,6 +17,7 @@
 
 (() => {
   const SW = (window.Slatework = window.Slatework || {});
+  if (SW.Profile) return; // idempotent: ignore double-load
   const STORAGE_KEY = 'slatework.profiles.v1';
   const SCHEMA_VERSION = 1;
   const COUNTRY_ALLOWLIST = ['US', 'GB', 'CA', 'AU', 'NZ', 'IE', 'HK'];
@@ -37,6 +38,27 @@
     };
   }
 
+  // Patch any partially-corrupted state up to a valid emptyShape() match.
+  // Used by both read() (post-parse) and importFromJson() (post-schema-check).
+  function normalizeShape(parsed) {
+    if (!parsed || typeof parsed !== 'object') return emptyShape();
+    const empty = emptyShape();
+    return {
+      schema: SCHEMA_VERSION,
+      tutor: parsed.tutor || null,
+      students: Array.isArray(parsed.students) ? parsed.students : [],
+      current_student_id: typeof parsed.current_student_id === 'undefined' ? null : parsed.current_student_id,
+      preferences: parsed.preferences || empty.preferences
+    };
+  }
+
+  // Trim, fall back, and slice user-provided strings so a pasted multi-MB
+  // blob can't blow the 5MB localStorage quota silently.
+  function clampStr(value, fallback = '', max = 200) {
+    if (typeof value !== 'string') return fallback;
+    return value.trim().slice(0, max);
+  }
+
   function read() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -44,15 +66,7 @@
       const parsed = JSON.parse(raw);
       if (!parsed || typeof parsed !== 'object') return emptyShape();
       if (parsed.schema !== SCHEMA_VERSION) return emptyShape(); // future-proof migration anchor
-      // Defensive defaults — old shapes get patched up rather than discarded.
-      parsed.tutor = parsed.tutor || null;
-      parsed.students = Array.isArray(parsed.students) ? parsed.students : [];
-      if (typeof parsed.current_student_id === 'undefined') parsed.current_student_id = null;
-      parsed.preferences = parsed.preferences || {
-        contextual_offer_dismissed: false,
-        contextual_offer_shown_count: 0
-      };
-      return parsed;
+      return normalizeShape(parsed);
     } catch (err) {
       // Private browsing, quota, JSON.parse error — fail open.
       return emptyShape();
@@ -103,11 +117,9 @@
     const next = {
       country,
       currency: COUNTRY_TO_CURRENCY[country] || existing.currency || 'USD',
-      name: typeof partial.name === 'string' ? partial.name.trim() : (existing.name || ''),
-      email: typeof partial.email === 'string' ? partial.email.trim() : (existing.email || ''),
-      business_name: typeof partial.business_name === 'string'
-        ? partial.business_name.trim()
-        : (existing.business_name || ''),
+      name: clampStr(partial.name, existing.name || ''),
+      email: clampStr(partial.email, existing.email || ''),
+      business_name: clampStr(partial.business_name, existing.business_name || ''),
       set_at: existing.set_at || nowIso()
     };
     state.tutor = next;
@@ -153,25 +165,26 @@
 
   function addStudent(p) {
     if (!p || typeof p !== 'object') return null;
-    if (!p.nickname || typeof p.nickname !== 'string') return null;
+    const nickname = clampStr(p.nickname, '');
+    if (!nickname) return null; // rejects missing AND whitespace-only nicknames
     const state = read();
-    const id = genId(p.nickname);
+    const id = genId(nickname);
     const level = String(p.level || 'B1').toUpperCase();
     const mode = String(p.mode || 'one_to_one');
-    const exam = (typeof p.exam === 'string' ? p.exam : '').trim();
+    const exam = clampStr(p.exam, '');
     const audience = p.audience_profile || deriveAudience({level, mode, exam});
     const student = {
       id,
-      nickname: p.nickname.trim(),
-      target: String(p.target || ''),
-      source: String(p.source || 'English'),
+      nickname,
+      target: clampStr(p.target, ''),
+      source: clampStr(p.source, 'English'),
       level,
       level_set_via: p.level_set_via || 'manual',
       mode,
       exam,
       audience_profile: audience,
       audience_set_via: p.audience_profile ? 'manual' : 'auto',
-      notes: typeof p.notes === 'string' ? p.notes.trim() : '',
+      notes: clampStr(p.notes, '', 1000),
       created_at: nowIso(),
       last_used_at: nowIso()
     };
@@ -185,11 +198,32 @@
     const state = read();
     const idx = state.students.findIndex(s => s.id === id);
     if (idx === -1) return null;
-    const merged = { ...state.students[idx], ...partial, id, last_used_at: nowIso() };
-    if (partial.level || partial.mode || partial.exam) {
-      merged.audience_profile = partial.audience_profile
+    // Normalise incoming partial: coerce level uppercase, clamp strings.
+    // Mirrors addStudent so updates can't desync stored level vs derived audience.
+    const cleanPartial = { ...partial };
+    if (typeof cleanPartial.level === 'string') {
+      cleanPartial.level = cleanPartial.level.toUpperCase();
+    }
+    if (typeof cleanPartial.exam === 'string') {
+      cleanPartial.exam = clampStr(cleanPartial.exam, '');
+    }
+    if (typeof cleanPartial.notes === 'string') {
+      cleanPartial.notes = clampStr(cleanPartial.notes, '', 1000);
+    }
+    if (typeof cleanPartial.nickname === 'string') {
+      cleanPartial.nickname = clampStr(cleanPartial.nickname, state.students[idx].nickname);
+    }
+    if (typeof cleanPartial.target === 'string') {
+      cleanPartial.target = clampStr(cleanPartial.target, state.students[idx].target);
+    }
+    if (typeof cleanPartial.source === 'string') {
+      cleanPartial.source = clampStr(cleanPartial.source, state.students[idx].source);
+    }
+    const merged = { ...state.students[idx], ...cleanPartial, id, last_used_at: nowIso() };
+    if (cleanPartial.level || cleanPartial.mode || (typeof cleanPartial.exam === 'string')) {
+      merged.audience_profile = cleanPartial.audience_profile
         || deriveAudience({level: merged.level, mode: merged.mode, exam: merged.exam});
-      merged.audience_set_via = partial.audience_profile ? 'manual' : 'auto';
+      merged.audience_set_via = cleanPartial.audience_profile ? 'manual' : 'auto';
     }
     state.students[idx] = merged;
     return write(state) ? merged : null;
@@ -218,10 +252,9 @@
     try {
       const parsed = JSON.parse(s);
       if (!parsed || parsed.schema !== SCHEMA_VERSION) return false;
-      // Trust import only at the schema level; do not run wider validation
-      // because the user's exported file was produced by exportAsJson() so we
-      // can rely on its shape.
-      return write(parsed);
+      // Run through the same shape-normalization path as read() so a
+      // tampered-but-schema-valid file can't write missing students/preferences.
+      return write(normalizeShape(parsed));
     } catch (err) {
       return false;
     }

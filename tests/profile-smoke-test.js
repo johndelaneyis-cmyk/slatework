@@ -110,6 +110,10 @@
     P().dismissContextualOffer();
     assert(!P().shouldShowContextualOffer(), 'dismiss -> stop showing');
 
+    // 14b. addStudent rejects whitespace-only nickname
+    P().clearAll();
+    assertEq(P().addStudent({nickname: '   ', level: 'A1'}), null, 'addStudent rejects whitespace-only nickname');
+
     // 15. Fail-open: simulate unavailable storage by stubbing setItem to throw
     P().clearAll();
     const realSet = localStorage.setItem.bind(localStorage);
