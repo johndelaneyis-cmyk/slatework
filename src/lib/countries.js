@@ -57,6 +57,7 @@
     // Curated list of student-facing target languages, deduped from languagePairs.
     // Used by all "what language is the student learning?" dropdowns.
     return [
+      { value: 'English',                 label: 'English' },
       { value: 'Spanish',                 label: 'Spanish' },
       { value: 'French',                  label: 'French' },
       { value: 'German',                  label: 'German' },
@@ -69,7 +70,6 @@
       { value: 'Korean',                  label: 'Korean' },
       { value: 'Arabic',                  label: 'Arabic' },
       { value: 'Irish',                   label: 'Irish (Gaeilge)' },
-      { value: 'English',                 label: 'English' },
       { value: 'Other',                   label: "Other — I'll type it" }
     ];
   }

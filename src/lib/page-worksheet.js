@@ -15,7 +15,7 @@ const escapeHtml = SW.escapeHtml;
     opt.textContent = t.label;
     sel.appendChild(opt);
   }
-  sel.value = 'Spanish';
+  sel.value = 'English';
   sel.addEventListener('change', () => {
     const otherInput = $('target_other');
     if (sel.value === 'Other') {
@@ -62,7 +62,7 @@ function applyProfilePrefill(student) {
   if (!student || quickLessonModeActive) return;
   if ($('target') && student.target) $('target').value = student.target;
   if ($('level') && student.level) $('level').value = student.level;
-  // URL params still take precedence — re-apply
+  // URL params still take precedence ï¿½ re-apply
   const params = new URLSearchParams(location.search);
   for (const k of ['target','level','topic','exam','format','count']) {
     const v = params.get(k);
@@ -131,7 +131,7 @@ $('form').addEventListener('submit', async (event) => {
   topicEl.removeAttribute('aria-invalid');
   btn.disabled = true;
   $('result').hidden = false;
-  $('worksheet').innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>DRAFTING THE WORKSHEET</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15–40 seconds. Worksheet first, answer key after.</p></div>';
+  $('worksheet').innerHTML = '<div class="slate-loading"><p class="mono-caption"><span class="dot"></span>DRAFTING THE WORKSHEET</p><div class="chalk-dots" aria-hidden="true"><span class="chalk-dot"></span><span class="chalk-dot"></span><span class="chalk-dot"></span></div><p class="slate-loading-sub">Roughly 15ï¿½40 seconds. Worksheet first, answer key after.</p></div>';
   $('answer-key').hidden = true;
 
   // Apply Adjust-for-today overrides if set
@@ -170,7 +170,7 @@ $('form').addEventListener('submit', async (event) => {
   }
 });
 
-// ---- 8. Print handlers — use afterprint to reliably restore visibility ----
+// ---- 8. Print handlers ï¿½ use afterprint to reliably restore visibility ----
 $('print-ws').addEventListener('click', () => {
   $('answer-key').hidden = true;
   $('worksheet').hidden = false;

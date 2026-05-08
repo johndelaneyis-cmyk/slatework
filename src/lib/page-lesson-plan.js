@@ -17,7 +17,7 @@ const escapeHtml = SW.escapeHtml;
     opt.textContent = t.label;
     targetSel.appendChild(opt);
   }
-  targetSel.value = 'Spanish';
+  targetSel.value = 'English';
 
   const sources = ['English','Spanish','French','German','Italian','Portuguese','Mandarin','Cantonese','Japanese','Korean','Arabic','Russian','Irish'];
   for (const s of sources) {
@@ -30,7 +30,7 @@ const escapeHtml = SW.escapeHtml;
   sourceOther.value = 'Other';
   sourceOther.textContent = "Other — I'll type it";
   sourceSel.appendChild(sourceOther);
-  sourceSel.value = 'English';
+  sourceSel.value = 'Spanish';
 
   function wireOther(selectEl, otherInputId) {
     selectEl.addEventListener('change', () => {

@@ -62,7 +62,7 @@ function showSaveBlock(determinedLevel) {
     opt.textContent = t.label;
     sel.appendChild(opt);
   }
-  sel.value = 'Spanish';
+  sel.value = 'English';
   sel.addEventListener('change', () => {
     const otherInput = $('lang_other');
     if (sel.value === 'Other') {

@@ -15,7 +15,7 @@ const escapeHtml = SW.escapeHtml;
     opt.textContent = t.label;
     sel.appendChild(opt);
   }
-  sel.value = 'Spanish';
+  sel.value = 'English';
   sel.addEventListener('change', () => {
     const otherInput = $('target_other');
     if (sel.value === 'Other') {
