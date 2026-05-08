@@ -1,0 +1,506 @@
+﻿{
+    "generated":  "2026-05-08",
+    "illustrations":  [
+                          {
+                              "keyword":  "cow",
+                              "category":  "animal",
+                              "file":  "animals/cow.svg"
+                          },
+                          {
+                              "keyword":  "cat",
+                              "category":  "animal",
+                              "file":  "animals/cat.svg"
+                          },
+                          {
+                              "keyword":  "dog",
+                              "category":  "animal",
+                              "file":  "animals/dog.svg"
+                          },
+                          {
+                              "keyword":  "bird",
+                              "category":  "animal",
+                              "file":  "animals/bird.svg"
+                          },
+                          {
+                              "keyword":  "fish",
+                              "category":  "animal",
+                              "file":  "animals/fish.svg"
+                          },
+                          {
+                              "keyword":  "pig",
+                              "category":  "animal",
+                              "file":  "animals/pig.svg"
+                          },
+                          {
+                              "keyword":  "chicken",
+                              "category":  "animal",
+                              "file":  "animals/chicken.svg"
+                          },
+                          {
+                              "keyword":  "duck",
+                              "category":  "animal",
+                              "file":  "animals/duck.svg"
+                          },
+                          {
+                              "keyword":  "sheep",
+                              "category":  "animal",
+                              "file":  "animals/sheep.svg"
+                          },
+                          {
+                              "keyword":  "horse",
+                              "category":  "animal",
+                              "file":  "animals/horse.svg"
+                          },
+                          {
+                              "keyword":  "rabbit",
+                              "category":  "animal",
+                              "file":  "animals/rabbit.svg"
+                          },
+                          {
+                              "keyword":  "butterfly",
+                              "category":  "animal",
+                              "file":  "animals/butterfly.svg"
+                          },
+                          {
+                              "keyword":  "bee",
+                              "category":  "animal",
+                              "file":  "animals/bee.svg"
+                          },
+                          {
+                              "keyword":  "monkey",
+                              "category":  "animal",
+                              "file":  "animals/monkey.svg"
+                          },
+                          {
+                              "keyword":  "lion",
+                              "category":  "animal",
+                              "file":  "animals/lion.svg"
+                          },
+                          {
+                              "keyword":  "elephant",
+                              "category":  "animal",
+                              "file":  "animals/elephant.svg"
+                          },
+                          {
+                              "keyword":  "snake",
+                              "category":  "animal",
+                              "file":  "animals/snake.svg"
+                          },
+                          {
+                              "keyword":  "turtle",
+                              "category":  "animal",
+                              "file":  "animals/turtle.svg"
+                          },
+                          {
+                              "keyword":  "frog",
+                              "category":  "animal",
+                              "file":  "animals/frog.svg"
+                          },
+                          {
+                              "keyword":  "penguin",
+                              "category":  "animal",
+                              "file":  "animals/penguin.svg"
+                          },
+                          {
+                              "keyword":  "apple",
+                              "category":  "food",
+                              "file":  "food/apple.svg"
+                          },
+                          {
+                              "keyword":  "banana",
+                              "category":  "food",
+                              "file":  "food/banana.svg"
+                          },
+                          {
+                              "keyword":  "orange",
+                              "category":  "food",
+                              "file":  "food/orange.svg"
+                          },
+                          {
+                              "keyword":  "bread",
+                              "category":  "food",
+                              "file":  "food/bread.svg"
+                          },
+                          {
+                              "keyword":  "cheese",
+                              "category":  "food",
+                              "file":  "food/cheese.svg"
+                          },
+                          {
+                              "keyword":  "milk",
+                              "category":  "food",
+                              "file":  "food/milk.svg"
+                          },
+                          {
+                              "keyword":  "egg",
+                              "category":  "food",
+                              "file":  "food/egg.svg"
+                          },
+                          {
+                              "keyword":  "ice-cream",
+                              "category":  "food",
+                              "file":  "food/ice-cream.svg"
+                          },
+                          {
+                              "keyword":  "pizza",
+                              "category":  "food",
+                              "file":  "food/pizza.svg"
+                          },
+                          {
+                              "keyword":  "carrot",
+                              "category":  "food",
+                              "file":  "food/carrot.svg"
+                          },
+                          {
+                              "keyword":  "potato",
+                              "category":  "food",
+                              "file":  "food/potato.svg"
+                          },
+                          {
+                              "keyword":  "strawberry",
+                              "category":  "food",
+                              "file":  "food/strawberry.svg"
+                          },
+                          {
+                              "keyword":  "watermelon",
+                              "category":  "food",
+                              "file":  "food/watermelon.svg"
+                          },
+                          {
+                              "keyword":  "hamburger",
+                              "category":  "food",
+                              "file":  "food/hamburger.svg"
+                          },
+                          {
+                              "keyword":  "cookie",
+                              "category":  "food",
+                              "file":  "food/cookie.svg"
+                          },
+                          {
+                              "keyword":  "family",
+                              "category":  "family",
+                              "file":  "family/family.svg"
+                          },
+                          {
+                              "keyword":  "mother",
+                              "category":  "family",
+                              "file":  "family/mother.svg"
+                          },
+                          {
+                              "keyword":  "father",
+                              "category":  "family",
+                              "file":  "family/father.svg"
+                          },
+                          {
+                              "keyword":  "baby",
+                              "category":  "family",
+                              "file":  "family/baby.svg"
+                          },
+                          {
+                              "keyword":  "girl",
+                              "category":  "family",
+                              "file":  "family/girl.svg"
+                          },
+                          {
+                              "keyword":  "boy",
+                              "category":  "family",
+                              "file":  "family/boy.svg"
+                          },
+                          {
+                              "keyword":  "sister",
+                              "category":  "family",
+                              "file":  "family/sister.svg"
+                          },
+                          {
+                              "keyword":  "brother",
+                              "category":  "family",
+                              "file":  "family/brother.svg"
+                          },
+                          {
+                              "keyword":  "grandmother",
+                              "category":  "family",
+                              "file":  "family/grandmother.svg"
+                          },
+                          {
+                              "keyword":  "grandfather",
+                              "category":  "family",
+                              "file":  "family/grandfather.svg"
+                          },
+                          {
+                              "keyword":  "hand",
+                              "category":  "body",
+                              "file":  "body/hand.svg"
+                          },
+                          {
+                              "keyword":  "foot",
+                              "category":  "body",
+                              "file":  "body/foot.svg"
+                          },
+                          {
+                              "keyword":  "head",
+                              "category":  "body",
+                              "file":  "body/head.svg"
+                          },
+                          {
+                              "keyword":  "arm",
+                              "category":  "body",
+                              "file":  "body/arm.svg"
+                          },
+                          {
+                              "keyword":  "leg",
+                              "category":  "body",
+                              "file":  "body/leg.svg"
+                          },
+                          {
+                              "keyword":  "eye",
+                              "category":  "body",
+                              "file":  "body/eye.svg"
+                          },
+                          {
+                              "keyword":  "ear",
+                              "category":  "body",
+                              "file":  "body/ear.svg"
+                          },
+                          {
+                              "keyword":  "nose",
+                              "category":  "body",
+                              "file":  "body/nose.svg"
+                          },
+                          {
+                              "keyword":  "mouth",
+                              "category":  "body",
+                              "file":  "body/mouth.svg"
+                          },
+                          {
+                              "keyword":  "teeth",
+                              "category":  "body",
+                              "file":  "body/teeth.svg"
+                          },
+                          {
+                              "keyword":  "hair",
+                              "category":  "body",
+                              "file":  "body/hair.svg"
+                          },
+                          {
+                              "keyword":  "heart",
+                              "category":  "body",
+                              "file":  "body/heart.svg"
+                          },
+                          {
+                              "keyword":  "jump",
+                              "category":  "action",
+                              "file":  "actions/jump.svg"
+                          },
+                          {
+                              "keyword":  "run",
+                              "category":  "action",
+                              "file":  "actions/run.svg"
+                          },
+                          {
+                              "keyword":  "walk",
+                              "category":  "action",
+                              "file":  "actions/walk.svg"
+                          },
+                          {
+                              "keyword":  "sit",
+                              "category":  "action",
+                              "file":  "actions/sit.svg"
+                          },
+                          {
+                              "keyword":  "sleep",
+                              "category":  "action",
+                              "file":  "actions/sleep.svg"
+                          },
+                          {
+                              "keyword":  "dance",
+                              "category":  "action",
+                              "file":  "actions/dance.svg"
+                          },
+                          {
+                              "keyword":  "sing",
+                              "category":  "action",
+                              "file":  "actions/sing.svg"
+                          },
+                          {
+                              "keyword":  "eat",
+                              "category":  "action",
+                              "file":  "actions/eat.svg"
+                          },
+                          {
+                              "keyword":  "drink",
+                              "category":  "action",
+                              "file":  "actions/drink.svg"
+                          },
+                          {
+                              "keyword":  "read",
+                              "category":  "action",
+                              "file":  "actions/read.svg"
+                          },
+                          {
+                              "keyword":  "write",
+                              "category":  "action",
+                              "file":  "actions/write.svg"
+                          },
+                          {
+                              "keyword":  "play",
+                              "category":  "action",
+                              "file":  "actions/play.svg"
+                          },
+                          {
+                              "keyword":  "swim",
+                              "category":  "action",
+                              "file":  "actions/swim.svg"
+                          },
+                          {
+                              "keyword":  "climb",
+                              "category":  "action",
+                              "file":  "actions/climb.svg"
+                          },
+                          {
+                              "keyword":  "draw",
+                              "category":  "action",
+                              "file":  "actions/draw.svg"
+                          },
+                          {
+                              "keyword":  "book",
+                              "category":  "school",
+                              "file":  "school/book.svg"
+                          },
+                          {
+                              "keyword":  "pencil",
+                              "category":  "school",
+                              "file":  "school/pencil.svg"
+                          },
+                          {
+                              "keyword":  "desk",
+                              "category":  "school",
+                              "file":  "school/desk.svg"
+                          },
+                          {
+                              "keyword":  "chair",
+                              "category":  "school",
+                              "file":  "school/chair.svg"
+                          },
+                          {
+                              "keyword":  "school",
+                              "category":  "school",
+                              "file":  "school/school.svg"
+                          },
+                          {
+                              "keyword":  "blackboard",
+                              "category":  "school",
+                              "file":  "school/blackboard.svg"
+                          },
+                          {
+                              "keyword":  "backpack",
+                              "category":  "school",
+                              "file":  "school/backpack.svg"
+                          },
+                          {
+                              "keyword":  "notebook",
+                              "category":  "school",
+                              "file":  "school/notebook.svg"
+                          },
+                          {
+                              "keyword":  "scissors",
+                              "category":  "school",
+                              "file":  "school/scissors.svg"
+                          },
+                          {
+                              "keyword":  "glue",
+                              "category":  "school",
+                              "file":  "school/glue.svg"
+                          },
+                          {
+                              "keyword":  "crayon",
+                              "category":  "school",
+                              "file":  "school/crayon.svg"
+                          },
+                          {
+                              "keyword":  "paint",
+                              "category":  "school",
+                              "file":  "school/paint.svg"
+                          },
+                          {
+                              "keyword":  "sun",
+                              "category":  "weather",
+                              "file":  "weather/sun.svg"
+                          },
+                          {
+                              "keyword":  "cloud",
+                              "category":  "weather",
+                              "file":  "weather/cloud.svg"
+                          },
+                          {
+                              "keyword":  "rain",
+                              "category":  "weather",
+                              "file":  "weather/rain.svg"
+                          },
+                          {
+                              "keyword":  "snow",
+                              "category":  "weather",
+                              "file":  "weather/snow.svg"
+                          },
+                          {
+                              "keyword":  "wind",
+                              "category":  "weather",
+                              "file":  "weather/wind.svg"
+                          },
+                          {
+                              "keyword":  "lightning",
+                              "category":  "weather",
+                              "file":  "weather/lightning.svg"
+                          },
+                          {
+                              "keyword":  "one",
+                              "category":  "number",
+                              "file":  "numbers/one.svg"
+                          },
+                          {
+                              "keyword":  "two",
+                              "category":  "number",
+                              "file":  "numbers/two.svg"
+                          },
+                          {
+                              "keyword":  "three",
+                              "category":  "number",
+                              "file":  "numbers/three.svg"
+                          },
+                          {
+                              "keyword":  "four",
+                              "category":  "number",
+                              "file":  "numbers/four.svg"
+                          },
+                          {
+                              "keyword":  "five",
+                              "category":  "number",
+                              "file":  "numbers/five.svg"
+                          },
+                          {
+                              "keyword":  "red",
+                              "category":  "color",
+                              "file":  "colors/red.svg"
+                          },
+                          {
+                              "keyword":  "blue",
+                              "category":  "color",
+                              "file":  "colors/blue.svg"
+                          },
+                          {
+                              "keyword":  "yellow",
+                              "category":  "color",
+                              "file":  "colors/yellow.svg"
+                          },
+                          {
+                              "keyword":  "green",
+                              "category":  "color",
+                              "file":  "colors/green.svg"
+                          },
+                          {
+                              "keyword":  "purple",
+                              "category":  "color",
+                              "file":  "colors/purple.svg"
+                          }
+                      ],
+    "version":  "1.0"
+}
