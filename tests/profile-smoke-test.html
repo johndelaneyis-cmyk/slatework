@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile module smoke tests</title>
+  <link rel="stylesheet" href="/src/lib/styles.css" />
+  <style>
+    .pass { color: #16a34a; }
+    .fail { color: #b91c1c; font-weight: 700; }
+    pre { background: #0f172a; color: #f8fafc; padding: 1rem; overflow: auto; max-height: 60vh; }
+    button { margin-right: .5rem; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Profile smoke tests</h1>
+    <p>Click <strong>Run</strong>. Expected: every line says <code class="pass">PASS</code>. The runner clears localStorage between tests, then wipes everything at the end.</p>
+    <button id="run">Run</button>
+    <button id="wipe">Clear localStorage and reload</button>
+    <pre id="out">(not yet run)</pre>
+  </main>
+  <script src="/src/lib/profile.js"></script>
+  <script src="/tests/profile-smoke-test.js"></script>
+</body>
+</html>
