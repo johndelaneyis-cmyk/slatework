@@ -69,12 +69,14 @@ const SYSTEM_PROMPT = [
   "Do NOT include student names, locations, or anything resembling PII anywhere in the deck."
 ].join("\n");
 
-// Haiku 4.5 picked over Sonnet for slideshow specifically: structured JSON
-// output with a clear schema, rigid 8-slide template, and tight latency
-// requirement (CF edge times out at 60s). Haiku generates ~3x faster than
-// Sonnet for this kind of constrained output. Override via ANTHROPIC_MODEL
-// env var if Sonnet quality is needed.
-const DEFAULT_MODEL = "claude-haiku-4-5";
+// Sonnet 4.6 for slideshow: Haiku 4.5 was 3x faster but ~50% of decks for
+// rich lesson plans (>3000 chars) fell to the static fallback because Haiku's
+// JSON shape drifted just enough to fail validation even after normalization.
+// Sonnet costs ~25s extra latency but reliably produces lesson-specific
+// content. With prompt-caching on the system prompt (auto-applied by callClaude)
+// and max_tokens=2500, total round-trip is ~30-40s — under CF's 60s edge cap.
+// Override via ANTHROPIC_MODEL env var if Haiku speed becomes acceptable later.
+const DEFAULT_MODEL = "claude-sonnet-4-6";
 const PER_IP_DAILY = 20;
 const GLOBAL_DAILY = 1500;
 
@@ -298,7 +300,7 @@ export async function onRequestPost({ request, env }) {
       model,
       system: SYSTEM_PROMPT,
       user: userMsgLines.join('\n'),
-      max_tokens: 2000
+      max_tokens: 2500
     });
     let deck;
     try { deck = JSON.parse(extractJson(raw)); }
