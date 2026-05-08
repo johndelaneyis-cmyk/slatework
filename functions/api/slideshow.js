@@ -231,7 +231,7 @@ export async function onRequestPost({ request, env }) {
       model,
       system: SYSTEM_PROMPT,
       user: userMsgLines.join('\n'),
-      max_tokens: 3000
+      max_tokens: 2000
     });
     let deck;
     try { deck = JSON.parse(extractJson(raw)); }
