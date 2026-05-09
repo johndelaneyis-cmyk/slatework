@@ -145,7 +145,7 @@
       </div>
       <div class="field">
         <label for="hours">Hours per week</label>
-        <input id="hours" name="hours" type="number" min="0" max="60" step="1" value="10" required />
+        <input id="hours" name="hours" type="number" inputmode="numeric" min="0" max="60" step="1" value="10" required />
         <span class="help">Used for the annual projection.</span>
       </div>
     </div>
@@ -153,7 +153,7 @@
     <div class="section-row">
       <div class="field">
         <label for="rate">Your hourly rate (optional)</label>
-        <input id="rate" name="rate" type="number" min="0" step="1" placeholder="leave blank to use the median" />
+        <input id="rate" name="rate" type="number" inputmode="decimal" min="0" step="1" placeholder="leave blank to use the median" />
         <span class="help">If blank, we use the median for your country + pair.</span>
       </div>
     </div>

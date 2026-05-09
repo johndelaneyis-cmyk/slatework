@@ -253,4 +253,21 @@ $('form').addEventListener('submit', async (event) => {
   }
 });
 
+// --- Char counter wiring.
+(function wireCharCounter() {
+  const ta = document.getElementById('sample');
+  const cc = document.getElementById('sample-cc');
+  if (!ta || !cc) return;
+  const max = parseInt(ta.getAttribute('maxlength') || '0', 10);
+  if (!max) return;
+  const update = () => {
+    const n = ta.value.length;
+    cc.textContent = n + ' / ' + max;
+    cc.classList.toggle('is-warning', n >= max * 0.85 && n < max);
+    cc.classList.toggle('is-over', n >= max);
+  };
+  ta.addEventListener('input', update);
+  update();
+})();
+
 // renderMarkdown / escapeHtml provided by /src/lib/markdown.js

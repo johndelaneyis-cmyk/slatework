@@ -195,8 +195,10 @@
     </div>
 
     <div class="field">
-      <label for="sample">Anonymised student writing</label>
-      <textarea id="sample" minlength="50" maxlength="4000" placeholder="Paste the writing only — or attach a file/photo above. Remove names and identifying details first."></textarea>
+      <label for="sample">Student writing</label>
+      <textarea id="sample" minlength="50" maxlength="4000" aria-describedby="sample-help sample-cc" placeholder="Paste the writing or attach a file/photo above."></textarea>
+      <small id="sample-help" class="help">Remove names and identifying details first &mdash; the model only ever sees this text.</small>
+      <small id="sample-cc" class="char-count" aria-live="polite">0 / 4000</small>
     </div>
 
     <div id="adjust-for-today"></div>

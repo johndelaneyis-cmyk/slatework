@@ -158,9 +158,10 @@
     </div>
 
     <div class="field">
-      <label for="goal">Lesson goal</label>
-      <textarea id="goal" required minlength="10" maxlength="600" placeholder="e.g., Practise the past simple in the context of weekend activities, focusing on irregular verbs."></textarea>
-      <span class="help">10–600 characters. The clearer the goal, the more useful the plan.</span>
+      <label for="goal">Lesson goal <span class="req-marker" aria-hidden="true">*</span></label>
+      <textarea id="goal" required minlength="10" maxlength="600" aria-describedby="goal-help goal-cc" placeholder="e.g., Practise the past simple in the context of weekend activities, focusing on irregular verbs."></textarea>
+      <span id="goal-help" class="help">10–600 characters. The clearer the goal, the more useful the plan.</span>
+      <small id="goal-cc" class="char-count" aria-live="polite">0 / 600</small>
     </div>
 
     <div class="field">

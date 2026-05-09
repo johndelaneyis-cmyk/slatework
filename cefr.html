@@ -157,7 +157,8 @@
       </div>
       <div class="field">
         <label for="sample">Anonymised writing sample (50–500 words)</label>
-        <textarea id="sample" minlength="100" maxlength="3000" placeholder="Paste the student's writing — or attach a file/photo above. Remove names and identifying details first."></textarea>
+        <textarea id="sample" minlength="100" maxlength="3000" aria-describedby="sample-cc" placeholder="Paste the student's writing — or attach a file/photo above. Remove names and identifying details first."></textarea>
+        <small id="sample-cc" class="char-count" aria-live="polite">0 / 3000</small>
       </div>
       <button type="submit" id="ai-go" class="btn btn-primary">Assess</button>
     </form>

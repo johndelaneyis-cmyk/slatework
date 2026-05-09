@@ -1882,6 +1882,27 @@ button[disabled],
 
 .field-other-input { margin-top: 6px; }
 
+/* Char counter under long textareas — quiet, right-aligned, threshold-coloured. */
+.char-count {
+  display: block;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+.char-count.is-over { color: var(--err); font-weight: 500; }
+.char-count.is-warning { color: var(--accent); }
+
+/* Required-field marker — small accent asterisk. */
+.req-marker {
+  color: var(--err);
+  font-weight: 500;
+  margin-left: 3px;
+  font-size: 0.95em;
+}
+
 /* 404 page */
 .notfound-main {
   text-align: center;

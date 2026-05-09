@@ -260,3 +260,20 @@ function populateExtensionLinks() {
     }
   });
 })();
+
+// --- Char counter wiring on the goal textarea.
+(function wireCharCounter() {
+  const ta = document.getElementById('goal');
+  const cc = document.getElementById('goal-cc');
+  if (!ta || !cc) return;
+  const max = parseInt(ta.getAttribute('maxlength') || '0', 10);
+  if (!max) return;
+  const update = () => {
+    const n = ta.value.length;
+    cc.textContent = n + ' / ' + max;
+    cc.classList.toggle('is-warning', n >= max * 0.85 && n < max);
+    cc.classList.toggle('is-over', n >= max);
+  };
+  ta.addEventListener('input', update);
+  update();
+})();

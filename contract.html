@@ -134,7 +134,7 @@
       <div class="field"><label for="rate">Rate per lesson</label><input id="rate" type="text" placeholder="e.g., $50 per 60-minute lesson, or whatever your local currency uses" /></div>
       <div class="field"><label for="duration">Lesson duration</label><input id="duration" type="text" placeholder="e.g., 60 minutes" value="60 minutes" /></div>
       <div class="field"><label for="location">Location</label><input id="location" type="text" placeholder="e.g., online via Zoom, or in-person at the student's home" value="online via Zoom" /></div>
-      <div class="field"><label for="cancel_hours">Cancellation notice (hours)</label><input id="cancel_hours" type="number" min="0" max="168" step="1" value="24" /></div>
+      <div class="field"><label for="cancel_hours">Cancellation notice (hours)</label><input id="cancel_hours" type="number" inputmode="numeric" min="0" max="168" step="1" value="24" /></div>
       <div class="field"><label for="payment_terms">Payment terms</label><input id="payment_terms" type="text" placeholder="e.g., paid weekly in advance via Faster Payments" value="paid weekly in advance" /></div>
 
       <details class="contract-more">
@@ -144,7 +144,7 @@
 
         <div class="field">
           <label for="years_teaching">Years teaching (optional)</label>
-          <input id="years_teaching" type="number" min="0" max="60" step="1" placeholder="e.g. 5" />
+          <input id="years_teaching" type="number" inputmode="numeric" min="0" max="60" step="1" placeholder="e.g. 5" />
           <span class="help">Used in the warm/formal welcome paragraphs. Leave blank to skip.</span>
         </div>
 
