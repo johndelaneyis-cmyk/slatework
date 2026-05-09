@@ -43,15 +43,15 @@
   --ink-2: #0f172a;
   --ink-muted: #475569;
   --ink-faint: #64748b;
-  --accent: #d97706;
-  --accent-soft: rgba(217, 119, 6, 0.08);
-  --accent-hover: #b45309;
+  --accent: #b45309;
+  --accent-soft: rgba(180, 83, 9, 0.10);
+  --accent-hover: #92400e;
   --ok: #16a34a;
   --warn: #b45309;
   --err: #b91c1c;
   --line: #e2e8f0;
   --line-strong: #cbd5e1;
-  --ring: #d97706;
+  --ring: #b45309;
 
   --radius-sm: 4px;
   --radius-md: 6px;
@@ -2237,7 +2237,7 @@ button[disabled],
     --line-strong: #475569; /* hover borders */
 
     /* Accent stays orange; soften the alpha mixin against dark surface. */
-    --accent-soft: rgba(217, 119, 6, 0.15);
+    --accent-soft: rgba(180, 83, 9, 0.18);
 
     /* Shadows are barely visible on dark surfaces; reduce them so they
        don't print as black blocks. */
