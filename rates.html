@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=28" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=29" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -161,14 +161,14 @@
 
   <section id="result" class="result" role="region" aria-live="polite" hidden>
     <h2 class="mt-0">Your rate</h2>
-    <div id="suggestion-block"></div>
+    <div id="suggestion-block" role="table" aria-label="Suggested rate breakdown"></div>
 
-    <h2>Platform-net comparison</h2>
+    <h2 id="platforms-heading">Platform-net comparison</h2>
     <p class="small">If you charged the same gross hourly rate on each platform, here's what you'd actually take home after commission.</p>
-    <div id="platforms-block"></div>
+    <div id="platforms-block" role="table" aria-labelledby="platforms-heading"></div>
 
-    <h2>Annual projection</h2>
-    <div id="annual-block"></div>
+    <h2 id="annual-heading">Annual projection</h2>
+    <div id="annual-block" role="table" aria-labelledby="annual-heading"></div>
 
     <p class="small mt-1" id="fx-note"></p>
   </section>
@@ -232,13 +232,13 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=28"></script>
-<script src="/src/lib/currency.js?v=28"></script>
-<script src="/feedback.js?v=28" defer></script>
+<script src="/src/lib/countries.js?v=29"></script>
+<script src="/src/lib/currency.js?v=29"></script>
+<script src="/feedback.js?v=29" defer></script>
 
-<script src="/src/lib/profile.js?v=28"></script>
-<script src="/src/lib/profile-ui.js?v=28"></script>
-<script src="/src/lib/page-rates.js?v=28" defer></script>
+<script src="/src/lib/profile.js?v=29"></script>
+<script src="/src/lib/profile-ui.js?v=29"></script>
+<script src="/src/lib/page-rates.js?v=29" defer></script>
 
 <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0a7c100b0b8e44ee9cc547af8f844385"}'></script><!-- End Cloudflare Web Analytics -->
 </body>

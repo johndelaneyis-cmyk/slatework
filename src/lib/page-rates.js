@@ -164,10 +164,10 @@ async function recalc() {
   // Suggestion block
   const suggestion = document.createElement('div');
   suggestion.innerHTML = `
-    <div class="row"><span>Suggested low</span><strong>${SW.formatCurrency(low, ccy, locale)}/hr</strong></div>
-    <div class="row"><span>Suggested median</span><strong>${SW.formatCurrency(median, ccy, locale)}/hr</strong></div>
-    <div class="row"><span>Suggested high</span><strong>${SW.formatCurrency(high, ccy, locale)}/hr</strong></div>
-    <div class="row"><span>Your gross rate (used below)</span><strong>${SW.formatCurrency(grossRate, ccy, locale)}/hr</strong></div>
+    <div class="row" role="row"><span role="cell">Suggested low</span><strong role="cell">${SW.formatCurrency(low, ccy, locale)}/hr</strong></div>
+    <div class="row" role="row"><span role="cell">Suggested median</span><strong role="cell">${SW.formatCurrency(median, ccy, locale)}/hr</strong></div>
+    <div class="row" role="row"><span role="cell">Suggested high</span><strong role="cell">${SW.formatCurrency(high, ccy, locale)}/hr</strong></div>
+    <div class="row" role="row"><span role="cell">Your gross rate (used below)</span><strong role="cell">${SW.formatCurrency(grossRate, ccy, locale)}/hr</strong></div>
   `;
   const sb = $('suggestion-block');
   sb.innerHTML = '';
@@ -184,11 +184,12 @@ async function recalc() {
       : grossRate * (1 - fee / 100);
     const row = document.createElement('div');
     row.className = 'row';
+    row.setAttribute('role', 'row');
     if (net == null) {
-      row.innerHTML = `<span>${escapeHtml(p.name)}</span><strong class="small">${escapeHtml(p.notes || 'Different pricing model')}</strong>`;
+      row.innerHTML = `<span role="cell">${escapeHtml(p.name)}</span><strong class="small" role="cell">${escapeHtml(p.notes || 'Different pricing model')}</strong>`;
     } else {
       const feeLabel = p.fee_curve ? `${fee}% (after ${hoursTier(p, hours)} hrs taught)` : `${fee}%`;
-      row.innerHTML = `<span>${escapeHtml(p.name)} <span class="small">— ${feeLabel}</span></span><strong>${SW.formatCurrency(net, ccy, locale)}/hr</strong>`;
+      row.innerHTML = `<span role="cell">${escapeHtml(p.name)} <span class="small">— ${feeLabel}</span></span><strong role="cell">${SW.formatCurrency(net, ccy, locale)}/hr</strong>`;
     }
     pb.appendChild(row);
   }
@@ -201,9 +202,9 @@ async function recalc() {
   const grossYear = grossRate * weeklyHours * 50; // 50 working weeks
   const ab = $('annual-block');
   ab.innerHTML = `
-    <div class="row"><span>Hours / week</span><strong>${weeklyHours}</strong></div>
-    <div class="row"><span>Gross / year (50 weeks)</span><strong>${SW.formatCurrency(grossYear, ccy, locale)}</strong></div>
-    <div class="row"><span>Tax-relevant threshold</span><strong>${taxThresholdNote(pack, ccy, locale)}</strong></div>
+    <div class="row" role="row"><span role="cell">Hours / week</span><strong role="cell">${weeklyHours}</strong></div>
+    <div class="row" role="row"><span role="cell">Gross / year (50 weeks)</span><strong role="cell">${SW.formatCurrency(grossYear, ccy, locale)}</strong></div>
+    <div class="row" role="row"><span role="cell">Tax-relevant threshold</span><strong role="cell">${taxThresholdNote(pack, ccy, locale)}</strong></div>
   `;
 
   // FX note

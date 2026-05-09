@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500..700;1,6..72,400&display=swap" />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=28" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=29" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -115,7 +115,9 @@
     </aside>
   </noscript>
 
-  <div role="tablist" aria-label="CEFR assessment modes" class="tab-row">
+  <p class="cefr-mode-help">Two ways to place a student. <strong>Rule-based</strong> runs entirely in your browser from a 12-statement checklist &mdash; no data leaves your device. <strong>AI</strong> reads a 50&ndash;500-word writing sample and returns a level with reasoning.</p>
+
+  <div role="tablist" aria-label="CEFR assessment modes" class="tab-row tab-row--cefr">
     <button id="tab-rules" type="button" class="btn" role="tab" aria-selected="true" aria-controls="rules-mode" tabindex="0">Rule-based (private)</button>
     <button id="tab-ai" type="button" class="btn secondary" role="tab" aria-selected="false" aria-controls="ai-mode" tabindex="-1">AI from writing sample</button>
   </div>
@@ -226,14 +228,14 @@
   </div>
 </footer>
 
-<script src="/src/lib/cefr-rules.js?v=28"></script>
-<script src="/src/lib/countries.js?v=28"></script>
-<script src="/src/lib/markdown.js?v=28"></script>
-<script src="/src/lib/file-extract.js?v=28"></script>
-<script src="/feedback.js?v=28" defer></script>
-<script src="/src/lib/profile.js?v=28"></script>
-<script src="/src/lib/profile-ui.js?v=28"></script>
-<script src="/src/lib/page-cefr.js?v=28" defer></script>
+<script src="/src/lib/cefr-rules.js?v=29"></script>
+<script src="/src/lib/countries.js?v=29"></script>
+<script src="/src/lib/markdown.js?v=29"></script>
+<script src="/src/lib/file-extract.js?v=29"></script>
+<script src="/feedback.js?v=29" defer></script>
+<script src="/src/lib/profile.js?v=29"></script>
+<script src="/src/lib/profile-ui.js?v=29"></script>
+<script src="/src/lib/page-cefr.js?v=29" defer></script>
 <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0a7c100b0b8e44ee9cc547af8f844385"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
