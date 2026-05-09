@@ -398,15 +398,16 @@
       fs.appendChild(el('legend', {text: q.label}));
       for (const [val, lbl] of q.options) {
         const id = `qc-${q.key}-${val}`;
+        const row = el('div', {class: 'option-row'});
         const radio = el('input', {type: 'radio', name: q.key, value: val, id});
         radio.addEventListener('change', () => {
           state[q.key] = val;
           setBtn.disabled = !(state.q1 && state.q2 && state.q3);
         });
-        const label = el('label', {for: id});
-        label.appendChild(radio);
-        label.appendChild(document.createTextNode(' ' + lbl));
-        fs.appendChild(label);
+        const label = el('label', {for: id, text: lbl});
+        row.appendChild(radio);
+        row.appendChild(label);
+        fs.appendChild(row);
       }
       wrap.appendChild(fs);
     }
