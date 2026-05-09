@@ -267,16 +267,25 @@ $('ai-form').addEventListener('submit', async (event) => {
   }
 });
 
-// --- Char counter wiring (reads aria-describedby for the counter target).
+// --- Char counter wiring with min-awareness (reads minlength + maxlength).
 (function wireCharCounter() {
   const ta = document.getElementById('sample');
   const cc = document.getElementById('sample-cc');
   if (!ta || !cc) return;
   const max = parseInt(ta.getAttribute('maxlength') || '0', 10);
+  const min = parseInt(ta.getAttribute('minlength') || '0', 10);
   if (!max) return;
   const update = () => {
     const n = ta.value.length;
-    cc.textContent = n + ' / ' + max;
+    let label;
+    if (min && n < min) {
+      const togo = min - n;
+      label = n + ' / ' + min + ' min — ' + togo + ' more to go';
+    } else {
+      label = n + ' / ' + max;
+    }
+    cc.textContent = label;
+    cc.classList.toggle('is-below-min', !!(min && n > 0 && n < min));
     cc.classList.toggle('is-warning', n >= max * 0.85 && n < max);
     cc.classList.toggle('is-over', n >= max);
   };

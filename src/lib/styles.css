@@ -1954,6 +1954,7 @@ button[disabled],
 }
 .char-count.is-over { color: var(--err); font-weight: 500; }
 .char-count.is-warning { color: var(--accent); }
+.char-count.is-below-min { color: var(--accent); font-weight: 500; }
 
 /* Required-field marker — small accent asterisk. */
 .req-marker {
