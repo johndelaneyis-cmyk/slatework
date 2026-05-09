@@ -2625,3 +2625,42 @@ details.contract-more[open] > summary {
 .is-rtl-target em {
   unicode-bidi: embed;
 }
+
+/* ============================================================================
+   TILE ENTRANCE ANIMATION — homepage tool tiles
+   60ms stagger, subtle fade + lift. Respects prefers-reduced-motion.
+   Frontend-design audit 2026-05-09: lifts the section without breaking
+   the restrained editorial voice.
+   ============================================================================ */
+@keyframes tile-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tile-grid .tile {
+  animation: tile-fade-in 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--tile-i, 0) * 60ms);
+}
+
+.tile-grid .tile:nth-child(1)  { --tile-i: 0; }
+.tile-grid .tile:nth-child(2)  { --tile-i: 1; }
+.tile-grid .tile:nth-child(3)  { --tile-i: 2; }
+.tile-grid .tile:nth-child(4)  { --tile-i: 3; }
+.tile-grid .tile:nth-child(5)  { --tile-i: 4; }
+.tile-grid .tile:nth-child(6)  { --tile-i: 5; }
+.tile-grid .tile:nth-child(7)  { --tile-i: 6; }
+.tile-grid .tile:nth-child(8)  { --tile-i: 7; }
+.tile-grid .tile:nth-child(9)  { --tile-i: 8; }
+.tile-grid .tile:nth-child(10) { --tile-i: 9; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tile-grid .tile {
+    animation: none;
+  }
+}
