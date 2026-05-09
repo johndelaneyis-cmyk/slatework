@@ -35,8 +35,18 @@
     wrap.innerHTML = `
       <p class="fb-prompt"><strong>Was this useful?</strong></p>
       <div class="fb-row">
-        <button type="button" class="fb-btn" data-fb="up">\u{1F44D} Yes</button>
-        <button type="button" class="fb-btn" data-fb="down">\u{1F44E} Could be better</button>
+        <button type="button" class="fb-btn" data-fb="up" aria-label="Yes, this was useful">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 11v8a2 2 0 0 0 2 2h7.5a2 2 0 0 0 1.95-1.59l1.55-7A2 2 0 0 0 18 10H14V5a2 2 0 0 0-2-2l-3 7v1H7Z"/>
+          </svg>
+          Yes
+        </button>
+        <button type="button" class="fb-btn" data-fb="down" aria-label="Could be better">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M17 13V5a2 2 0 0 0-2-2H7.5a2 2 0 0 0-1.95 1.59l-1.55 7A2 2 0 0 0 6 14h4v5a2 2 0 0 0 2 2l3-7v-1h2Z"/>
+          </svg>
+          Could be better
+        </button>
         <span class="fb-status"></span>
       </div>
       <textarea class="fb-note" data-fb="note" aria-label="Optional feedback note" placeholder="(optional) one-sentence note — what went well or didn't" hidden></textarea>

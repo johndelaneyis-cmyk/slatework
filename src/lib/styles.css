@@ -2007,7 +2007,12 @@ button[disabled],
   border: 1px solid var(--line);
   border-radius: 6px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
 }
+.fb-btn svg { flex-shrink: 0; }
 .fb-btn-send {
   font: inherit;
   padding: 0.4rem 0.8rem;
