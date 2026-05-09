@@ -164,6 +164,7 @@ async function recalc() {
   // Suggestion block
   const suggestion = document.createElement('div');
   suggestion.innerHTML = `
+    <div class="row visually-hidden" role="row"><span role="columnheader" scope="col">Tier</span><span role="columnheader" scope="col">Hourly rate</span></div>
     <div class="row" role="row"><span role="cell">Suggested low</span><strong role="cell">${SW.formatCurrency(low, ccy, locale)}/hr</strong></div>
     <div class="row" role="row"><span role="cell">Suggested median</span><strong role="cell">${SW.formatCurrency(median, ccy, locale)}/hr</strong></div>
     <div class="row" role="row"><span role="cell">Suggested high</span><strong role="cell">${SW.formatCurrency(high, ccy, locale)}/hr</strong></div>
@@ -176,7 +177,7 @@ async function recalc() {
   // Platforms block
   const platforms = pack.platforms.filter(p => (p.available_in || []).includes(code));
   const pb = $('platforms-block');
-  pb.innerHTML = '';
+  pb.innerHTML = '<div class="row visually-hidden" role="row"><span role="columnheader" scope="col">Platform</span><span role="columnheader" scope="col">Net hourly rate</span></div>';
   for (const p of platforms) {
     const fee = pickFee(p, hours);
     const net = p.fee_pct === 0 && p.notes
@@ -202,6 +203,7 @@ async function recalc() {
   const grossYear = grossRate * weeklyHours * 50; // 50 working weeks
   const ab = $('annual-block');
   ab.innerHTML = `
+    <div class="row visually-hidden" role="row"><span role="columnheader" scope="col">Metric</span><span role="columnheader" scope="col">Value</span></div>
     <div class="row" role="row"><span role="cell">Hours / week</span><strong role="cell">${weeklyHours}</strong></div>
     <div class="row" role="row"><span role="cell">Gross / year (50 weeks)</span><strong role="cell">${SW.formatCurrency(grossYear, ccy, locale)}</strong></div>
     <div class="row" role="row"><span role="cell">Tax-relevant threshold</span><strong role="cell">${taxThresholdNote(pack, ccy, locale)}</strong></div>
