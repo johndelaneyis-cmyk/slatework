@@ -2,6 +2,50 @@
 // Loaded via <script src="/src/lib/page-index.js" defer> from index.html.
 console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:italic");
 
+/* Tile entrance — IntersectionObserver-triggered (2026-05-09).
+   Below-fold tiles stay opacity:0 until they scroll into view, so the GPU
+   doesn't burn cycles animating offscreen elements on cheap Android.
+   `data-js="ready"` flag flips the no-JS fallback off; styles.css holds
+   the matching `body:not([data-js="ready"]) .tile-grid .tile { opacity: 1 }`
+   rule so users with JS disabled still see all tiles. */
+(() => {
+  if (!('IntersectionObserver' in window)) {
+    document.body.setAttribute('data-js', 'ready');
+    return;
+  }
+  document.body.setAttribute('data-js', 'ready');
+  const tiles = document.querySelectorAll('.tile-grid .tile');
+  if (!tiles.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  tiles.forEach((t) => observer.observe(t));
+})();
+
+/* Pause hero atmospheric loop when tab is backgrounded (2026-05-09).
+   The .hero-slate::before chalk-dust animation is a 12s infinite loop
+   with radial-gradient + transform; backgrounded tabs were still running
+   it at full rate. Page Visibility API toggles animationPlayState so the
+   compositor pauses entirely when document.hidden flips true. */
+(() => {
+  const hero = document.querySelector('.hero-slate');
+  if (!hero) return;
+  const apply = (state) => {
+    hero.style.animationPlayState = state;
+    hero.querySelectorAll('*').forEach((el) => {
+      el.style.animationPlayState = state;
+    });
+  };
+  document.addEventListener('visibilitychange', () => {
+    apply(document.hidden ? 'paused' : 'running');
+  });
+})();
+
 /* Headline letter-by-letter chalk reveal — first paint only, respects reduced-motion.
    Counts characters and sets --chalk-mark-delay on each .chalk-mark so the
    underline animation fires AFTER the last character finishes drawing
