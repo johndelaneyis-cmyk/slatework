@@ -1837,7 +1837,49 @@ button[disabled],
 .cefr-radio-group {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
 }
+.cefr-radio-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 4px;
+  cursor: pointer;
+}
+.cefr-radio-group input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Universal tap-target wrapper — ensures 44px floor for native radios/checkboxes
+   and small inline controls per WCAG 2.5.5 + Apple HIG. */
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 0;
+  cursor: pointer;
+}
+.option-row input[type="radio"],
+.option-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.option-row label,
+.option-row > span {
+  flex: 1;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
 .field-other-input { margin-top: 6px; }
 
 /* 404 page */
