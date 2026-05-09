@@ -39,7 +39,7 @@
         <button type="button" class="fb-btn" data-fb="down">\u{1F44E} Could be better</button>
         <span class="fb-status"></span>
       </div>
-      <textarea class="fb-note" data-fb="note" placeholder="(optional) one-sentence note — what went well or didn't" hidden></textarea>
+      <textarea class="fb-note" data-fb="note" aria-label="Optional feedback note" placeholder="(optional) one-sentence note — what went well or didn't" hidden></textarea>
       <div class="fb-actions" data-fb="actions" hidden>
         <button type="button" class="fb-btn-send" data-fb="send">Send</button>
         <button type="button" class="fb-btn-skip" data-fb="skip">Skip note</button>
