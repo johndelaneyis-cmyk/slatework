@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 1000" width="3000" height="1000">
+  <title>Slatework — social banner</title>
+  <desc>3:1 social banner. Slate-dark canvas with chalk-line decorative texture, wordmark "Slatework" with warm chalk-yellow underline, tagline, country chip. Avatar overlay safe-zone reserved in bottom-left corner.</desc>
+
+  <defs>
+    <!-- Slate gradient: deeper at top-left, lighter toward bottom-right -->
+    <linearGradient id="slateBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="0.55" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <!-- Soft vignette around the edges -->
+    <radialGradient id="vignette" cx="0.5" cy="0.5" r="0.7">
+      <stop offset="0.6" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.35"/>
+    </radialGradient>
+
+    <!-- Chalk-dust grain — same recipe as logo, just subtler -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0"/>
+    </filter>
+
+    <!-- Decorative 3-chalk-line cluster (callback to logo's lesson-plan metaphor) -->
+    <g id="chalkCluster">
+      <path d="M 0 0 C 60 -3, 140 5, 240 -1" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.13"/>
+      <path d="M 0 50 C 60 47, 130 55, 210 50" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.11"/>
+      <path d="M 0 100 C 60 97, 110 105, 170 100" stroke="#cbd5e1" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.09"/>
+    </g>
+  </defs>
+
+  <!-- Base canvas -->
+  <rect width="3000" height="1000" fill="url(#slateBg)"/>
+
+  <!-- Chalk-dust grain layer (very subtle) -->
+  <rect width="3000" height="1000" filter="url(#grain)" opacity="0.55"/>
+
+  <!-- Decorative chalk-line clusters scattered in upper area (light, low opacity) -->
+  <use href="#chalkCluster" transform="translate(140 140)"/>
+  <use href="#chalkCluster" transform="translate(2400 180) scale(0.85)"/>
+  <use href="#chalkCluster" transform="translate(2580 720) scale(0.7)"/>
+
+  <!-- Bottom-left avatar safe-zone marker (no content here — avatar overlays this region on X + Bluesky) -->
+  <!-- Reserved area: roughly 0,650 to 350,1000 -->
+
+  <!-- Wordmark: "Slatework" centered roughly in the right 2/3 -->
+  <g transform="translate(1500 480)" text-anchor="middle" fill="#f8fafc">
+    <text font-family="Georgia, 'Times New Roman', serif" font-size="280" font-weight="700" letter-spacing="-6" x="0" y="0">Slatework</text>
+    <!-- Warm chalk-yellow underline — callback to logo signature mark -->
+    <path d="M 360 70 C 700 60, 1100 78, 1640 64" stroke="#fde68a" stroke-width="10" stroke-linecap="round" fill="none" opacity="0.92"/>
+  </g>
+
+  <!-- Tagline -->
+  <text x="1500" y="660" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, 'Helvetica Neue', Arial, sans-serif"
+        font-size="64" font-weight="400" fill="#cbd5e1" letter-spacing="0.5">
+    Free tools for independent language tutors
+  </text>
+
+  <!-- Country chip — small caps with separators -->
+  <text x="1500" y="820" text-anchor="middle"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif"
+        font-size="32" font-weight="600" fill="#64748b" letter-spacing="8">
+    UK · US · CA · AU · NZ · IE · HK
+  </text>
+
+  <!-- § signature mark — bottom-right corner, warm cream accent -->
+  <text x="2880" y="940" text-anchor="end"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="72" font-weight="400" fill="#fde68a" opacity="0.7">§</text>
+
+  <!-- Vignette overlay (last) -->
+  <rect width="3000" height="1000" fill="url(#vignette)"/>
+</svg>
