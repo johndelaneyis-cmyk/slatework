@@ -1,20 +1,22 @@
-# r/ESL_Teachers — second launch post
+# r/ESL_Teachers — second launch post (Rule 5 compliant, 2026-05-12 rewrite)
 
 **When:** Tue May 12, 2pm UK / 9am ET (after r/languageteachers post is stable, no removal)
 **Why this sub:** Bullseye for ESL/EFL tutors specifically — the marking + worksheet generator are most useful for this audience. ~90K subs.
 **Flair:** Resource or Tools (check Mon May 11)
 
+**Rule 5 compliance:** This sub bans posts about teaching in non-English-speaking countries (China/Korea/Spain/etc). This rewrite strips HK from the country list and frames the post for tutors based in English-speaking markets or teaching remotely. Original draft is in git history if you need to revert.
+
 ---
 
 ## Title
 
-> Free toolkit for independent ESL/EFL tutors — marking accelerator, worksheets, lesson plans, rate calculator (no signup, no platform fee)
+> Free toolkit for independent ESL tutors — marking accelerator, worksheets, lesson plans, rate calculator (no signup, no platform fee)
 
 ## Body
 
-I built [Slatework](https://slatework.tools) for the part of teaching that doesn't pay — marking, lesson prep, parent contracts, the rate-setting awkwardness when you go independent. Free, no signup, country-aware for 7 markets.
+I built [Slatework](https://slatework.tools) for the part of teaching that doesn't pay — marking, lesson prep, parent contracts, the rate-setting awkwardness when you go independent. Free, no signup. Built around English-speaking markets and remote-teaching setups.
 
-The bits that should matter most for ESL/EFL specifically:
+The bits that should matter most for ESL specifically:
 
 **Marking accelerator.** Paste a student's writing (or a photo of handwritten work — vision-OCR is built in). Returns categorised errors (Grammar / Vocabulary / Structure / Mechanics) plus three feedback variants you can paste into an email or report: warm, direct, and rubric-mapped (Content / Accuracy / Range / Organisation). Calibrated to CEFR level so a B1 student gets B1-level expectations, not C1. I built this because I was spending 20 minutes per student per piece writing the same kinds of corrections.
 
@@ -32,7 +34,7 @@ What I'd love feedback on:
 
 1. **Marking accuracy at lower CEFR levels.** I have B1+ samples but fewer A1/A2 — am I catching the right errors at the right level?
 2. **Rubric phrasing** in the marking output — does the warm/direct/structured split actually match how your school/program expects feedback written?
-3. **Country gaps.** Currently US/UK/CA/AU/NZ/IE/HK. India, Singapore, Philippines next — but tell me which.
+3. **Country gaps.** Currently US, UK, Canada, Australia, NZ, Ireland for tax/rate/registration logic. Other English-medium markets next (Singapore, South Africa) — tell me which.
 
 Privacy: AI tools send to Anthropic, not stored or logged on my end. Contract builder is browser-only. Privacy page lays out the specifics: https://slatework.tools/privacy
 
