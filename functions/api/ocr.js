@@ -57,7 +57,7 @@ export async function onRequestPost({ request, env }) {
     }
     return jsonResponse({ text, char_count: text.length }, 200);
   } catch (err) {
-    const { error, status } = userFacingClaudeError(err, 'extract text from the image');
+    const { error, status } = userFacingClaudeError(err, 'extract text from the image', 'image');
     return jsonResponse({ error, ocr_failed: true }, status);
   }
 }

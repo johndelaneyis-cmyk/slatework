@@ -66,7 +66,7 @@
         "name": "Does my student's writing leave my browser?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Pasted text and uploaded files are sent to Google Cloud Vision (for OCR on photos) and Anthropic (for the marking) — for processing only. We don't store the text, log the body, share it, or sell it. Photos go through Vision OCR client-side first; the marking model only ever sees text, never the image. Remove names and identifying details before pasting."
+          "text": "Yes. Pasted text and uploaded files are sent to Google Cloud Vision (for OCR on photos) and Anthropic (for the marking) — for processing only. We don't store the text, log the body, share it, or sell it. Photos go through Vision OCR first; the marking model only ever sees the extracted text, never the original image. Names in student writing are fine — they're not saved anywhere."
         }
       },
       {
@@ -197,7 +197,7 @@
     <div class="field">
       <label for="sample">Student writing</label>
       <textarea id="sample" minlength="50" maxlength="4000" aria-describedby="sample-help sample-cc" placeholder="Paste the writing or attach a file/photo above."></textarea>
-      <small id="sample-help" class="help">Remove names and identifying details first &mdash; the model only ever sees this text.</small>
+      <small id="sample-help" class="help">Names are fine &mdash; nothing is stored or logged. The model only ever sees this text, never the original photo.</small>
       <small id="sample-cc" class="char-count" aria-live="polite">0 / 4000</small>
     </div>
 
@@ -231,7 +231,7 @@
       <summary>Does my student's writing leave my browser?</summary>
       <div class="answer">
         <p>Yes. Pasted text and uploaded files are sent to Google Cloud Vision (for OCR on photos) and Anthropic (for the marking) for processing only. We don't store the text, log the body, share it, or sell it.</p>
-        <p>Photos go through Vision OCR client-side first &mdash; the marking model only ever sees text, never the image. Remove names and identifying details before pasting.</p>
+        <p>Photos go through Vision OCR first &mdash; the marking model only ever sees the extracted text, never the original image. Names in student writing are fine; nothing is saved anywhere.</p>
       </div>
     </details>
     <details>

@@ -315,28 +315,31 @@ const extractUpstreamMessage = extractUpstreamDetail;
 // Translate a thrown error into a user-facing { error, status } pair so
 // each endpoint's catch block can speak the same language. The `action`
 // arg is the verb that failed ("mark the sample", "generate the lesson
-// plan", etc.) — used in the user-visible message.
+// plan", etc.) — used in the user-visible message. The `context` arg is
+// "text" (default — text-only endpoints like marking/cefr/lesson-plan/
+// worksheet/slideshow) or "image" (the OCR endpoint, where the upstream
+// is Google Vision rather than Anthropic).
 //
 // Always tries to surface the upstream provider's message first — that's
 // almost always more specific than anything we'd write ourselves.
-export function userFacingClaudeError(err, action = 'complete the request') {
+export function userFacingClaudeError(err, action = 'complete the request', context = 'text') {
   const ts = new Date().toISOString().replace(/[:.]/g, '').slice(0, 15); // ref code for support
   // Log full server-side context so issues are debuggable from CF logs even
   // when the user-facing message is intentionally trimmed. Visible in
   // `wrangler pages tail` and Cloudflare dashboard's runtime logs.
   if (err instanceof ClaudeError) {
-    console.error(`[claude_error] action="${action}" ref=${ts} code=${err.code} status=${err.status} body=${(err.bodySnippet || '').slice(0, 400)}`);
+    console.error(`[claude_error] action="${action}" context=${context} ref=${ts} code=${err.code} status=${err.status} body=${(err.bodySnippet || '').slice(0, 400)}`);
   } else {
-    console.error(`[claude_error] action="${action}" ref=${ts} non-ClaudeError name=${err && err.name} message=${err && err.message}`);
+    console.error(`[claude_error] action="${action}" context=${context} ref=${ts} non-ClaudeError name=${err && err.name} message=${err && err.message}`);
   }
   if (err instanceof ClaudeError) {
     const upstream = extractUpstreamDetail(err.bodySnippet);
     const upstreamSuffix = upstream ? ` Upstream said: "${upstream.slice(0, 250)}${upstream.length > 250 ? '…' : ''}"` : '';
-    // Detect content-classifier 403s — Anthropic returns 403 with bodies
+    // Detect content-classifier 403s. Anthropic returns 403 with bodies
     // like "forbidden: Request not allowed" / "content_filter" / "blocked"
-    // when an image trips their safety classifier (photos containing a
-    // child's face/hand/name, identity docs, etc.). Different code path
-    // and very different user message — there's an immediate workaround.
+    // when its safety classifier refuses content. Branches by context so
+    // text-only endpoints don't show image-flavored messages (and don't
+    // wrongly blame student names — names alone never trip the filter).
     const upstreamLower = (upstream || '').toLowerCase();
     const looksContentBlocked = err.status === 403 && (
       upstreamLower.includes('not allowed') ||
@@ -348,17 +351,40 @@ export function userFacingClaudeError(err, action = 'complete the request') {
     );
     switch (err.code) {
       case 'auth':
-        if (looksContentBlocked) {
+        if (looksContentBlocked && context === 'image') {
+          // OCR path — Google Vision returned 403. Almost always an auth/quota/
+          // billing issue (DOCUMENT_TEXT_DETECTION doesn't content-filter the
+          // way Anthropic does). Don't claim "child's face" — that's
+          // misleading and incorrectly blames the user's photo content.
           return {
-            error: `Our AI provider's content filter declined this specific image. Their classifier sometimes blocks photos that contain (or appear to contain) a child's face, hand, name, or school context — even when the writing itself is fine.
+            error: `The OCR service couldn't process this image right now. This is on us, not your photo.
 
 What to try:
 • Type or paste the writing into the text box below — that always works.
-• Or crop the photo to just the page text and re-attach.
-• Or re-photograph against a plain background.
+• Or wait a minute and re-attach.
 
 (Server ref ${ts})`,
-            status: 422,  // Unprocessable Entity — the content was rejected, not an auth issue
+            status: 503,
+            content_blocked: true
+          };
+        }
+        if (looksContentBlocked) {
+          // Text-only endpoint (marking / cefr / lesson-plan / worksheet /
+          // slideshow). Anthropic refused the text payload — explicit
+          // violence, self-harm, sexual content, etc. NAMES AND SCHOOL
+          // CONTEXT ARE FINE — the classifier doesn't refuse on those.
+          return {
+            error: `Our AI couldn't process this specific writing — the safety classifier refused it. This typically happens with explicit violence, self-harm, or sexual content in the text.
+
+Names and school details are fine — they're not what trips the filter, and nothing is stored or logged either way.
+
+What to try:
+• Edit the sample to soften any explicit phrasing and resubmit.
+• If the writing is benign, try once more — the classifier is occasionally over-cautious.
+• Email hello@slatework.tools if this keeps happening.
+
+(Server ref ${ts})`,
+            status: 422,  // Unprocessable Entity — the content was rejected
             content_blocked: true
           };
         }
