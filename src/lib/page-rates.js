@@ -19,6 +19,20 @@ const EXPERIENCE_MULTIPLIER = {
   senior: 1.5
 };
 
+// Platforms compete on price — booking rates sit below off-platform private rates.
+// Factor applied to the gross rate before commission to estimate realistic
+// platform booking rate. Calibrated from public listings + tutor reports as of
+// 2026-05; refined after r/OnlineESLTeaching feedback that italki rates were
+// being over-stated when computed from private off-platform rates alone.
+const PLATFORM_MARKET_FACTOR = {
+  italki: 0.65,
+  preply: 0.70,
+  wyzant: 0.85,
+  mytutor: 0.90,
+  tutorhouse: 0.90
+  // cambly is per-minute fixed pricing — no factor applied, handled via notes.
+};
+
 const $ = (id) => document.getElementById(id);
 
 // Phase E: bind country select to tutor profile if set.
@@ -180,9 +194,11 @@ async function recalc() {
   pb.innerHTML = '<div class="row visually-hidden" role="row"><span role="columnheader" scope="col">Platform</span><span role="columnheader" scope="col">Net hourly rate</span></div>';
   for (const p of platforms) {
     const fee = pickFee(p, hours);
+    const marketFactor = PLATFORM_MARKET_FACTOR[p.key] ?? 1.0;
+    const platformGross = grossRate * marketFactor;
     const net = p.fee_pct === 0 && p.notes
       ? null
-      : grossRate * (1 - fee / 100);
+      : platformGross * (1 - fee / 100);
     const row = document.createElement('div');
     row.className = 'row';
     row.setAttribute('role', 'row');
@@ -190,12 +206,19 @@ async function recalc() {
       row.innerHTML = `<span role="cell">${escapeHtml(p.name)}</span><strong class="small" role="cell">${escapeHtml(p.notes || 'Different pricing model')}</strong>`;
     } else {
       const feeLabel = p.fee_curve ? `${fee}% (after ${hoursTier(p, hours)} hrs taught)` : `${fee}%`;
-      row.innerHTML = `<span role="cell">${escapeHtml(p.name)} <span class="small">— ${feeLabel}</span></span><strong role="cell">${SW.formatCurrency(net, ccy, locale)}/hr</strong>`;
+      const factorLabel = marketFactor < 1.0 ? ` · platform rate ≈ ${Math.round(marketFactor * 100)}% of private` : '';
+      row.innerHTML = `<span role="cell">${escapeHtml(p.name)} <span class="small">— ${feeLabel}${factorLabel}</span></span><strong role="cell">${SW.formatCurrency(net, ccy, locale)}/hr</strong>`;
     }
     pb.appendChild(row);
   }
   if (platforms.length === 0) {
     pb.innerHTML = '<p class="small">No platforms in our list operate here. Private rates apply directly.</p>';
+  } else {
+    const note = document.createElement('p');
+    note.className = 'small';
+    note.style.marginTop = '0.5rem';
+    note.textContent = 'Platforms compete on price, so your booking rate typically sits below your off-platform private rate. The factor above is calibrated from listings + tutor reports; tell me where it’s off.';
+    pb.appendChild(note);
   }
 
   // Annual block
