@@ -10,43 +10,110 @@
       "name": "italki",
       "fee_pct": 15,
       "url": "https://www.italki.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Flat 15% on regular lessons. Trial lessons: 0% (tutor keeps 100%).",
+      "data_source": "https://support.italki.com/hc/en-us/articles/206352068"
     },
     {
       "key": "preply",
       "name": "Preply",
       "fee_pct": 33,
       "fee_curve": [
-        { "after_hours": 0, "fee_pct": 33 },
-        { "after_hours": 20, "fee_pct": 28 },
-        { "after_hours": 50, "fee_pct": 25 },
-        { "after_hours": 200, "fee_pct": 18 },
-        { "after_hours": 400, "fee_pct": 15 }
+        {
+          "after_hours": 0,
+          "fee_pct": 33
+        },
+        {
+          "after_hours": 20,
+          "fee_pct": 28
+        },
+        {
+          "after_hours": 50,
+          "fee_pct": 25
+        },
+        {
+          "after_hours": 200,
+          "fee_pct": 22
+        },
+        {
+          "after_hours": 400,
+          "fee_pct": 18
+        }
       ],
       "url": "https://preply.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Sliding scale: 33% at 0 hours → 18% after 400 hours teaching on Preply. First trial lesson: 100% to Preply (not modeled).",
+      "data_source": "https://help.preply.com/en/articles/4171383-preply-commission-model"
     },
     {
       "key": "cambly",
       "name": "Cambly",
       "fee_pct": 0,
       "url": "https://www.cambly.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"],
-      "notes": "Per-minute rate model. Cambly accepts tutors based in India (and is one of the more accessible platforms for Indian-based tutors)."
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Per-minute pay: $0.17/min (~$10.20/hour). Effective hourly often lower ($5-8) due to gaps between calls.",
+      "data_source": "https://www.cambly.com/en/tutors"
     },
     {
       "key": "verbling",
       "name": "Verbling",
       "fee_pct": 15,
       "url": "https://www.verbling.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "data_source": "https://support.verbling.com/hc/en-us/articles/360007886158"
     },
     {
       "key": "urbanpro",
       "name": "UrbanPro",
       "fee_pct": 0,
       "url": "https://www.urbanpro.com",
-      "available_in": ["IN"],
+      "available_in": [
+        "IN"
+      ],
       "notes": "Lead-based marketplace. Tutors pay for student leads (~₹100–₹300 per qualified lead) rather than commission per lesson."
     },
     {
@@ -54,7 +121,9 @@
       "name": "Vedantu",
       "fee_pct": 30,
       "url": "https://www.vedantu.com",
-      "available_in": ["IN"],
+      "available_in": [
+        "IN"
+      ],
       "notes": "Heavily K-12-focused. Tutor revenue share varies by tier; ~70% to tutor at standard tier."
     },
     {
@@ -62,7 +131,9 @@
       "name": "Chegg India (Q&A)",
       "fee_pct": 0,
       "url": "https://www.cheggindia.com",
-      "available_in": ["IN"],
+      "available_in": [
+        "IN"
+      ],
       "notes": "Per-question payment, not per-hour. Asynchronous Q&A model — pays ₹50–₹200 per accepted answer depending on subject."
     },
     {
@@ -70,7 +141,9 @@
       "name": "Filo",
       "fee_pct": 25,
       "url": "https://filo.tutor",
-      "available_in": ["IN"],
+      "available_in": [
+        "IN"
+      ],
       "notes": "On-demand 1:1 tutoring app. Per-minute pricing; tutor takes ~70-75%."
     }
   ],
@@ -80,12 +153,30 @@
     "vat_threshold_amount": 2000000,
     "trading_allowance_amount": 0,
     "income_tax_brackets": [
-      { "upper_bound_amount": 300000, "rate": 0.0 },
-      { "upper_bound_amount": 700000, "rate": 0.05 },
-      { "upper_bound_amount": 1000000, "rate": 0.10 },
-      { "upper_bound_amount": 1200000, "rate": 0.15 },
-      { "upper_bound_amount": 1500000, "rate": 0.20 },
-      { "upper_bound_amount": null, "rate": 0.30 }
+      {
+        "upper_bound_amount": 300000,
+        "rate": 0.0
+      },
+      {
+        "upper_bound_amount": 700000,
+        "rate": 0.05
+      },
+      {
+        "upper_bound_amount": 1000000,
+        "rate": 0.1
+      },
+      {
+        "upper_bound_amount": 1200000,
+        "rate": 0.15
+      },
+      {
+        "upper_bound_amount": 1500000,
+        "rate": 0.2
+      },
+      {
+        "upper_bound_amount": null,
+        "rate": 0.3
+      }
     ],
     "registration_steps": [
       "Get a PAN (Permanent Account Number) if you don't already — required for any tax filing.",
@@ -227,5 +318,5 @@
     ],
     "notes": "Professional indemnity / public liability is uncommon for individual private tutors in India but recommended for tutors of minors and for those running coaching classes from a fixed location. Annual premiums are modest (~₹2,000–₹8,000) for ₹10–25 lakh cover."
   },
-  "data_source_last_verified": "2026-05-07"
+  "data_source_last_verified": "2026-05-15"
 }

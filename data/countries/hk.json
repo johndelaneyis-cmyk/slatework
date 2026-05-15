@@ -18,7 +18,9 @@
         "NZ",
         "IE",
         "HK"
-      ]
+      ],
+      "notes": "Flat 15% on regular lessons. Trial lessons: 0% (tutor keeps 100%).",
+      "data_source": "https://support.italki.com/hc/en-us/articles/206352068"
     },
     {
       "key": "preply",
@@ -39,11 +41,11 @@
         },
         {
           "after_hours": 200,
-          "fee_pct": 18
+          "fee_pct": 22
         },
         {
           "after_hours": 400,
-          "fee_pct": 15
+          "fee_pct": 18
         }
       ],
       "url": "https://preply.com",
@@ -55,7 +57,9 @@
         "NZ",
         "IE",
         "HK"
-      ]
+      ],
+      "notes": "Sliding scale: 33% at 0 hours → 18% after 400 hours teaching on Preply. First trial lesson: 100% to Preply (not modeled).",
+      "data_source": "https://help.preply.com/en/articles/4171383-preply-commission-model"
     },
     {
       "key": "snapask",
@@ -100,7 +104,8 @@
         "NZ",
         "IE",
         "HK"
-      ]
+      ],
+      "data_source": "https://support.verbling.com/hc/en-us/articles/360007886158"
     },
     {
       "key": "cambly",
@@ -116,7 +121,8 @@
         "IE",
         "HK"
       ],
-      "notes": "Per-minute rate."
+      "notes": "Per-minute pay: $0.17/min (~$10.20/hour). Effective hourly often lower ($5-8) due to gaps between calls.",
+      "data_source": "https://www.cambly.com/en/tutors"
     }
   ],
   "tax": {
@@ -301,5 +307,5 @@
     ],
     "notes": "HK$10M public liability is typical. Tutors of minors should carry professional indemnity in addition. ~HK$1,500–$3,500/year."
   },
-  "data_source_last_verified": "2026-05-06"
+  "data_source_last_verified": "2026-05-15"
 }

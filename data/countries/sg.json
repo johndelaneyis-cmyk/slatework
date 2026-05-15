@@ -10,43 +10,110 @@
       "name": "italki",
       "fee_pct": 15,
       "url": "https://www.italki.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Flat 15% on regular lessons. Trial lessons: 0% (tutor keeps 100%).",
+      "data_source": "https://support.italki.com/hc/en-us/articles/206352068"
     },
     {
       "key": "preply",
       "name": "Preply",
       "fee_pct": 33,
       "fee_curve": [
-        { "after_hours": 0, "fee_pct": 33 },
-        { "after_hours": 20, "fee_pct": 28 },
-        { "after_hours": 50, "fee_pct": 25 },
-        { "after_hours": 200, "fee_pct": 18 },
-        { "after_hours": 400, "fee_pct": 15 }
+        {
+          "after_hours": 0,
+          "fee_pct": 33
+        },
+        {
+          "after_hours": 20,
+          "fee_pct": 28
+        },
+        {
+          "after_hours": 50,
+          "fee_pct": 25
+        },
+        {
+          "after_hours": 200,
+          "fee_pct": 22
+        },
+        {
+          "after_hours": 400,
+          "fee_pct": 18
+        }
       ],
       "url": "https://preply.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Sliding scale: 33% at 0 hours → 18% after 400 hours teaching on Preply. First trial lesson: 100% to Preply (not modeled).",
+      "data_source": "https://help.preply.com/en/articles/4171383-preply-commission-model"
     },
     {
       "key": "cambly",
       "name": "Cambly",
       "fee_pct": 0,
       "url": "https://www.cambly.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"],
-      "notes": "Per-minute rate model."
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Per-minute pay: $0.17/min (~$10.20/hour). Effective hourly often lower ($5-8) due to gaps between calls.",
+      "data_source": "https://www.cambly.com/en/tutors"
     },
     {
       "key": "verbling",
       "name": "Verbling",
       "fee_pct": 15,
       "url": "https://www.verbling.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "data_source": "https://support.verbling.com/hc/en-us/articles/360007886158"
     },
     {
       "key": "championtutor",
       "name": "ChampionTutor",
       "fee_pct": 50,
       "url": "https://www.championtutor.com",
-      "available_in": ["SG"],
+      "available_in": [
+        "SG"
+      ],
       "notes": "First-month commission. Agency-style introduction model — half of the first month's fee, then 0% thereafter."
     },
     {
@@ -54,7 +121,9 @@
       "name": "MindFlex",
       "fee_pct": 50,
       "url": "https://mindflex.com.sg",
-      "available_in": ["SG"],
+      "available_in": [
+        "SG"
+      ],
       "notes": "First-half-of-first-month commission. Agency model similar to ChampionTutor."
     },
     {
@@ -62,7 +131,9 @@
       "name": "FamilyTutor",
       "fee_pct": 50,
       "url": "https://www.familytutor.sg",
-      "available_in": ["SG"],
+      "available_in": [
+        "SG"
+      ],
       "notes": "Half of first month. Agency model."
     },
     {
@@ -70,7 +141,10 @@
       "name": "Tueetor",
       "fee_pct": 0,
       "url": "https://www.tueetor.com",
-      "available_in": ["SG", "MY"],
+      "available_in": [
+        "SG",
+        "MY"
+      ],
       "notes": "Lead-based — tutors purchase credits to view student requests. No commission per lesson."
     },
     {
@@ -78,7 +152,11 @@
       "name": "Snapask",
       "fee_pct": 30,
       "url": "https://www.snapask.com/en-sg",
-      "available_in": ["HK", "SG", "TW"]
+      "available_in": [
+        "HK",
+        "SG",
+        "TW"
+      ]
     }
   ],
   "tax": {
@@ -87,19 +165,58 @@
     "vat_threshold_amount": 1000000,
     "trading_allowance_amount": 0,
     "income_tax_brackets": [
-      { "upper_bound_amount": 20000, "rate": 0.0 },
-      { "upper_bound_amount": 30000, "rate": 0.02 },
-      { "upper_bound_amount": 40000, "rate": 0.035 },
-      { "upper_bound_amount": 80000, "rate": 0.07 },
-      { "upper_bound_amount": 120000, "rate": 0.115 },
-      { "upper_bound_amount": 160000, "rate": 0.15 },
-      { "upper_bound_amount": 200000, "rate": 0.18 },
-      { "upper_bound_amount": 240000, "rate": 0.19 },
-      { "upper_bound_amount": 280000, "rate": 0.195 },
-      { "upper_bound_amount": 320000, "rate": 0.20 },
-      { "upper_bound_amount": 500000, "rate": 0.22 },
-      { "upper_bound_amount": 1000000, "rate": 0.23 },
-      { "upper_bound_amount": null, "rate": 0.24 }
+      {
+        "upper_bound_amount": 20000,
+        "rate": 0.0
+      },
+      {
+        "upper_bound_amount": 30000,
+        "rate": 0.02
+      },
+      {
+        "upper_bound_amount": 40000,
+        "rate": 0.035
+      },
+      {
+        "upper_bound_amount": 80000,
+        "rate": 0.07
+      },
+      {
+        "upper_bound_amount": 120000,
+        "rate": 0.115
+      },
+      {
+        "upper_bound_amount": 160000,
+        "rate": 0.15
+      },
+      {
+        "upper_bound_amount": 200000,
+        "rate": 0.18
+      },
+      {
+        "upper_bound_amount": 240000,
+        "rate": 0.19
+      },
+      {
+        "upper_bound_amount": 280000,
+        "rate": 0.195
+      },
+      {
+        "upper_bound_amount": 320000,
+        "rate": 0.2
+      },
+      {
+        "upper_bound_amount": 500000,
+        "rate": 0.22
+      },
+      {
+        "upper_bound_amount": 1000000,
+        "rate": 0.23
+      },
+      {
+        "upper_bound_amount": null,
+        "rate": 0.24
+      }
     ],
     "registration_steps": [
       "Register your business name (sole proprietorship) with ACRA via BizFile+ (https://www.bizfile.gov.sg) — annual fee S$60. Optional but recommended if trading under any name other than your own.",
@@ -242,5 +359,5 @@
     ],
     "notes": "Public liability is not legally required for home or online tuition but is recommended for tutors of minors or those operating from a fixed address. ~S$200-500/year for S$500K-1M cover. Professional indemnity (covering bad-advice claims) is optional and rarely purchased by individual tutors."
   },
-  "data_source_last_verified": "2026-05-07"
+  "data_source_last_verified": "2026-05-15"
 }

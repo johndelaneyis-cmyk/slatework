@@ -114,7 +114,7 @@
     ]
   },
   "currency_symbol": "£",
-  "data_source_last_verified": "2026-05-06",
+  "data_source_last_verified": "2026-05-15",
   "payment_methods": [
     {
       "international": false,
@@ -196,7 +196,9 @@
         "IE",
         "HK"
       ],
-      "fee_pct": 15
+      "fee_pct": 15,
+      "notes": "Flat 15% on regular lessons. Trial lessons: 0% (tutor keeps 100%).",
+      "data_source": "https://support.italki.com/hc/en-us/articles/206352068"
     },
     {
       "available_in": [
@@ -225,15 +227,17 @@
         },
         {
           "after_hours": 200,
-          "fee_pct": 18
+          "fee_pct": 22
         },
         {
           "after_hours": 400,
-          "fee_pct": 15
+          "fee_pct": 18
         }
       ],
       "fee_pct": 33,
-      "url": "https://preply.com"
+      "url": "https://preply.com",
+      "notes": "Sliding scale: 33% at 0 hours → 18% after 400 hours teaching on Preply. First trial lesson: 100% to Preply (not modeled).",
+      "data_source": "https://help.preply.com/en/articles/4171383-preply-commission-model"
     },
     {
       "url": "https://www.mytutor.co.uk",
@@ -242,7 +246,9 @@
       "available_in": [
         "GB"
       ],
-      "fee_pct": 25
+      "fee_pct": 40,
+      "notes": "Commission ~40% (plus VAT) per tutor reports — tutors take home roughly 52% of the lesson fee.",
+      "data_source": "https://www.pmt.education/blog/tutors/tutoring-platform-fees-and-commissions-explained/"
     },
     {
       "url": "https://tutorhouse.co.uk",
@@ -251,7 +257,23 @@
       "available_in": [
         "GB"
       ],
-      "fee_pct": 20
+      "fee_pct": 25,
+      "fee_curve": [
+        {
+          "after_hours": 0,
+          "fee_pct": 25
+        },
+        {
+          "after_hours": 100,
+          "fee_pct": 20
+        },
+        {
+          "after_hours": 300,
+          "fee_pct": 15
+        }
+      ],
+      "notes": "Sliding scale: 25% at 0 hours → 15% after ~300 hours taught.",
+      "data_source": "https://www.myengineeringbuddy.com/blog/tutor-house-reviews-features-pricing-alternatives/"
     },
     {
       "url": "https://www.verbling.com",
@@ -266,7 +288,24 @@
         "IE",
         "HK"
       ],
-      "fee_pct": 15
+      "fee_pct": 15,
+      "data_source": "https://support.verbling.com/hc/en-us/articles/360007886158"
+    },
+    {
+      "url": "https://www.lingoda.com",
+      "key": "lingoda",
+      "name": "Lingoda",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE"
+      ],
+      "fee_pct": 20,
+      "notes": "Fixed pay rate per lesson hour (~$8-13 depending on country and qualifications). Effective commission ≈ 20%.",
+      "data_source": "https://www.appjobs.com/blog/what-you-must-know-about-teaching-with-lingoda"
     },
     {
       "available_in": [
@@ -279,10 +318,11 @@
         "HK"
       ],
       "name": "Cambly",
-      "notes": "Per-minute rate, not commission.",
+      "notes": "Per-minute pay: $0.17/min (~$10.20/hour). Effective hourly often lower ($5-8) due to gaps between calls.",
       "key": "cambly",
       "fee_pct": 0,
-      "url": "https://www.cambly.com"
+      "url": "https://www.cambly.com",
+      "data_source": "https://www.cambly.com/en/tutors"
     }
   ],
   "background_check": {

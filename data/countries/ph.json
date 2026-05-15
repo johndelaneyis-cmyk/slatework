@@ -10,43 +10,110 @@
       "name": "italki",
       "fee_pct": 15,
       "url": "https://www.italki.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Flat 15% on regular lessons. Trial lessons: 0% (tutor keeps 100%).",
+      "data_source": "https://support.italki.com/hc/en-us/articles/206352068"
     },
     {
       "key": "preply",
       "name": "Preply",
       "fee_pct": 33,
       "fee_curve": [
-        { "after_hours": 0, "fee_pct": 33 },
-        { "after_hours": 20, "fee_pct": 28 },
-        { "after_hours": 50, "fee_pct": 25 },
-        { "after_hours": 200, "fee_pct": 18 },
-        { "after_hours": 400, "fee_pct": 15 }
+        {
+          "after_hours": 0,
+          "fee_pct": 33
+        },
+        {
+          "after_hours": 20,
+          "fee_pct": 28
+        },
+        {
+          "after_hours": 50,
+          "fee_pct": 25
+        },
+        {
+          "after_hours": 200,
+          "fee_pct": 22
+        },
+        {
+          "after_hours": 400,
+          "fee_pct": 18
+        }
       ],
       "url": "https://preply.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Sliding scale: 33% at 0 hours → 18% after 400 hours teaching on Preply. First trial lesson: 100% to Preply (not modeled).",
+      "data_source": "https://help.preply.com/en/articles/4171383-preply-commission-model"
     },
     {
       "key": "cambly",
       "name": "Cambly",
       "fee_pct": 0,
       "url": "https://www.cambly.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"],
-      "notes": "Per-minute rate. Cambly's Philippines-based tutor pool is one of its largest — generally pays USD 0.17/min standard or USD 0.20/min Cambly Kids."
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "notes": "Per-minute pay: $0.17/min (~$10.20/hour). Effective hourly often lower ($5-8) due to gaps between calls.",
+      "data_source": "https://www.cambly.com/en/tutors"
     },
     {
       "key": "verbling",
       "name": "Verbling",
       "fee_pct": 15,
       "url": "https://www.verbling.com",
-      "available_in": ["US", "GB", "CA", "AU", "NZ", "IE", "HK", "IN", "SG", "PH"]
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK",
+        "IN",
+        "SG",
+        "PH"
+      ],
+      "data_source": "https://support.verbling.com/hc/en-us/articles/360007886158"
     },
     {
       "key": "fiftyonetalk",
       "name": "51Talk",
       "fee_pct": 0,
       "url": "https://www.51talk.com.ph",
-      "available_in": ["PH"],
+      "available_in": [
+        "PH"
+      ],
       "notes": "Pays per 25-minute class. Tier-based — base ₱120-180/class, peak ₱200+/class. Largest ESL platform employing PH-based tutors."
     },
     {
@@ -54,7 +121,9 @@
       "name": "RareJob",
       "fee_pct": 0,
       "url": "https://www.rarejob.com.ph",
-      "available_in": ["PH"],
+      "available_in": [
+        "PH"
+      ],
       "notes": "Japanese-focused ESL. Per-25-min lesson rate; tier-based. Strong demand from Japanese learners."
     },
     {
@@ -62,7 +131,9 @@
       "name": "Native Camp",
       "fee_pct": 0,
       "url": "https://nativecamp.net/en/teach",
-      "available_in": ["PH"],
+      "available_in": [
+        "PH"
+      ],
       "notes": "On-demand ESL platform. Pays per 25-min lesson; flexible scheduling."
     },
     {
@@ -70,7 +141,9 @@
       "name": "Engoo (formerly Bibo English)",
       "fee_pct": 0,
       "url": "https://engoo.com/teach",
-      "available_in": ["PH"],
+      "available_in": [
+        "PH"
+      ],
       "notes": "ESL platform with primarily East Asian student base. Per-lesson pay."
     }
   ],
@@ -80,12 +153,30 @@
     "vat_threshold_amount": 3000000,
     "trading_allowance_amount": 250000,
     "income_tax_brackets": [
-      { "upper_bound_amount": 250000, "rate": 0.0 },
-      { "upper_bound_amount": 400000, "rate": 0.15 },
-      { "upper_bound_amount": 800000, "rate": 0.20 },
-      { "upper_bound_amount": 2000000, "rate": 0.25 },
-      { "upper_bound_amount": 8000000, "rate": 0.30 },
-      { "upper_bound_amount": null, "rate": 0.35 }
+      {
+        "upper_bound_amount": 250000,
+        "rate": 0.0
+      },
+      {
+        "upper_bound_amount": 400000,
+        "rate": 0.15
+      },
+      {
+        "upper_bound_amount": 800000,
+        "rate": 0.2
+      },
+      {
+        "upper_bound_amount": 2000000,
+        "rate": 0.25
+      },
+      {
+        "upper_bound_amount": 8000000,
+        "rate": 0.3
+      },
+      {
+        "upper_bound_amount": null,
+        "rate": 0.35
+      }
     ],
     "registration_steps": [
       "Register with the BIR (Bureau of Internal Revenue) using Form 1901 — get a TIN (Taxpayer Identification Number) and Certificate of Registration (COR / Form 2303). One-time fee ₱500.",
@@ -228,5 +319,5 @@
     ],
     "notes": "Public liability and professional indemnity are uncommon for individual tutors in the Philippines. Recommended for tutors operating from fixed coaching centres or those with student volumes above 20/week. Annual premium ~₱3,000-8,000 for ₱500K-1M cover."
   },
-  "data_source_last_verified": "2026-05-07"
+  "data_source_last_verified": "2026-05-15"
 }
