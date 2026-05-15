@@ -219,23 +219,15 @@
       "data_source": "https://help.preply.com/en/articles/4171383-preply-commission-model"
     },
     {
-      "url": "https://www.thelessonspace.com",
-      "key": "lessonspace",
-      "name": "LessonSpace (was StudyHall)",
-      "available_in": [
-        "AU",
-        "NZ"
-      ],
-      "fee_pct": 20
-    },
-    {
       "url": "https://clueylearning.com.au",
       "key": "cluey",
       "name": "Cluey Learning",
       "available_in": [
         "AU"
       ],
-      "fee_pct": 30
+      "fee_pct": 0,
+      "notes": "Flat hourly pay (employer model): AUD$30-35 (qualified teacher) or AUD$25 (non-qualified tutor) per hour, plus superannuation. NZD$22-30 equivalent. Not commission-based — Cluey sets the tutor pay regardless of student rate.",
+      "data_source": "https://onlineteachingreview.com/cluey-learning-review/"
     },
     {
       "url": "https://www.verbling.com",

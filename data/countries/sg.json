@@ -109,32 +109,35 @@
     {
       "key": "championtutor",
       "name": "ChampionTutor",
-      "fee_pct": 50,
+      "fee_pct": 0,
       "url": "https://www.championtutor.com",
       "available_in": [
         "SG"
       ],
-      "notes": "First-month commission. Agency-style introduction model — half of the first month's fee, then 0% thereafter."
+      "notes": "Matchmaking agency, no agency fee on tutor — parents pay the tutor-set rate directly. Tutor keeps 100%.",
+      "data_source": "https://www.akstech.com.sg/tuition-agencies-in-singapore/"
     },
     {
       "key": "mindflex",
       "name": "MindFlex",
-      "fee_pct": 50,
+      "fee_pct": 0,
       "url": "https://mindflex.com.sg",
       "available_in": [
         "SG"
       ],
-      "notes": "First-half-of-first-month commission. Agency model similar to ChampionTutor."
+      "notes": "Premium tier of ChampionTutor — same model: no agency fee on tutor; parents pay tutor-set rate directly.",
+      "data_source": "https://singaporetuitionteachers.com/"
     },
     {
       "key": "familytutor",
       "name": "FamilyTutor",
-      "fee_pct": 50,
+      "fee_pct": 0,
       "url": "https://www.familytutor.sg",
       "available_in": [
         "SG"
       ],
-      "notes": "Half of first month. Agency model."
+      "notes": "Matchmaking agency model. Tutor sets the rate; parents pay direct. (Some Singapore agencies charge tutors a one-time intro fee — verify on signup.)",
+      "data_source": "https://www.akstech.com.sg/tuition-agencies-in-singapore/"
     },
     {
       "key": "tueetor",
@@ -145,7 +148,8 @@
         "SG",
         "MY"
       ],
-      "notes": "Lead-based — tutors purchase credits to view student requests. No commission per lesson."
+      "notes": "Self-serve directory model — no middleman, no referral fees. Tutors and learners connect direct, tutor keeps 100% of agreed rate.",
+      "data_source": "https://www.tueetor.com/en/about"
     },
     {
       "key": "snapask",

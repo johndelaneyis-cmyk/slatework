@@ -219,16 +219,6 @@
       "data_source": "https://help.preply.com/en/articles/4171383-preply-commission-model"
     },
     {
-      "url": "https://www.thelessonspace.com",
-      "key": "lessonspace",
-      "name": "LessonSpace",
-      "available_in": [
-        "AU",
-        "NZ"
-      ],
-      "fee_pct": 20
-    },
-    {
       "url": "https://www.verbling.com",
       "key": "verbling",
       "name": "Verbling",

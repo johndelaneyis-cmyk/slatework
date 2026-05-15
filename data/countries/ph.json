@@ -114,7 +114,8 @@
       "available_in": [
         "PH"
       ],
-      "notes": "Pays per 25-minute class. Tier-based — base ₱120-180/class, peak ₱200+/class. Largest ESL platform employing PH-based tutors."
+      "notes": "Flat hourly pay (employer model) for Filipino teachers — ~PHP 76-104/hour. Not commission-based.",
+      "data_source": "https://ph.indeed.com/cmp/51talk/salaries"
     },
     {
       "key": "rarejob",
@@ -124,7 +125,8 @@
       "available_in": [
         "PH"
       ],
-      "notes": "Japanese-focused ESL. Per-25-min lesson rate; tier-based. Strong demand from Japanese learners."
+      "notes": "Flat per-class pay (employer model): ~PHP 55/class (~PHP 85-107/hour avg). Not commission-based.",
+      "data_source": "https://ph.indeed.com/cmp/Rarejob-Philippines/salaries"
     },
     {
       "key": "nativecamp",
@@ -134,7 +136,8 @@
       "available_in": [
         "PH"
       ],
-      "notes": "On-demand ESL platform. Pays per 25-min lesson; flexible scheduling."
+      "notes": "Flat per-class pay (employer model): ~PHP 51 per 25-min class (~$1.70/class) for Filipino tutors. Not commission-based.",
+      "data_source": "https://www.indeed.com/cmp/Nativecamp./reviews?ftopic=paybenefits"
     },
     {
       "key": "engoo",
@@ -144,7 +147,8 @@
       "available_in": [
         "PH"
       ],
-      "notes": "ESL platform with primarily East Asian student base. Per-lesson pay."
+      "notes": "Flat per-class pay (employer model). Native speakers ≈ $10/hr; non-native (e.g. Filipino tutors) ≈ $1.20 per 25-min class ($2.40/hr). Not commission-based.",
+      "data_source": "https://onlineteachingreview.com/engoo-review/"
     }
   ],
   "tax": {

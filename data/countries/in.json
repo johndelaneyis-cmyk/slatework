@@ -114,37 +114,30 @@
       "available_in": [
         "IN"
       ],
-      "notes": "Lead-based marketplace. Tutors pay for student leads (~₹100–₹300 per qualified lead) rather than commission per lesson."
+      "notes": "Two-component model: one-time flat fee on first payment from each new student + percentage on earnings above the flat fee. Both components vary by subject. Tutors verify on the payment dashboard.",
+      "data_source": "https://help.urbanpro.com/hc/en-us/articles/360054824934"
     },
     {
       "key": "vedantu",
       "name": "Vedantu",
-      "fee_pct": 30,
+      "fee_pct": 0,
       "url": "https://www.vedantu.com",
       "available_in": [
         "IN"
       ],
-      "notes": "Heavily K-12-focused. Tutor revenue share varies by tier; ~70% to tutor at standard tier."
-    },
-    {
-      "key": "chegg_india",
-      "name": "Chegg India (Q&A)",
-      "fee_pct": 0,
-      "url": "https://www.cheggindia.com",
-      "available_in": [
-        "IN"
-      ],
-      "notes": "Per-question payment, not per-hour. Asynchronous Q&A model — pays ₹50–₹200 per accepted answer depending on subject."
+      "notes": "Flat hourly pay (employer model): ₹500-1500/hour depending on subject + experience. Min 3-4 hours/day, IST evening slots. Not commission-based — Vedantu sets the rate.",
+      "data_source": "https://www.glassdoor.co.in/Hourly-Pay/Vedantu-Teacher-Hourly-Pay-E923744_D_KO8,15.htm"
     },
     {
       "key": "filo",
       "name": "Filo",
-      "fee_pct": 25,
+      "fee_pct": 0,
       "url": "https://filo.tutor",
       "available_in": [
         "IN"
       ],
-      "notes": "On-demand 1:1 tutoring app. Per-minute pricing; tutor takes ~70-75%."
+      "notes": "Per-session pay (~₹200-400/hour live; ₹546/hour avg per Indeed). Bonuses on reaching 30 / 40 sessions/month with ≥4/5 rating. Not commission-based.",
+      "data_source": "https://askfilo.com/blog/how-to-be-a-filo-tutor/"
     }
   ],
   "tax": {
