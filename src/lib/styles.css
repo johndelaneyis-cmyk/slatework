@@ -1453,6 +1453,54 @@ ul.checklist li::before {
 }
 .ai-disclaimer strong { color: var(--ink); }
 
+/* OCR review notice — surfaces post-OCR when Vision's confidence is variable
+   or our heuristic detects likely-broken tokens. Amber accent (warning
+   without alarm), auto-clears once the user edits the textarea. */
+.ocr-review-notice {
+  margin: 0 0 1rem;
+  padding: 0.9rem 1.05rem;
+  background: rgba(217, 119, 6, 0.06);  /* matches drop-zone.drag-over tint */
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.ocr-review-notice[hidden] { display: none; }
+.ocr-review-heading {
+  margin: 0 0 0.5rem;
+}
+.ocr-review-heading .mono-caption {
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+.ocr-review-confidence,
+.ocr-review-suspects {
+  margin: 0.35rem 0;
+}
+.ocr-review-confidence strong,
+.ocr-review-suspects strong {
+  color: var(--ink);
+}
+.ocr-review-help {
+  margin: 0.6rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  font-style: italic;
+}
+.ocr-suspect-chip {
+  display: inline-block;
+  margin: 0.15rem 0.2rem 0.15rem 0;
+  padding: 0.1rem 0.45rem;
+  background: var(--surface);
+  border: 1px solid var(--ink-faint);
+  border-radius: var(--radius-sm);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
 .extracted-text {
   margin: 0 0 1.5rem;
   padding: 1rem 1.25rem;

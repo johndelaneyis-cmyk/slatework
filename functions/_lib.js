@@ -161,7 +161,40 @@ export async function callGoogleVision(env, { base64, mime, timeoutMs = 30000 })
   // (soft wrap). Drops end-of-line hyphens that join across the wrap.
   const rawText = (resp && resp.fullTextAnnotation && resp.fullTextAnnotation.text) || '';
   const text = collapseSoftWraps(rawText);
-  return text;
+  // Confidence summary lets the marking/cefr clients surface a
+  // "low-confidence OCR — please review" banner. We compute mean and min
+  // across word-level confidences (Vision reports 0..1 per word, often
+  // 0.9+ on printed text and 0.5-0.85 on handwriting).
+  const { avg_confidence, min_confidence, word_count } = summarizeConfidence(resp && resp.fullTextAnnotation);
+  return { text, avg_confidence, min_confidence, word_count };
+}
+
+function summarizeConfidence(annotation) {
+  if (!annotation || !Array.isArray(annotation.pages)) {
+    return { avg_confidence: null, min_confidence: null, word_count: 0 };
+  }
+  let total = 0;
+  let count = 0;
+  let min = 1;
+  for (const page of annotation.pages) {
+    for (const block of (page.blocks || [])) {
+      for (const para of (block.paragraphs || [])) {
+        for (const word of (para.words || [])) {
+          const c = typeof word.confidence === 'number' ? word.confidence : null;
+          if (c === null) continue;
+          total += c;
+          count += 1;
+          if (c < min) min = c;
+        }
+      }
+    }
+  }
+  if (count === 0) return { avg_confidence: null, min_confidence: null, word_count: 0 };
+  return {
+    avg_confidence: Math.round((total / count) * 100) / 100,  // 2dp
+    min_confidence: Math.round(min * 100) / 100,
+    word_count: count,
+  };
 }
 
 // Post-process Vision's flat OCR text to undo mid-word soft wraps and

@@ -86,6 +86,7 @@ function resolveLangVal() {
   const dropZone = $('drop-zone');
   const textarea = $('sample');
   const dropStatus = $('drop-status');
+  const reviewNotice = $('ocr-review-notice');
   if (!dropZone || !SW.attachFileDrop) return;
   SW.attachFileDrop({
     dropZone,
@@ -95,6 +96,7 @@ function resolveLangVal() {
       // Decoupled OCR: photo → /api/ocr (Google Vision) → textarea → submit text-only.
       // Anthropic never sees the image, avoiding their content-classifier rejection.
       dropStatus.textContent = 'Extracting text from photo (OCR)…';
+      hideOcrReviewNotice(reviewNotice);
       try {
         const r = await fetch('/api/ocr', {
           method: 'POST',
@@ -118,6 +120,14 @@ function resolveLangVal() {
           textarea.value = data.text;
           dropStatus.textContent = `OCR extracted ${data.text.length} chars. Review and edit, then click Assess.`;
         }
+        renderOcrReviewNotice(reviewNotice, {
+          avg: data.avg_confidence,
+          min: data.min_confidence,
+          wordCount: data.word_count,
+          suspects: detectSuspectOcrTokens(textarea.value),
+          textarea,
+          actionLabel: 'Assess',
+        });
         textarea.focus();
       } catch (e) {
         dropStatus.textContent = 'Network error during OCR. Type the writing in the box below instead.';
@@ -125,9 +135,87 @@ function resolveLangVal() {
     },
     clearImageHandler: () => {
       // No hidden image fields anymore — OCR runs on drop, textarea holds the text
+      hideOcrReviewNotice(reviewNotice);
     }
   });
 })();
+
+// --- OCR review notice (mirrors page-marking.js — kept inline to avoid
+// touching the SW shared bundle mid-launch).
+
+function detectSuspectOcrTokens(text) {
+  if (!text) return [];
+  const tokens = text.split(/\s+/).filter(Boolean);
+  const out = [];
+  const seen = new Set();
+  for (const raw of tokens) {
+    const clean = raw.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+    if (!clean) continue;
+    const key = clean.toLowerCase();
+    if (seen.has(key)) continue;
+    let suspect = false;
+    if (clean.length === 1 && !/^[aIoAOiu]$/.test(clean)) suspect = true;
+    else if (clean.length >= 2 && clean.length <= 3 && /^[bcdfghjklmnpqrstvwxyz]+$/i.test(clean)) suspect = true;
+    else if (/^(ing|ed|ly|tion|sion|ness|ment|ous|ful|less)$/i.test(clean)) suspect = true;
+    else if (clean.includes('-') && !/^[A-Z]/.test(clean) && clean.length < 12) suspect = true;
+    if (suspect) {
+      out.push(raw);
+      seen.add(key);
+      if (out.length >= 8) break;
+    }
+  }
+  return out;
+}
+
+function renderOcrReviewNotice(container, { avg, min, wordCount, suspects, textarea, actionLabel }) {
+  if (!container) return;
+  const hasSuspects = suspects && suspects.length > 0;
+  const lowAvg = typeof avg === 'number' && avg < 0.85;
+  const lowMin = typeof min === 'number' && min < 0.5;
+  if (!hasSuspects && !lowAvg && !lowMin) {
+    hideOcrReviewNotice(container);
+    return;
+  }
+  let confidenceLine = '';
+  if (typeof avg === 'number' && wordCount) {
+    const pct = Math.round(avg * 100);
+    if (lowAvg) {
+      confidenceLine = `<p class="ocr-review-confidence">OCR confidence: <strong>${pct}%</strong> across ${wordCount} words. Handwriting and low-contrast photos read variably — please scan the text below before clicking ${escapeOcrText(actionLabel)}.</p>`;
+    } else {
+      confidenceLine = `<p class="ocr-review-confidence">OCR confidence: <strong>${pct}%</strong> across ${wordCount} words.</p>`;
+    }
+  }
+  let suspectsBlock = '';
+  if (hasSuspects) {
+    const chips = suspects.map(t => `<code class="ocr-suspect-chip">${escapeOcrText(t)}</code>`).join(' ');
+    suspectsBlock = `<p class="ocr-review-suspects"><strong>Possible misreads to check:</strong> ${chips}</p>`;
+  }
+  container.innerHTML = `
+    <p class="ocr-review-heading"><span class="mono-caption">// REVIEW BEFORE ASSESS</span></p>
+    ${confidenceLine}
+    ${suspectsBlock}
+    <p class="ocr-review-help">Edit the text below to fix any misreads. This notice clears once you start editing.</p>
+  `;
+  container.hidden = false;
+  container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const clear = () => {
+    hideOcrReviewNotice(container);
+    textarea.removeEventListener('input', clear);
+  };
+  textarea.addEventListener('input', clear, { once: true });
+}
+
+function hideOcrReviewNotice(container) {
+  if (!container) return;
+  container.hidden = true;
+  container.innerHTML = '';
+}
+
+function escapeOcrText(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 
 // --- Tab switching
 const rulesMode = $('rules-mode');

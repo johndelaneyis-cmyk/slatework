@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="Place a language student at A1–C2 using the CEFR Can-Do framework. Default rule-based assessment with an optional AI mode for sample-writing input." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
   <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/IBMPlexSans-normal-400-latin.woff2" crossorigin />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=33" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=34" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -88,7 +88,7 @@
     ]
   }
   </script>
-  <script src="/src/lib/trusted-types.js?v=33"></script>
+  <script src="/src/lib/trusted-types.js?v=34"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -154,9 +154,10 @@
           <p id="drop-status" class="drop-status small" role="status" aria-live="polite"></p>
         </button>
         <p class="ai-disclaimer small">
-          <strong>How photo upload works:</strong> when you attach an image, we extract the text via Google Cloud Vision OCR (handwriting-trained) and drop it into the box below. Review and edit the extracted text — OCR isn't perfect, especially cursive — then click Assess. The placement model only ever sees text, not your photo.
+          <strong>Photo OCR works best on clear printed text.</strong> Handwriting reads variably &mdash; review the extracted text and fix any misreads before clicking Assess. We use Google Cloud Vision (handwriting-trained) for OCR and send only the text &mdash; never the image &mdash; to the placement model.
         </p>
       </div>
+      <div id="ocr-review-notice" class="ocr-review-notice" role="status" aria-live="polite" hidden></div>
       <div class="field">
         <label for="sample">Writing sample (50–500 words)</label>
         <textarea id="sample" minlength="100" maxlength="3000" aria-describedby="sample-cc" placeholder="Paste the student's writing — or attach a file/photo above. Names are fine; nothing is stored or logged."></textarea>
@@ -228,14 +229,14 @@
   </div>
 </footer>
 
-<script src="/src/lib/cefr-rules.js?v=33"></script>
-<script src="/src/lib/countries.js?v=33"></script>
-<script src="/src/lib/markdown.js?v=33"></script>
-<script src="/src/lib/file-extract.js?v=33"></script>
-<script src="/feedback.js?v=33" defer></script>
-<script src="/src/lib/profile.js?v=33"></script>
-<script src="/src/lib/profile-ui.js?v=33"></script>
-<script src="/src/lib/page-cefr.js?v=33" defer></script>
+<script src="/src/lib/cefr-rules.js?v=34"></script>
+<script src="/src/lib/countries.js?v=34"></script>
+<script src="/src/lib/markdown.js?v=34"></script>
+<script src="/src/lib/file-extract.js?v=34"></script>
+<script src="/feedback.js?v=34" defer></script>
+<script src="/src/lib/profile.js?v=34"></script>
+<script src="/src/lib/profile-ui.js?v=34"></script>
+<script src="/src/lib/page-cefr.js?v=34" defer></script>
 <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0a7c100b0b8e44ee9cc547af8f844385"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

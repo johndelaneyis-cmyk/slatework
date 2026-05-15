@@ -121,6 +121,7 @@ let __mkAdjustHandle = null;
   const dropZone = $('drop-zone');
   const textarea = $('sample');
   const dropStatus = $('drop-status');
+  const reviewNotice = $('ocr-review-notice');
   if (!dropZone || !SW.attachFileDrop) return;
   SW.attachFileDrop({
     dropZone,
@@ -132,6 +133,7 @@ let __mkAdjustHandle = null;
       // text-only to /api/marking. Anthropic never sees the image, so its
       // content classifier can't refuse student-writing photos.
       dropStatus.textContent = 'Extracting text from photo (OCR)…';
+      hideReviewNotice(reviewNotice);
       try {
         const r = await fetch('/api/ocr', {
           method: 'POST',
@@ -155,6 +157,15 @@ let __mkAdjustHandle = null;
           textarea.value = data.text;
           dropStatus.textContent = `OCR extracted ${data.text.length} chars. Review and edit, then click Mark.`;
         }
+        // Surface review notice when confidence is variable or suspect tokens detected.
+        renderOcrReviewNotice(reviewNotice, {
+          avg: data.avg_confidence,
+          min: data.min_confidence,
+          wordCount: data.word_count,
+          suspects: detectSuspectOcrTokens(textarea.value),
+          textarea,
+          actionLabel: 'Mark',
+        });
         // Pull focus to textarea so user can correct OCR mistakes immediately
         textarea.focus();
       } catch (e) {
@@ -163,9 +174,95 @@ let __mkAdjustHandle = null;
     },
     clearImageHandler: () => {
       // No hidden image fields anymore — OCR runs on drop, textarea holds the text
+      hideReviewNotice(reviewNotice);
     }
   });
 })();
+
+// --- OCR review notice -----------------------------------------------------
+// Surfaces when Vision's per-word confidence is variable or our heuristic
+// flags likely-broken tokens in the extracted text. Auto-clears the moment
+// the user edits the textarea so it doesn't linger after correction.
+
+function detectSuspectOcrTokens(text) {
+  if (!text) return [];
+  const tokens = text.split(/\s+/).filter(Boolean);
+  const out = [];
+  const seen = new Set();
+  for (const raw of tokens) {
+    const clean = raw.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+    if (!clean) continue;
+    const key = clean.toLowerCase();
+    if (seen.has(key)) continue;
+    let suspect = false;
+    // Single-character tokens that aren't valid stand-alone English/Romance words
+    if (clean.length === 1 && !/^[aIoAOiu]$/.test(clean)) suspect = true;
+    // 2-3 chars, all consonants → likely fragment
+    else if (clean.length >= 2 && clean.length <= 3 && /^[bcdfghjklmnpqrstvwxyz]+$/i.test(clean)) suspect = true;
+    // Common suffix appearing as standalone token (wrap fragment)
+    else if (/^(ing|ed|ly|tion|sion|ness|ment|ous|ful|less)$/i.test(clean)) suspect = true;
+    // Stray hyphen inside a lowercase word (likely missed wrap)
+    else if (clean.includes('-') && !/^[A-Z]/.test(clean) && clean.length < 12) suspect = true;
+    if (suspect) {
+      out.push(raw);
+      seen.add(key);
+      if (out.length >= 8) break;
+    }
+  }
+  return out;
+}
+
+function renderOcrReviewNotice(container, { avg, min, wordCount, suspects, textarea, actionLabel }) {
+  if (!container) return;
+  const hasSuspects = suspects && suspects.length > 0;
+  const lowAvg = typeof avg === 'number' && avg < 0.85;
+  const lowMin = typeof min === 'number' && min < 0.5;
+  // No reason to bother the user — clean OCR.
+  if (!hasSuspects && !lowAvg && !lowMin) {
+    hideReviewNotice(container);
+    return;
+  }
+  let confidenceLine = '';
+  if (typeof avg === 'number' && wordCount) {
+    const pct = Math.round(avg * 100);
+    if (lowAvg) {
+      confidenceLine = `<p class="ocr-review-confidence">OCR confidence: <strong>${pct}%</strong> across ${wordCount} words. Handwriting and low-contrast photos read variably — please scan the text below before clicking ${escapeText(actionLabel)}.</p>`;
+    } else {
+      confidenceLine = `<p class="ocr-review-confidence">OCR confidence: <strong>${pct}%</strong> across ${wordCount} words.</p>`;
+    }
+  }
+  let suspectsBlock = '';
+  if (hasSuspects) {
+    const chips = suspects.map(t => `<code class="ocr-suspect-chip">${escapeText(t)}</code>`).join(' ');
+    suspectsBlock = `<p class="ocr-review-suspects"><strong>Possible misreads to check:</strong> ${chips}</p>`;
+  }
+  container.innerHTML = `
+    <p class="ocr-review-heading"><span class="mono-caption">// REVIEW BEFORE MARKING</span></p>
+    ${confidenceLine}
+    ${suspectsBlock}
+    <p class="ocr-review-help">Edit the text below to fix any misreads. This notice clears once you start editing.</p>
+  `;
+  container.hidden = false;
+  container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // Auto-clear on first edit so the notice doesn't linger.
+  const clear = () => {
+    hideReviewNotice(container);
+    textarea.removeEventListener('input', clear);
+  };
+  textarea.addEventListener('input', clear, { once: true });
+}
+
+function hideReviewNotice(container) {
+  if (!container) return;
+  container.hidden = true;
+  container.innerHTML = '';
+}
+
+function escapeText(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 
 $('form').addEventListener('submit', async (event) => {
   event.preventDefault();
