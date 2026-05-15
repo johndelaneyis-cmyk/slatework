@@ -150,13 +150,15 @@
     {
       "key": "snapask",
       "name": "Snapask",
-      "fee_pct": 30,
+      "fee_pct": 0,
       "url": "https://www.snapask.com/en-sg",
       "available_in": [
         "HK",
         "SG",
         "TW"
-      ]
+      ],
+      "notes": "Per-session flat rate: HK$5 per question answered (bonus tiers add HK$1/session per 25 questions above 200/month). Not a commission on tutor-set rates.",
+      "data_source": "https://tutor-handbook.snapask.com/sg/qa"
     }
   ],
   "tax": {

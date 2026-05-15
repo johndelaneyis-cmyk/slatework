@@ -64,22 +64,15 @@
     {
       "key": "snapask",
       "name": "Snapask",
-      "fee_pct": 30,
+      "fee_pct": 0,
       "url": "https://www.snapask.com/en-hk",
       "available_in": [
         "HK",
         "SG",
         "TW"
-      ]
-    },
-    {
-      "key": "afterschool",
-      "name": "AfterSchool HK",
-      "fee_pct": 25,
-      "url": "https://www.afterschool.com.hk",
-      "available_in": [
-        "HK"
-      ]
+      ],
+      "notes": "Per-session flat rate: HK$5 per question answered (bonus tiers add HK$1/session per 25 questions above 200/month). Not a commission on tutor-set rates.",
+      "data_source": "https://tutor-handbook.snapask.com/hk/qa"
     },
     {
       "key": "tutorcircle",
@@ -89,7 +82,8 @@
       "available_in": [
         "HK"
       ],
-      "notes": "Charges tutors a one-off introduction fee (~HK$200) per matched student rather than commission."
+      "notes": "Introduction fee model: tutor pays an admin fee equal to ~2 weeks of expected tuition (capped HK$700 general / HK$1000 international/instrument), paid once per matched student. Tutor keeps 100% of all subsequent lessons.",
+      "data_source": "https://www.tutorcircle.hk/en-hk/Q&A.php"
     },
     {
       "key": "verbling",

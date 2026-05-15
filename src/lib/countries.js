@@ -15,7 +15,7 @@
     // Bust browser cache when platform-fee data changes (2026-05-15 update).
     // force-cache is fine within a deploy; the ?v= query string makes the URL
     // unique per data revision so we don't serve stale fees from CDN/browser.
-    const r = await fetch('/data/countries/' + lower + '.json?v=2026-05-15', { cache: 'force-cache' });
+    const r = await fetch('/data/countries/' + lower + '.json?v=2026-05-15-2', { cache: 'force-cache' });
     if (!r.ok) throw new Error('Country pack fetch failed: ' + r.status);
     const pack = await r.json();
     cache.set(lower, pack);
