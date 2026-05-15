@@ -84,7 +84,7 @@
   "tax": {
     "vat_threshold_amount": 0,
     "self_employment_form": "Schedule C (Form 1040) + Schedule SE",
-    "notes": "Form 1099-K thresholds dropped to $5,000 for tax year 2026. Platform earnings above that get reported to IRS automatically.",
+    "notes": "US has no federal VAT/GST. The self-employment income threshold for filing is $400/year (Schedule SE). Form 1099-K thresholds dropped to $5,000 for tax year 2026. Platform earnings above that get reported to IRS automatically.",
     "trading_allowance_amount": 0,
     "self_employment_url": "https://www.irs.gov/forms-pubs/about-schedule-c-form-1040",
     "registration_steps": [

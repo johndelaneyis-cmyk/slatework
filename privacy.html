@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="Slatework's privacy posture: nothing leaves your device unless we explicitly tell you. No accounts, no tracking, minimal data." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
   <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/IBMPlexSans-normal-400-latin.woff2" crossorigin />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=39" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=40" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -32,7 +32,7 @@
     ]
   }
   </script>
-  <script src="/src/lib/trusted-types.js?v=39"></script>
+  <script src="/src/lib/trusted-types.js?v=40"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -46,15 +46,15 @@
 
 <main id="main" class="container">
   <h1>Privacy</h1>
-  <p class="small">Last updated: 2026-05-06.</p>
+  <p class="small">Last updated: 2026-05-15.</p>
 
   <h2>The short version</h2>
   <p>Most of what Slatework does happens in your browser. The few tools that send data anywhere send it only to a language model for processing — we don't store it, log it, or sell it.</p>
 
   <h2>What we collect</h2>
   <ul>
-    <li><strong>Email address</strong> — only if you sign up for the newsletter. We hash it to deduplicate. You can unsubscribe in one click and we delete the record.</li>
-    <li><strong>Rate-limit fingerprint</strong> — when you use an AI-backed tool, we hash your IP address and time-stamp the request to prevent abuse. We don't store the request body. The hash is rotated daily.</li>
+    <li><strong>Email address</strong> — only if you sign up for the newsletter. We store only the <abbr title="Secure Hash Algorithm 256-bit">SHA-256</abbr> hash for deduplication; the plaintext email never lands in our database. You can unsubscribe in one click and we delete the hash.</li>
+    <li><strong>Rate-limit fingerprint</strong> — when you use an AI-backed tool, we compute a <abbr title="Secure Hash Algorithm 256-bit">SHA-256</abbr> hash of your IP address joined with today's UTC date (truncated to 8 bytes), use that as a daily quota key, and discard it overnight. No long-term identifier exists. We never log the request body.</li>
     <li><strong>Feedback</strong> — only if you click the thumbs widget at the bottom of a tool page. We store the verdict (yes/no), the tool name, and your optional note. Nothing else.</li>
   </ul>
 
@@ -68,17 +68,18 @@
 
   <h2>AI-backed tools (lesson plan, worksheet, marking, CEFR AI)</h2>
   <p>When you use one of these four tools, the text you submit is sent to <a href="https://www.anthropic.com">Anthropic</a> for processing. We don't keep a copy on our servers. Anthropic's data-handling policy applies.</p>
-  <p>For the marking accelerator and the CEFR AI mode specifically: please don't include a student's name or other identifying information in the input. Paste the writing only.</p>
+  <p>Names in the writing are fine &mdash; nothing is stored or logged either way. The model only ever sees the text you've submitted, never the original photo or document.</p>
+  <p><strong>Photo uploads (marking + CEFR AI) take an extra hop:</strong> if you attach a photo of handwritten work, the image first goes to <a href="https://cloud.google.com/vision" rel="noopener">Google Cloud Vision</a> for OCR (text extraction). We then take that text, drop it in the textarea for you to review and edit, and only the reviewed text is sent to Anthropic for marking or assessment. The image itself never reaches the marking model.</p>
   <p>For slideshow image illustrations: when you generate a slideshow with the <em>teen</em> or <em>adult</em> audience profile, single-word image keywords (e.g. "classroom", "coffee") that the slideshow generator extracts from the lesson plan are sent to <a href="https://www.pexels.com/" rel="noopener">Pexels</a> to fetch matching photos. No student details, lesson goals, or profile data are sent &mdash; only the keywords. Slideshows for the <em>young learner</em> audience use a curated illustration bundle that ships with Slatework and makes no external image request.</p>
 
   <h2 id="student-data">Student names in uploads</h2>
   <p>The marking accelerator and the CEFR AI assessor both let you upload student writing — pasted text, a Word doc, a PDF, or a photo of handwritten work. That writing often contains the student's name. Here's exactly what happens to it:</p>
   <ul>
-    <li><strong>We never store it.</strong> The file (or its extracted text) is forwarded to Anthropic's API. The response is returned to you. No copy lives on our servers, our database, or our logs.</li>
-    <li><strong>We never log the request body.</strong> Our rate-limit system records only an IP fingerprint, the tool name, and a timestamp — not the content you sent.</li>
-    <li><strong>Anthropic's data policy applies during processing.</strong> Anthropic does not train on API requests by default and processes them according to <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">their privacy policy</a>.</li>
+    <li><strong>We never store it.</strong> The file (or its extracted text) is forwarded for processing — to Google Cloud Vision if it's a photo, then to Anthropic's API for the actual marking — and the response is returned to you. No copy lives on our servers, our database, or our logs.</li>
+    <li><strong>We never log the request body.</strong> Our rate-limit system records only the daily SHA-256 IP-fingerprint, the tool name, and a timestamp — not the content you sent.</li>
+    <li><strong>Anthropic's data policy applies during processing.</strong> Anthropic does not train on API requests by default and processes them according to <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">their privacy policy</a>. Google Cloud Vision processes the OCR step under <a href="https://cloud.google.com/vision/docs/data-usage" target="_blank" rel="noopener">Google's Cloud Vision data policy</a>.</li>
     <li><strong>We don't share or sell anything.</strong> Period.</li>
-    <li><strong>Best practice we'd suggest:</strong> if you're nervous, redact the student name with a black square in the photo, or replace it with a placeholder ("Student A") in the pasted text. Slatework works the same either way.</li>
+    <li><strong>If you want to be extra cautious:</strong> you can still redact the student name with a black square in the photo, or replace it with a placeholder ("Student A") in the text — Slatework works the same either way. But this isn't necessary for normal use; nothing about the student is kept on our side.</li>
   </ul>
 
   <section id="profile-data">
@@ -116,8 +117,8 @@
     <div><a href="/about.html">About</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div>
   </div>
 </footer>
-<script src="/src/lib/profile.js?v=39"></script>
-<script src="/src/lib/page-privacy.js?v=39" defer></script>
+<script src="/src/lib/profile.js?v=40"></script>
+<script src="/src/lib/page-privacy.js?v=40" defer></script>
 <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0a7c100b0b8e44ee9cc547af8f844385"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
