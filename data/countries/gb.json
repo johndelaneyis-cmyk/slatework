@@ -254,6 +254,21 @@
       "fee_pct": 20
     },
     {
+      "url": "https://www.verbling.com",
+      "key": "verbling",
+      "name": "Verbling",
+      "available_in": [
+        "US",
+        "GB",
+        "CA",
+        "AU",
+        "NZ",
+        "IE",
+        "HK"
+      ],
+      "fee_pct": 15
+    },
+    {
       "available_in": [
         "US",
         "GB",

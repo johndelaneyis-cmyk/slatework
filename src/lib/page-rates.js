@@ -175,14 +175,21 @@ async function recalc() {
   const ccy = pack.currency;
   const locale = pack.locale_default;
 
-  // Suggestion block
+  // Headline rate block — Reddit feedback (2026-05-12): the previous
+  // 4-row suggested-low/median/high/your-gross table buried the answer.
+  // Lead with ONE big number, push the range to a subline, push the
+  // platform comparison and annual projection behind <details>.
+  const usingMedian = !(!isNaN(userRate) && userRate > 0);
   const suggestion = document.createElement('div');
   suggestion.innerHTML = `
-    <div class="row visually-hidden" role="row"><span role="columnheader" scope="col">Tier</span><span role="columnheader" scope="col">Hourly rate</span></div>
-    <div class="row" role="row"><span role="cell">Suggested low</span><strong role="cell">${SW.formatCurrency(low, ccy, locale)}/hr</strong></div>
-    <div class="row" role="row"><span role="cell">Suggested median</span><strong role="cell">${SW.formatCurrency(median, ccy, locale)}/hr</strong></div>
-    <div class="row" role="row"><span role="cell">Suggested high</span><strong role="cell">${SW.formatCurrency(high, ccy, locale)}/hr</strong></div>
-    <div class="row" role="row"><span role="cell">Your gross rate (used below)</span><strong role="cell">${SW.formatCurrency(grossRate, ccy, locale)}/hr</strong></div>
+    <div class="rate-hero" role="figure" aria-label="Your hourly rate">
+      <span class="rate-hero-label">${usingMedian ? 'Suggested rate (median)' : 'Your hourly rate'}</span>
+      <strong class="rate-hero-value">${SW.formatCurrency(grossRate, ccy, locale)}</strong>
+      <span class="rate-hero-suffix">/hr</span>
+    </div>
+    <p class="rate-hero-range small">
+      Range for your country + pair: <strong>${SW.formatCurrency(low, ccy, locale)}</strong>–<strong>${SW.formatCurrency(high, ccy, locale)}</strong>/hr · Median <strong>${SW.formatCurrency(median, ccy, locale)}</strong>/hr${usingMedian ? ' · <em>enter your rate above to override</em>' : ''}.
+    </p>
   `;
   const sb = $('suggestion-block');
   sb.innerHTML = '';

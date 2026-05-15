@@ -21,7 +21,7 @@
   <meta name="twitter:description" content="Set a defensible hourly rate as an independent language tutor. See your private rate range and your platform-net side-by-side across italki, Preply, Wyzant, and Cambly — country-aware for 7 markets." />
   <meta name="twitter:image" content="https://slatework.tools/og.png" />
   <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/IBMPlexSans-normal-400-latin.woff2" crossorigin />
-  <link rel="stylesheet" href="/src/lib/styles.css?v=35" />
+  <link rel="stylesheet" href="/src/lib/styles.css?v=36" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -88,7 +88,7 @@
     ]
   }
   </script>
-  <script src="/src/lib/trusted-types.js?v=35"></script>
+  <script src="/src/lib/trusted-types.js?v=36"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -159,17 +159,23 @@
   </form>
 
   <section id="result" class="result" role="region" aria-live="polite" hidden>
-    <h2 class="mt-0">Your rate</h2>
-    <div id="suggestion-block" role="table" aria-label="Suggested rate breakdown"></div>
+    <div id="suggestion-block" aria-label="Your hourly rate"></div>
 
-    <h2 id="platforms-heading">Platform-net comparison</h2>
-    <p class="small">If you charged the same gross hourly rate on each platform, here's what you'd actually take home after commission.</p>
-    <div id="platforms-block" role="table" aria-labelledby="platforms-heading"></div>
+    <details class="rate-details" open>
+      <summary class="rate-details-summary">What each platform pays you at this rate</summary>
+      <p class="small rate-details-help">If you charged the same gross hourly rate on each platform, here's what you'd actually take home after commission. Platforms compete on price, so the booking rate typically sits below your off-platform private rate &mdash; the factor accounts for that.</p>
+      <div id="platforms-block" role="table" aria-label="Platform-net comparison"></div>
+    </details>
 
-    <h2 id="annual-heading">Annual projection</h2>
-    <div id="annual-block" role="table" aria-labelledby="annual-heading"></div>
+    <details class="rate-details">
+      <summary class="rate-details-summary">Annual projection</summary>
+      <div id="annual-block" role="table" aria-label="Annual projection"></div>
+    </details>
 
     <p class="small mt-1" id="fx-note"></p>
+    <p class="small rate-feedback">
+      Rate or commission look wrong for your country? <a href="mailto:hello@slatework.tools?subject=Slatework+rate+correction">Email me the specifics</a> &mdash; country packs are JSON, fast to update. Also coming: subscription-based platforms (Intch, etc.) on their own row, since they don't fit the per-lesson commission model used here.
+    </p>
   </section>
 
   <section class="tool-explainer">
@@ -231,13 +237,13 @@
   </div>
 </footer>
 
-<script src="/src/lib/countries.js?v=35"></script>
-<script src="/src/lib/currency.js?v=35"></script>
-<script src="/feedback.js?v=35" defer></script>
+<script src="/src/lib/countries.js?v=36"></script>
+<script src="/src/lib/currency.js?v=36"></script>
+<script src="/feedback.js?v=36" defer></script>
 
-<script src="/src/lib/profile.js?v=35"></script>
-<script src="/src/lib/profile-ui.js?v=35"></script>
-<script src="/src/lib/page-rates.js?v=35" defer></script>
+<script src="/src/lib/profile.js?v=36"></script>
+<script src="/src/lib/profile-ui.js?v=36"></script>
+<script src="/src/lib/page-rates.js?v=36" defer></script>
 
 <!-- Cloudflare Web Analytics --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0a7c100b0b8e44ee9cc547af8f844385"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
