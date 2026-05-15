@@ -163,7 +163,31 @@ export async function callGoogleVision(env, { base64, mime, timeoutMs = 30000 })
   // shape), use the flat fullTextAnnotation.text so we never regress.
   const rebuilt = rebuildVisionText(resp && resp.fullTextAnnotation);
   const text = rebuilt || (resp && resp.fullTextAnnotation && resp.fullTextAnnotation.text) || '';
-  return text;
+  // TEMPORARY DIAGNOSTIC (revert after 2026-05-15 OCR verification): expose
+  // the break-type histogram so we can confirm what Vision is actually
+  // classifying for mid-word wraps. Returned alongside the text on the
+  // /api/ocr response when callers opt in via the second return field.
+  const diag = summarizeBreakTypes(resp && resp.fullTextAnnotation);
+  return { text, diag };
+}
+
+function summarizeBreakTypes(annotation) {
+  const counts = {};
+  if (!annotation || !Array.isArray(annotation.pages)) return counts;
+  for (const page of annotation.pages) {
+    for (const block of (page.blocks || [])) {
+      for (const para of (block.paragraphs || [])) {
+        for (const word of (para.words || [])) {
+          for (const sym of (word.symbols || [])) {
+            const brk = sym.property && sym.property.detectedBreak;
+            const type = (brk && brk.type) || 'NONE';
+            counts[type] = (counts[type] || 0) + 1;
+          }
+        }
+      }
+    }
+  }
+  return counts;
 }
 
 // Reconstruct OCR text from Vision's fullTextAnnotation.pages[...].symbols

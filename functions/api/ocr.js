@@ -47,15 +47,18 @@ export async function onRequestPost({ request, env }) {
   }
 
   try {
-    const text = await callGoogleVision(env, { base64: imageData, mime: imageMime });
+    const result = await callGoogleVision(env, { base64: imageData, mime: imageMime });
+    const text = result && result.text || '';
+    const diag = result && result.diag || {};
     if (!text || !text.trim()) {
       return jsonResponse({
         error: "OCR ran but didn't find any readable text. Try a clearer / better-lit photo, or type the writing into the text box below.",
         text: '',
-        ocr_empty: true
+        ocr_empty: true,
+        _diag: diag
       }, 200);  // Not an error per se — text just empty
     }
-    return jsonResponse({ text, char_count: text.length }, 200);
+    return jsonResponse({ text, char_count: text.length, _diag: diag }, 200);
   } catch (err) {
     const { error, status } = userFacingClaudeError(err, 'extract text from the image', 'image');
     return jsonResponse({ error, ocr_failed: true }, status);
