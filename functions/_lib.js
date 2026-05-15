@@ -149,8 +149,65 @@ export async function callGoogleVision(env, { base64, mime, timeoutMs = 30000 })
     // Vision can return 200 with a per-image error in the body
     throw new ClaudeError('invalid_request', 200, JSON.stringify(resp.error).slice(0, 800));
   }
-  const text = (resp && resp.fullTextAnnotation && resp.fullTextAnnotation.text) || '';
+  // Rebuild text from the symbol-level structure so we can honour Vision's
+  // detected line-break types instead of just trusting fullTextAnnotation.text
+  // (which preserves raw line breaks — including mid-word wraps like
+  // "we ar hav\ning" when handwriting runs out of horizontal space).
+  //
+  // Semantics per Google Vision docs:
+  //   SPACE / SURE_SPACE   → inline space
+  //   EOL_SURE_SPACE       → soft line wrap inside a paragraph → render as space
+  //   HYPHEN               → end-of-line hyphen artefact → drop, join with no space
+  //   LINE_BREAK           → real paragraph break → newline
+  // Fallback: if rebuild produces empty output (no annotation, or unfamiliar
+  // shape), use the flat fullTextAnnotation.text so we never regress.
+  const rebuilt = rebuildVisionText(resp && resp.fullTextAnnotation);
+  const text = rebuilt || (resp && resp.fullTextAnnotation && resp.fullTextAnnotation.text) || '';
   return text;
+}
+
+// Reconstruct OCR text from Vision's fullTextAnnotation.pages[...].symbols
+// using the per-symbol detectedBreak info. Collapses soft line wraps that
+// would otherwise feed the marking LLM as broken tokens (the "we ar hav\ning"
+// failure mode reported by real users on handwriting samples).
+function rebuildVisionText(annotation) {
+  if (!annotation || !Array.isArray(annotation.pages)) return '';
+  let out = '';
+  for (const page of annotation.pages) {
+    for (const block of (page.blocks || [])) {
+      for (const para of (block.paragraphs || [])) {
+        for (const word of (para.words || [])) {
+          for (const sym of (word.symbols || [])) {
+            out += sym.text || '';
+            const brk = sym.property && sym.property.detectedBreak;
+            if (!brk || !brk.type) continue;
+            switch (brk.type) {
+              case 'SPACE':
+              case 'SURE_SPACE':
+              case 'EOL_SURE_SPACE':  // soft wrap → space, not newline
+                out += ' ';
+                break;
+              case 'HYPHEN':
+                // End-line hyphen artefact: drop and join the next symbol
+                // with no space ("hav-\ning" → "having").
+                break;
+              case 'LINE_BREAK':
+                out += '\n';
+                break;
+              default:
+                // Unknown break type — be conservative, add a space.
+                out += ' ';
+            }
+          }
+        }
+        // Vision sometimes ends a paragraph without an explicit LINE_BREAK
+        // on the final symbol. Defensive newline so paragraphs separate.
+        if (out && !out.endsWith('\n')) out += '\n';
+      }
+    }
+  }
+  // Collapse multiple consecutive newlines and trim whitespace at edges.
+  return out.replace(/\n{3,}/g, '\n\n').replace(/[ \t]+\n/g, '\n').trim();
 }
 
 // Single attempt. Used internally by callClaude. Throws ClaudeError on failure.
