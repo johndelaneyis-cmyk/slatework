@@ -149,89 +149,77 @@ export async function callGoogleVision(env, { base64, mime, timeoutMs = 30000 })
     // Vision can return 200 with a per-image error in the body
     throw new ClaudeError('invalid_request', 200, JSON.stringify(resp.error).slice(0, 800));
   }
-  // Rebuild text from the symbol-level structure so we can honour Vision's
-  // detected line-break types instead of just trusting fullTextAnnotation.text
-  // (which preserves raw line breaks — including mid-word wraps like
-  // "we ar hav\ning" when handwriting runs out of horizontal space).
+  // Vision's fullTextAnnotation.text preserves raw line breaks. Empirically
+  // (verified 2026-05-15 on synthetic test images), Vision classifies almost
+  // every line break as LINE_BREAK regardless of whether it's a real
+  // paragraph break or a mid-word soft wrap caused by handwriting running
+  // out of horizontal space. The symbol-level detectedBreak info is therefore
+  // not reliable for distinguishing the two cases.
   //
-  // Semantics per Google Vision docs:
-  //   SPACE / SURE_SPACE   → inline space
-  //   EOL_SURE_SPACE       → soft line wrap inside a paragraph → render as space
-  //   HYPHEN               → end-of-line hyphen artefact → drop, join with no space
-  //   LINE_BREAK           → real paragraph break → newline
-  // Fallback: if rebuild produces empty output (no annotation, or unfamiliar
-  // shape), use the flat fullTextAnnotation.text so we never regress.
-  const rebuilt = rebuildVisionText(resp && resp.fullTextAnnotation);
-  const text = rebuilt || (resp && resp.fullTextAnnotation && resp.fullTextAnnotation.text) || '';
-  // TEMPORARY DIAGNOSTIC (revert after 2026-05-15 OCR verification): expose
-  // the break-type histogram so we can confirm what Vision is actually
-  // classifying for mid-word wraps. Returned alongside the text on the
-  // /api/ocr response when callers opt in via the second return field.
-  const diag = summarizeBreakTypes(resp && resp.fullTextAnnotation);
-  return { text, diag };
+  // Heuristic post-processing instead: walk line pairs and decide whether
+  // to keep the newline (true paragraph break) or replace with a space
+  // (soft wrap). Drops end-of-line hyphens that join across the wrap.
+  const rawText = (resp && resp.fullTextAnnotation && resp.fullTextAnnotation.text) || '';
+  const text = collapseSoftWraps(rawText);
+  return text;
 }
 
-function summarizeBreakTypes(annotation) {
-  const counts = {};
-  if (!annotation || !Array.isArray(annotation.pages)) return counts;
-  for (const page of annotation.pages) {
-    for (const block of (page.blocks || [])) {
-      for (const para of (block.paragraphs || [])) {
-        for (const word of (para.words || [])) {
-          for (const sym of (word.symbols || [])) {
-            const brk = sym.property && sym.property.detectedBreak;
-            const type = (brk && brk.type) || 'NONE';
-            counts[type] = (counts[type] || 0) + 1;
-          }
-        }
-      }
-    }
-  }
-  return counts;
-}
-
-// Reconstruct OCR text from Vision's fullTextAnnotation.pages[...].symbols
-// using the per-symbol detectedBreak info. Collapses soft line wraps that
-// would otherwise feed the marking LLM as broken tokens (the "we ar hav\ning"
-// failure mode reported by real users on handwriting samples).
-function rebuildVisionText(annotation) {
-  if (!annotation || !Array.isArray(annotation.pages)) return '';
+// Post-process Vision's flat OCR text to undo mid-word soft wraps and
+// end-of-line hyphenation, while preserving real paragraph breaks.
+//
+// Rules applied per consecutive line pair (prev, next):
+//   1. prev ends with "-" + next starts lowercase → drop hyphen, join no space
+//      ("inter-\nesting" → "interesting")
+//   2. prev ends with terminal punctuation (.!?;:) → keep newline as-is
+//      (real sentence/paragraph break)
+//   3. next starts with an uppercase letter → keep newline
+//      (likely a new sentence Vision happened to put on a new line, but
+//      preserving paragraph intent is safer than collapsing)
+//   4. otherwise → replace newline with single space
+//      ("we ar hav\ning" → "we ar hav ing"; Claude can read this as
+//      "we are having" via context)
+//
+// Blank lines (multiple consecutive newlines) are always preserved as
+// paragraph breaks regardless of surrounding tokens.
+export function collapseSoftWraps(raw) {
+  if (!raw) return '';
+  // Split into segments separated by runs of newlines, remembering how many
+  // newlines were between each segment so paragraph breaks (2+) survive.
+  const parts = raw.split(/(\n+)/);  // alternating: line, gap, line, gap, ...
   let out = '';
-  for (const page of annotation.pages) {
-    for (const block of (page.blocks || [])) {
-      for (const para of (block.paragraphs || [])) {
-        for (const word of (para.words || [])) {
-          for (const sym of (word.symbols || [])) {
-            out += sym.text || '';
-            const brk = sym.property && sym.property.detectedBreak;
-            if (!brk || !brk.type) continue;
-            switch (brk.type) {
-              case 'SPACE':
-              case 'SURE_SPACE':
-              case 'EOL_SURE_SPACE':  // soft wrap → space, not newline
-                out += ' ';
-                break;
-              case 'HYPHEN':
-                // End-line hyphen artefact: drop and join the next symbol
-                // with no space ("hav-\ning" → "having").
-                break;
-              case 'LINE_BREAK':
-                out += '\n';
-                break;
-              default:
-                // Unknown break type — be conservative, add a space.
-                out += ' ';
-            }
-          }
-        }
-        // Vision sometimes ends a paragraph without an explicit LINE_BREAK
-        // on the final symbol. Defensive newline so paragraphs separate.
-        if (out && !out.endsWith('\n')) out += '\n';
+  for (let i = 0; i < parts.length; i++) {
+    const seg = parts[i];
+    if (i === 0) { out += seg; continue; }
+    if (i % 2 === 1) {
+      // This is a run of newlines. If 2+ newlines, always a paragraph break.
+      if (seg.length >= 2) { out += '\n\n'; continue; }
+      // Single newline — apply heuristic against neighbouring lines.
+      const prev = out;
+      const next = parts[i + 1] || '';
+      const prevTrimmedEnd = prev.replace(/[ \t]+$/, '');
+      const lastChar = prevTrimmedEnd.slice(-1);
+      const firstChar = next.replace(/^[ \t]+/, '').charAt(0);
+      // Rule 1: hyphenated wrap — drop the hyphen, join with no space.
+      if (lastChar === '-' && firstChar && firstChar === firstChar.toLowerCase() && /[a-z]/i.test(firstChar)) {
+        out = prevTrimmedEnd.slice(0, -1);
+        continue;
       }
+      // Rule 2: terminal punctuation → real paragraph/sentence break.
+      if (/[.!?;:]/.test(lastChar)) { out += '\n'; continue; }
+      // Rule 3: next line starts uppercase → keep break.
+      if (firstChar && firstChar === firstChar.toUpperCase() && /[A-Z]/.test(firstChar)) {
+        out += '\n';
+        continue;
+      }
+      // Rule 4: soft wrap — replace with single space.
+      out += ' ';
+    } else {
+      // This is a line segment — append.
+      out += seg;
     }
   }
-  // Collapse multiple consecutive newlines and trim whitespace at edges.
-  return out.replace(/\n{3,}/g, '\n\n').replace(/[ \t]+\n/g, '\n').trim();
+  // Final cleanup: collapse double spaces and trim.
+  return out.replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+\n/g, '\n').trim();
 }
 
 // Single attempt. Used internally by callClaude. Throws ClaudeError on failure.
