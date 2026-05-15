@@ -29,6 +29,13 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
+# Python (test scripts)
+__pycache__/
+*.pyc
+*.pyo
+tests/output/
+tests/fixtures/*.png.tmp
+
 # Editor
 .vscode/
 .idea/
