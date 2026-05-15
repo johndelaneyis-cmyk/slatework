@@ -184,6 +184,30 @@ let __mkAdjustHandle = null;
 // flags likely-broken tokens in the extracted text. Auto-clears the moment
 // the user edits the textarea so it doesn't linger after correction.
 
+// Common 2-3 letter English words — anything 2-3 letters NOT in this set
+// gets flagged as suspect. Catches the common OCR misread cases like
+// "ar" (→ "are"), "hav" (→ "have"/"having"), "wat" (→ "what") while
+// ignoring real short words like "the", "and", "for", "you".
+const COMMON_SHORT_EN = new Set([
+  // 2-letter
+  'a','i','am','an','as','at','be','by','do','go','he','hi','if','in','is',
+  'it','me','my','no','of','oh','ok','on','or','so','to','up','us','we','ye',
+  // 3-letter (top ~120 by frequency)
+  'add','age','ago','aid','aim','air','all','and','any','are','arm','art',
+  'ask','ate','bad','bag','bar','bat','bed','bee','beg','bet','big','bit',
+  'box','boy','bus','but','buy','can','car','cat','cup','cut','day','did',
+  'dog','don','dry','due','ear','eat','egg','end','era','eye','far','fat',
+  'few','fit','fix','fly','for','fun','get','god','got','gun','guy','had',
+  'has','hat','her','hey','him','his','hit','hot','how','its','job','key',
+  'kid','lay','led','let','lie','log','lot','low','man','may','men','met',
+  'mid','mix','mom','net','new','non','nor','not','now','nut','odd','off',
+  'oil','old','one','our','out','own','par','pay','pen','pet','put','ran',
+  'red','rid','run','sad','sat','saw','say','sea','see','set','she','sir',
+  'sit','six','sky','son','sun','tax','tea','ten','the','tie','tip','too',
+  'top','toy','try','two','use','van','vet','war','was','way','who','why',
+  'win','won','yes','yet','you','zoo',
+]);
+
 function detectSuspectOcrTokens(text) {
   if (!text) return [];
   const tokens = text.split(/\s+/).filter(Boolean);
@@ -195,14 +219,15 @@ function detectSuspectOcrTokens(text) {
     const key = clean.toLowerCase();
     if (seen.has(key)) continue;
     let suspect = false;
-    // Single-character tokens that aren't valid stand-alone English/Romance words
+    // Single-character tokens that aren't valid stand-alone English words
     if (clean.length === 1 && !/^[aIoAOiu]$/.test(clean)) suspect = true;
-    // 2-3 chars, all consonants → likely fragment
-    else if (clean.length >= 2 && clean.length <= 3 && /^[bcdfghjklmnpqrstvwxyz]+$/i.test(clean)) suspect = true;
     // Common suffix appearing as standalone token (wrap fragment)
     else if (/^(ing|ed|ly|tion|sion|ness|ment|ous|ful|less)$/i.test(clean)) suspect = true;
     // Stray hyphen inside a lowercase word (likely missed wrap)
     else if (clean.includes('-') && !/^[A-Z]/.test(clean) && clean.length < 12) suspect = true;
+    // 2-3 letter ASCII token not in the common-word allowlist — catches
+    // OCR misreads like "ar", "hav", "wat" while not flagging "the", "you" etc.
+    else if (clean.length >= 2 && clean.length <= 3 && /^[a-zA-Z]+$/.test(clean) && !COMMON_SHORT_EN.has(key)) suspect = true;
     if (suspect) {
       out.push(raw);
       seen.add(key);

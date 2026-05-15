@@ -143,6 +143,25 @@ function resolveLangVal() {
 // --- OCR review notice (mirrors page-marking.js — kept inline to avoid
 // touching the SW shared bundle mid-launch).
 
+// Mirrors page-marking.js — keep both in sync.
+const COMMON_SHORT_EN = new Set([
+  'a','i','am','an','as','at','be','by','do','go','he','hi','if','in','is',
+  'it','me','my','no','of','oh','ok','on','or','so','to','up','us','we','ye',
+  'add','age','ago','aid','aim','air','all','and','any','are','arm','art',
+  'ask','ate','bad','bag','bar','bat','bed','bee','beg','bet','big','bit',
+  'box','boy','bus','but','buy','can','car','cat','cup','cut','day','did',
+  'dog','don','dry','due','ear','eat','egg','end','era','eye','far','fat',
+  'few','fit','fix','fly','for','fun','get','god','got','gun','guy','had',
+  'has','hat','her','hey','him','his','hit','hot','how','its','job','key',
+  'kid','lay','led','let','lie','log','lot','low','man','may','men','met',
+  'mid','mix','mom','net','new','non','nor','not','now','nut','odd','off',
+  'oil','old','one','our','out','own','par','pay','pen','pet','put','ran',
+  'red','rid','run','sad','sat','saw','say','sea','see','set','she','sir',
+  'sit','six','sky','son','sun','tax','tea','ten','the','tie','tip','too',
+  'top','toy','try','two','use','van','vet','war','was','way','who','why',
+  'win','won','yes','yet','you','zoo',
+]);
+
 function detectSuspectOcrTokens(text) {
   if (!text) return [];
   const tokens = text.split(/\s+/).filter(Boolean);
@@ -155,9 +174,9 @@ function detectSuspectOcrTokens(text) {
     if (seen.has(key)) continue;
     let suspect = false;
     if (clean.length === 1 && !/^[aIoAOiu]$/.test(clean)) suspect = true;
-    else if (clean.length >= 2 && clean.length <= 3 && /^[bcdfghjklmnpqrstvwxyz]+$/i.test(clean)) suspect = true;
     else if (/^(ing|ed|ly|tion|sion|ness|ment|ous|ful|less)$/i.test(clean)) suspect = true;
     else if (clean.includes('-') && !/^[A-Z]/.test(clean) && clean.length < 12) suspect = true;
+    else if (clean.length >= 2 && clean.length <= 3 && /^[a-zA-Z]+$/.test(clean) && !COMMON_SHORT_EN.has(key)) suspect = true;
     if (suspect) {
       out.push(raw);
       seen.add(key);
