@@ -96,7 +96,8 @@
       <button type="button" id="profile-clear-btn" class="btn secondary">Clear all profiles</button>
       <button type="button" id="profile-export-btn" class="btn secondary">Export profiles (JSON)</button>
       <button type="button" id="profile-import-btn" class="btn secondary">Import profiles (JSON)</button>
-      <input type="file" id="profile-import-file" accept="application/json" hidden />
+      <label for="profile-import-file" class="visually-hidden">Profile JSON file</label>
+      <input type="file" id="profile-import-file" accept="application/json" aria-label="Profile JSON file to import" hidden />
     </div>
     <p id="profile-action-status" class="small" aria-live="polite"></p>
   </section>
