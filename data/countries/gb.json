@@ -111,7 +111,8 @@
       "Above £1,000, file an SA100 + SA103 by 31 January (online) or 31 October (paper).",
       "Pay Class 2 NI (£3.45/week if profits > £6,725) and Class 4 NI (9% on profits £12,570–£50,270, 2% above).",
       "Register for VAT only if turnover exceeds £90,000 — most tutors stay well below this."
-    ]
+    ],
+    "income_tax_source": "https://www.gov.uk/income-tax-rates"
   },
   "currency_symbol": "£",
   "data_source_last_verified": "2026-05-15",

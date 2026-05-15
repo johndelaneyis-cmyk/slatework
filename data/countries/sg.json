@@ -231,7 +231,8 @@
       "CPF — Singapore Citizens and PRs must contribute to MediSave (the medical savings portion of CPF) on net trade income above S$6,000/year. Rate ~8-10.5% depending on age, capped at S$5,760-S$7,560/year.",
       "Keep records of income and expenses for 5 years (IRAS requirement)."
     ],
-    "notes": "Singapore's tax regime is among the simplest globally for tutors: GST threshold is S$1M (most tutors never hit it), brackets are progressive but income tax effective rates are low under S$80K. Tax year is the calendar year. CPF MediSave contribution is the main 'extra' for citizens and PRs."
+    "notes": "Singapore's tax regime is among the simplest globally for tutors: GST threshold is S$1M (most tutors never hit it), brackets are progressive but income tax effective rates are low under S$80K. Tax year is the calendar year. CPF MediSave contribution is the main 'extra' for citizens and PRs.",
+    "income_tax_source": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates"
   },
   "background_check": {
     "name": "Tuition centre clearance via Singapore Police Force (Certificate of Clearance) — only required if registering with MOE-registered tuition centres",

@@ -191,7 +191,8 @@
       "Keep books of accounts (registered with BIR) and copies of all official receipts for 10 years.",
       "Local Business Permit (Mayor's Permit) from your city/municipality — annual renewal."
     ],
-    "notes": "The 8% flat-rate option is the simplest path for most independent tutors. Below ₱250K gross income you owe nothing; above that, 8% of gross — no separate percentage tax, no detailed expense bookkeeping. Choose this on your first quarterly return (Form 1701Q) of the year. Tax year is calendar year (January–December)."
+    "notes": "The 8% flat-rate option is the simplest path for most independent tutors. Below ₱250K gross income you owe nothing; above that, 8% of gross — no separate percentage tax, no detailed expense bookkeeping. Choose this on your first quarterly return (Form 1701Q) of the year. Tax year is calendar year (January–December).",
+    "income_tax_source": "https://www.bir.gov.ph/index.php/tax-information/income-tax.html"
   },
   "background_check": {
     "name": "NBI Clearance — National Bureau of Investigation",

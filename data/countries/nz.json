@@ -84,7 +84,7 @@
   "tax": {
     "vat_threshold_amount": 60000,
     "self_employment_form": "IR3 (Individual income return) + IR3B (Self-employed income summary)",
-    "notes": "Tutoring is generally GST-exempt only if delivered through a registered education provider. Independent tutors charge GST above the threshold.",
+    "notes": "Tutoring is generally GST-exempt only if delivered through a registered education provider. Independent tutors charge GST above the threshold. NZ has no tax-free threshold — tax starts at 10.5% from the first dollar. Brackets verified against IRD 2025-26 PAYE tax year (Apr 2025 - Mar 2026). ACC Earners Levy (~1.39%) is separate and not in these rates.",
     "trading_allowance_amount": 0,
     "self_employment_url": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/self-employed",
     "registration_steps": [
@@ -93,7 +93,30 @@
       "File IR3 by 7 July each year covering 1 April–31 March; pay tax in three provisional instalments.",
       "Pay ACC levies (work-based + earner) — automatically calculated after first IR3 filing.",
       "Most private tutors are sole traders; no separate business registration required."
-    ]
+    ],
+    "income_tax_brackets": [
+      {
+        "rate": 0.105,
+        "upper_bound_amount": 15600
+      },
+      {
+        "rate": 0.175,
+        "upper_bound_amount": 53500
+      },
+      {
+        "rate": 0.3,
+        "upper_bound_amount": 78100
+      },
+      {
+        "rate": 0.33,
+        "upper_bound_amount": 180000
+      },
+      {
+        "rate": 0.39,
+        "upper_bound_amount": null
+      }
+    ],
+    "income_tax_source": "https://www.ird.govt.nz/income-tax/income-tax-for-individuals/tax-codes-and-tax-rates-for-individuals/tax-rates-for-individuals"
   },
   "currency_symbol": "NZ$",
   "data_source_last_verified": "2026-05-15",

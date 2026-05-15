@@ -84,7 +84,7 @@
   "tax": {
     "vat_threshold_amount": 75000,
     "self_employment_form": "Individual tax return + Business and Professional Items schedule",
-    "notes": "Tutoring services are typically GST-free if you're a recognised education provider; check the ATO ruling for your specific service before charging GST.",
+    "notes": "Tutoring services are typically GST-free if you're a recognised education provider; check the ATO ruling for your specific service before charging GST. Brackets verified against ATO 2025-26 financial year (Jul 2025 - Jun 2026). Medicare Levy (2% of taxable income) is calculated separately, not included here. A legislated reduction to 15% on the $18,201-$45,000 bracket is scheduled from 1 July 2026.",
     "trading_allowance_amount": 0,
     "self_employment_url": "https://www.ato.gov.au/businesses-and-organisations/income-deductions-and-concessions/income-and-deductions-for-business",
     "registration_steps": [
@@ -94,7 +94,30 @@
       "Lodge an annual income tax return through myTax or via a registered agent — deadline 31 October.",
       "Pay PAYG instalments quarterly if ATO assigns you to instalment scheme.",
       "Each state has Working With Children Check — required before tutoring minors."
-    ]
+    ],
+    "income_tax_brackets": [
+      {
+        "rate": 0,
+        "upper_bound_amount": 18200
+      },
+      {
+        "rate": 0.16,
+        "upper_bound_amount": 45000
+      },
+      {
+        "rate": 0.3,
+        "upper_bound_amount": 135000
+      },
+      {
+        "rate": 0.37,
+        "upper_bound_amount": 190000
+      },
+      {
+        "rate": 0.45,
+        "upper_bound_amount": null
+      }
+    ],
+    "income_tax_source": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents"
   },
   "currency_symbol": "A$",
   "data_source_last_verified": "2026-05-15",

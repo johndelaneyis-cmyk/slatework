@@ -180,7 +180,8 @@
       "Income tax return due 31 July (for non-audit cases) — assessment year is the year following financial year (April–March).",
       "Advance tax: if total tax liability for the year exceeds ₹10,000, you must pay in 4 instalments (15 June, 15 Sept, 15 Dec, 15 March). Section 44ADA filers have a single 15 March deadline."
     ],
-    "notes": "The presumptive scheme under Section 44ADA is the simplest option for private tutors with gross receipts under ₹50 lakh — 50% of receipts deemed expenses, no books. Most independent tutors qualify for this. New tax regime brackets above are FY 2024-25; verify current year on incometax.gov.in."
+    "notes": "The presumptive scheme under Section 44ADA is the simplest option for private tutors with gross receipts under ₹50 lakh — 50% of receipts deemed expenses, no books. Most independent tutors qualify for this. New tax regime brackets above are FY 2024-25; verify current year on incometax.gov.in.",
+    "income_tax_source": "https://incometaxindia.gov.in/Pages/tax-information-services/tax-information-services.aspx"
   },
   "background_check": {
     "name": "Police Clearance Certificate (PCC) — local Police Commissioner's office",

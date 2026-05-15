@@ -124,7 +124,18 @@
       "Pay preliminary tax and balance via ROS.",
       "USC (Universal Social Charge) and PRSI Class S apply on self-employment income."
     ],
-    "notes": "Education services delivered by an approved provider are VAT-exempt; private tutoring is generally exempt — confirm with Revenue."
+    "notes": "Education services delivered by an approved provider are VAT-exempt; private tutoring is generally exempt — confirm with Revenue. Single-person bands. Married/civil-partnership single-earner band is €53,000 (not modeled here). Income tax bands only — USC (Universal Social Charge, 0.5-8% tiered) and PRSI (4% Class S for self-employed) are separate levies. Single Person Tax Credit + PAYE Tax Credit (~€4,000 combined) further reduces effective tax on the first ~€20,000.",
+    "income_tax_brackets": [
+      {
+        "rate": 0.2,
+        "upper_bound_amount": 44000
+      },
+      {
+        "rate": 0.4,
+        "upper_bound_amount": null
+      }
+    ],
+    "income_tax_source": "https://www.revenue.ie/en/jobs-and-pensions/calculating-your-income-tax/tax-rate-band.aspx"
   },
   "background_check": {
     "name": "Garda Vetting (National Vetting Bureau)",

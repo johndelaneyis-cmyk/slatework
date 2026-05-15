@@ -142,7 +142,8 @@
       "Mandatory Provident Fund (MPF) contributions: 5% of relevant income up to HK$1,500/month cap (HK$18,000/year) once you exceed the HK$7,100/month income trigger.",
       "No GST/VAT in Hong Kong — clean."
     ],
-    "notes": "Hong Kong has no sales tax, GST, or VAT — a meaningful simplification. The 'tutor king/queen' culture means rates can be 5–10× the international online median for in-person prep."
+    "notes": "Hong Kong has no sales tax, GST, or VAT — a meaningful simplification. The 'tutor king/queen' culture means rates can be 5–10× the international online median for in-person prep.",
+    "income_tax_source": "https://www.ird.gov.hk/eng/tax/ind_ctr.htm"
   },
   "background_check": {
     "name": "Sexual Conviction Record Check (SCRC) — Hong Kong Police",

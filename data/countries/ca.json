@@ -84,7 +84,7 @@
   "tax": {
     "vat_threshold_amount": 30000,
     "self_employment_form": "T2125 (Statement of Business or Professional Activities)",
-    "notes": "Tutoring is GST/HST-exempt in some provinces when delivered by a teacher to a student in a course leading to a credential — verify with your province before charging tax.",
+    "notes": "Tutoring is GST/HST-exempt in some provinces when delivered by a teacher to a student in a course leading to a credential — verify with your province before charging tax. Federal brackets only — provincial income tax stacks on top and varies by province (ranges roughly 4-21% depending on bracket). 2026 lowest-rate is 14% (dropped from 15% on 1 July 2025). The 0% band above represents the Basic Personal Amount credit (CA$16,452 in 2026) which effectively zeroes federal tax on income below it.",
     "trading_allowance_amount": 0,
     "self_employment_url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t2125.html",
     "registration_steps": [
@@ -94,7 +94,34 @@
       "File T2125 each year with your personal T1 return (deadline 30 April for most; 15 June if self-employed but balance owing still due 30 April).",
       "Pay quarterly tax instalments if net tax owing exceeds CA$3,000 in current or prior year.",
       "Province-level: Quebec runs its own tax system (Revenu Québec); register separately if QC-resident."
-    ]
+    ],
+    "income_tax_brackets": [
+      {
+        "rate": 0,
+        "upper_bound_amount": 16452
+      },
+      {
+        "rate": 0.14,
+        "upper_bound_amount": 74975
+      },
+      {
+        "rate": 0.205,
+        "upper_bound_amount": 133497
+      },
+      {
+        "rate": 0.26,
+        "upper_bound_amount": 197892
+      },
+      {
+        "rate": 0.29,
+        "upper_bound_amount": 274934
+      },
+      {
+        "rate": 0.33,
+        "upper_bound_amount": null
+      }
+    ],
+    "income_tax_source": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/frequently-asked-questions-individuals/canadian-income-tax-rates-individuals-current-previous-years.html"
   },
   "currency_symbol": "CA$",
   "data_source_last_verified": "2026-05-15",
