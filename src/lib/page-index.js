@@ -187,7 +187,11 @@ console.log("%cFor the teachers", "color:#475569;font-size:14px;font-style:itali
       const median = data.median * mult;
       const ccy = pack.currency;
       const locale = pack.locale_default;
-      rateEl.textContent = SW.formatCurrency(median, ccy, locale) + '/hr';
+      // Suffix /hr is now a separate span in HTML so it can be sized/weighted
+      // independently — the display font's tabular digits otherwise sit on a
+      // different baseline than the proportional "/hr" glyphs, which made the
+      // rate visually off-kilter (reported 2026-05-15).
+      rateEl.textContent = SW.formatCurrency(median, ccy, locale);
 
       const platforms = (pack.platforms || [])
         .filter(p => (p.available_in || []).includes(code) && p.fee_pct > 0)

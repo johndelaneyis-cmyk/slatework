@@ -493,6 +493,14 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
 }
 
 .preview-rate {
+  /* Container — keeps the number + suffix on one baseline */
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15em;
+  margin-bottom: 0.5rem;
+  line-height: 1.05;
+}
+.preview-rate-num {
   font-family: var(--display);
   font-size: clamp(2rem, 1.4rem + 2vw, 2.75rem);
   font-weight: 600;
@@ -500,8 +508,15 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.012em;
   color: var(--chalk);
-  line-height: 1.05;
-  margin-bottom: 0.5rem;
+}
+.preview-rate-suffix {
+  /* Smaller, lighter, baseline-aligned — sits naturally next to the
+     tabular digits without visual jolt */
+  font-family: var(--sans);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--chalk-faint);
+  letter-spacing: 0;
 }
 
 .preview-rate-label {
